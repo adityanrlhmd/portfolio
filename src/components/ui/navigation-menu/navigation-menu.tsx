@@ -1,7 +1,8 @@
 import { NavigationMenu as NavigationMenuPrimitive } from '@base-ui/react/navigation-menu';
+import { RiArrowDownSLine } from '@remixicon/react';
 
 import { cn } from '@/lib/utils';
-import { RiArrowDownSLine } from '@remixicon/react';
+
 import { navigationMenuTriggerStyle } from './style';
 
 function NavigationMenu({
