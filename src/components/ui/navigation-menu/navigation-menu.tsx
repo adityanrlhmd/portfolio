@@ -67,6 +67,7 @@ function NavigationMenuTrigger({
       className={cn(navigationMenuTriggerStyle(), 'group', className)}
       {...props}
     >
+      <div className="group-data-[active=true]:bg-accent size-1.5 -translate-y-px rounded-full" />
       {children}{' '}
       <RiArrowDownSLine
         className="relative top-px ms-1 size-3 transition duration-300 group-data-open/navigation-menu-trigger:rotate-180 group-data-popup-open/navigation-menu-trigger:rotate-180"
@@ -123,17 +124,21 @@ function NavigationMenuPositioner({
 
 function NavigationMenuLink({
   className,
+  children,
   ...props
 }: NavigationMenuPrimitive.Link.Props) {
   return (
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "hover:bg-muted focus:bg-muted focus-visible:ring-ring/30 data-[active=true]:bg-muted/50 data-[active=true]:hover:bg-muted data-[active=true]:focus:bg-muted flex items-center gap-1.5 rounded-lg p-2 text-xs/relaxed transition-all outline-none focus-visible:ring-2 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
+        "group text-foreground/50 hover:text-foreground focus-visible:ring-ring/30 data-[active=true]:text-foreground/80 data-[active=true]:hover:text-foreground data-[active=true]:focus:text-foreground flex items-center gap-1.5 rounded-lg p-2 text-xs/relaxed transition-all outline-none hover:bg-transparent focus:bg-transparent focus-visible:ring-2 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}
-    />
+    >
+      <div className="group-data-[active=true]:bg-accent size-1.5 -translate-y-px rounded-full" />
+      {children}
+    </NavigationMenuPrimitive.Link>
   );
 }
 
