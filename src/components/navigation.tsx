@@ -51,7 +51,7 @@ export const Navigation = () => {
   );
 
   return (
-    <header className="sticky top-0 z-1000 flex w-full justify-center">
+    <header className="bg-background sticky top-0 z-100 flex w-full justify-center">
       <motion.div
         style={{
           width: widthWrapper,
@@ -59,9 +59,11 @@ export const Navigation = () => {
         className="flex h-(--header-height) justify-center border-b px-8"
       >
         <div className="container mx-auto flex w-full items-center justify-between">
-          <Logo />
+          <div className="hover:text-primary">
+            <Logo />
+          </div>
 
-          <NavigationMenu>
+          <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
               {navigations.map((nav) => (
                 <NavigationMenuItem key={nav.title}>
