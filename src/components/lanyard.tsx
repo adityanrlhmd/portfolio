@@ -199,7 +199,8 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   });
 
   curve.curveType = 'chordal';
-  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  (texture as THREE.Texture).wrapS = (texture as THREE.Texture).wrapT =
+    THREE.RepeatWrapping;
 
   const meshLineGeom = useMemo(() => new MeshLineGeometry(), []);
   const meshLineMat = useMemo(() => {
