@@ -1,11 +1,14 @@
 import { Navigation } from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
+import Hero from '@/sections/hero';
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <main className="min-h-screen">
-        <Navigation />
+      <Navigation />
+
+      <main>
+        <Hero />
       </main>
     </ThemeProvider>
   );

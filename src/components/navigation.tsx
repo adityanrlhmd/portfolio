@@ -51,12 +51,12 @@ export const Navigation = () => {
   );
 
   return (
-    <header className="sticky top-0 z-100 flex w-full justify-center">
+    <header className="sticky top-0 z-1000 flex w-full justify-center">
       <motion.div
         style={{
           width: widthWrapper,
         }}
-        className="border-b px-8 py-4"
+        className="flex h-(--header-height) justify-center border-b px-8"
       >
         <div className="container mx-auto flex w-full items-center justify-between">
           <Logo />
@@ -68,8 +68,9 @@ export const Navigation = () => {
                   <NavigationMenuLink
                     data-active={activeSection === nav.href.replace('#', '')}
                     className={navigationMenuTriggerStyle()}
+                    href={nav.href}
                   >
-                    <a href={nav.href}>{nav.title}</a>
+                    {nav.title}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ))}

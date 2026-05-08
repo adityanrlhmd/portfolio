@@ -46,6 +46,7 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+  --header-height: 64px;
 }
 
 :root {
@@ -130,5 +131,130 @@
   }
   html {
     @apply font-mono;
+  }
+}
+
+.decrypted-btn {
+  --btn-transition: 0.3s;
+  --btn-letter-spacing: 0.1rem;
+  --btn-animation-duration: 1.2s;
+}
+
+.decrypted-btn {
+  transition: var(--btn-transition);
+}
+
+.decrypted-btn span {
+  letter-spacing: var(--btn-letter-spacing);
+  transition: var(--btn-transition);
+  box-sizing: border-box;
+  position: relative;
+  background: inherit;
+}
+
+.decrypted-btn span::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: '';
+  background: inherit;
+}
+
+.decrypted-btn:hover span::before,
+.decrypted-btn:focus span::before {
+  animation: chitchat linear both var(--btn-animation-duration);
+}
+
+@keyframes chitchat {
+  0% {
+    content: '#';
+  }
+
+  5% {
+    content: '.';
+  }
+
+  10% {
+    content: '^{';
+  }
+
+  15% {
+    content: '-!';
+  }
+
+  20% {
+    content: '#$_';
+  }
+
+  25% {
+    content: '№:0';
+  }
+
+  30% {
+    content: '#{+.';
+  }
+
+  35% {
+    content: '@}-?';
+  }
+
+  40% {
+    content: '?{4@%';
+  }
+
+  45% {
+    content: '=.,^!';
+  }
+
+  50% {
+    content: '?2@%';
+  }
+
+  55% {
+    content: '\;1}]';
+  }
+
+  60% {
+    content: '?{%:%';
+    right: 0;
+  }
+
+  65% {
+    content: '|{f[4';
+    right: 0;
+  }
+
+  70% {
+    content: '{4%0%';
+    right: 0;
+  }
+
+  75% {
+    content: "'1_0<";
+    right: 0;
+  }
+
+  80% {
+    content: '{0%';
+    right: 0;
+  }
+
+  85% {
+    content: "]>'";
+    right: 0;
+  }
+
+  90% {
+    content: '4';
+    right: 0;
+  }
+
+  95% {
+    content: '2';
+    right: 0;
+  }
+
+  100% {
+    content: '';
+    right: 0;
   }
 }
