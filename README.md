@@ -1,30 +1,38 @@
-# React + TypeScript + Vite
+# Aditya Hamda | Frontend Engineer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A frontend engineer who loves to develop scalable frontend architectures with a focus on type-safety and performance, ensuring every line of code contributes to a fast and reliable digital product.
 
-Currently, two official plugins are available:
+[![Website](https://img.shields.io/badge/Website-adityahamda.vercel.app-blue?style=flat-square&logo=vercel)](https://adityahamda.vercel.app/)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Aditya%20Hamda-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/adityanurulhamda/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚧 Under Development
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+I am currently rebuilding my digital home to better showcase my latest work and technical journey.
 
-- Configure the top-level `parserOptions` property like this:
+> "Still cooking something special behind the scenes."
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## 🚀 Technical Focus
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- **Frontend Architectures:** Designing scalable and maintainable web applications.
+- **Type-Safety:** Leveraging TypeScript to ensure robust and error-free codebases.
+- **Performance:** Optimizing for speed and seamless user experiences.
+
+## 🛠️ Stack
+
+- **Framework:** React 19 + Vite
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **Deployment:** Vercel
+
+## 📬 Let's Connect
+
+While the site is being polished, I'm always open to discussing frontend architecture, software engineering, or potential collaborations.
+
+- **LinkedIn:** [Aditya Nurul Hamda](https://www.linkedin.com/in/adityanurulhamda/)
+- **Email:** [adityanurulhamda@gmail.com](mailto:adityanurulhamda@gmail.com)
+
+---
+
+_Built with passion by Aditya Hamda._
