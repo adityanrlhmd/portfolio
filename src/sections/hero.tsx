@@ -112,7 +112,7 @@ const Hero = () => {
           {SKILLS.map((skill, index) => (
             <CarouselItem
               key={index}
-              className="basis-1/3 pl-1 md:basis-1/6 lg:basis-1/11"
+              className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/11"
             >
               <div className="p-1">
                 <Card className="hover:text-primary h-fit border-none bg-transparent p-0 shadow-none">
@@ -121,9 +121,9 @@ const Hero = () => {
                       src={skill.icon}
                       alt={skill.name}
                       title={skill.name}
-                      className="size-6 object-contain"
+                      className="size-4 object-contain md:size-6"
                     />
-                    <span>{skill.name}</span>
+                    <span className="text-xs">{skill.name}</span>
                   </CardContent>
                 </Card>
               </div>
