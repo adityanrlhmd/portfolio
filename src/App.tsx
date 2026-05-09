@@ -3,15 +3,19 @@ import { Navigation } from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
 import Hero from '@/sections/hero';
 
+import { GridBeam } from './components/grid-beam';
+
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AnnouncementBar />
       <Navigation />
 
-      <main>
-        <Hero />
-      </main>
+      <GridBeam>
+        <main className="flex flex-col">
+          <Hero />
+        </main>
+      </GridBeam>
     </ThemeProvider>
   );
 }

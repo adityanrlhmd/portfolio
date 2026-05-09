@@ -47,7 +47,7 @@ export const Navigation = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-50 flex h-(--header-height) justify-center px-4 backdrop-blur-none sm:px-8 sm:backdrop-blur-lg">
+      <header className="sticky top-0 z-50 flex h-(--header-height) justify-center border-b px-4 backdrop-blur-none sm:px-8 sm:backdrop-blur-lg">
         <div className="container mx-auto flex w-full items-center justify-between">
           <div className="hover:text-primary">
             <Logo />
