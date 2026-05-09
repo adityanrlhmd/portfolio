@@ -11,10 +11,6 @@ function App() {
 
       <main>
         <Hero />
-        <div className="h-screen" />
-        <div className="h-screen" />
-        <div className="h-screen" />
-        <div className="h-screen" />
       </main>
     </ThemeProvider>
   );
