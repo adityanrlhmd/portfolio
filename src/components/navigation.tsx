@@ -1,4 +1,9 @@
-import { motion, useScroll, useSpring, useTransform } from 'motion/react';
+import {
+  RiBarChartHorizontalLine,
+  RiFolderLine,
+  RiHomeLine,
+  RiSendPlaneLine,
+} from '@remixicon/react';
 
 import { Logo } from '@/assets/logo';
 import {
@@ -16,54 +21,39 @@ const navigations = [
   {
     title: 'Home',
     href: '#home',
+    icon: <RiHomeLine />,
   },
   {
     title: 'Experience',
     href: '#experience',
+    icon: <RiBarChartHorizontalLine />,
   },
   {
     title: 'Projects',
     href: '#projects',
+    icon: <RiFolderLine />,
   },
   {
     title: 'Contact',
     href: '#contact',
+    icon: <RiSendPlaneLine />,
   },
 ] as const;
 
 export const Navigation = () => {
-  const { scrollY } = useScroll();
-  const scrollYSpring = useSpring(scrollY, {
-    stiffness: 300,
-    damping: 20,
-    restDelta: 0.001,
-  });
-
-  // We use progress from 0 to 1 to avoid framer-motion interpolating "100%" to "100px"
-  const progress = useTransform(scrollYSpring, [0, 400], [0, 1]);
-  const widthWrapper = useTransform(
-    progress,
-    (p) => `calc((100% * ${1 - p}) + (578px * ${p}))`
-  );
-
   const activeSection = useActiveSection(
     navigations.map((nav) => nav.href.replace('#', ''))
   );
 
   return (
-    <header className="bg-background sticky top-0 z-100 flex w-full justify-center">
-      <motion.div
-        style={{
-          width: widthWrapper,
-        }}
-        className="flex h-(--header-height) justify-center border-b px-8"
-      >
+    <>
+      <header className="sticky top-0 z-50 flex h-(--header-height) justify-center px-4 backdrop-blur-none sm:px-8 sm:backdrop-blur-lg">
         <div className="container mx-auto flex w-full items-center justify-between">
           <div className="hover:text-primary">
             <Logo />
           </div>
 
-          <NavigationMenu className="hidden md:flex">
+          <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
               {navigations.map((nav) => (
                 <NavigationMenuItem key={nav.title}>
@@ -81,7 +71,24 @@ export const Navigation = () => {
 
           <ToggleButton />
         </div>
-      </motion.div>
-    </header>
+      </header>
+
+      <nav className="fixed inset-x-0 bottom-0 z-50 backdrop-blur-lg sm:hidden md:hidden">
+        <ul className="flex items-center justify-evenly">
+          {navigations.map((nav) => (
+            <li key={nav.title}>
+              <a
+                data-active={activeSection === nav.href.replace('#', '')}
+                className="text-foreground/80 hover:text-primary data-[active=true]:text-primary flex flex-col items-center justify-center p-4 text-sm"
+                href={nav.href}
+              >
+                {nav.icon}
+                <span className="text-xs">{nav.title}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
   );
 };

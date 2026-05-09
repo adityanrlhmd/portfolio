@@ -63,8 +63,8 @@ const Hero = () => {
   return (
     <section id="home" className="relative">
       <div className="container mx-auto flex flex-col items-center gap-8 lg:flex-row">
-        <div className="h-[600px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
-          <Lanyard position={[-5, 0, 15]} gravity={[0, -40, 0]} />
+        <div className="h-[400px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
+          <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
         </div>
 
         <div className="z-10 w-full space-y-4 p-6 pt-0 lg:w-2/3 lg:p-0">
@@ -83,7 +83,7 @@ const Hero = () => {
             A frontend engineer & typescript enthusiast
           </h1>
 
-          <p className="text-sm md:text-base lg:text-lg">
+          <p className="text-sm sm:text-base lg:text-lg">
             I develop scalable frontend architectures with a focus on
             type-safety and performance, ensuring every line of code contributes
             to a fast and reliable digital product.
@@ -112,18 +112,20 @@ const Hero = () => {
           {SKILLS.map((skill, index) => (
             <CarouselItem
               key={index}
-              className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/11"
+              className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/9 xl:basis-1/11"
             >
               <div className="p-1">
                 <Card className="hover:text-primary h-fit border-none bg-transparent p-0 shadow-none">
-                  <CardContent className="flex h-fit items-center justify-center gap-2 px-3 py-2">
+                  <CardContent className="flex h-fit items-center justify-center gap-2 border-none px-2 py-2">
                     <img
                       src={skill.icon}
                       alt={skill.name}
                       title={skill.name}
-                      className="size-4 object-contain md:size-6"
+                      className="size-4 object-contain sm:size-6"
                     />
-                    <span className="text-xs">{skill.name}</span>
+                    <span className="text-xs whitespace-nowrap">
+                      {skill.name}
+                    </span>
                   </CardContent>
                 </Card>
               </div>
