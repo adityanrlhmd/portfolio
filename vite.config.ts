@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import { fileURLToPath, URL } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react-swc';
+import { URL, fileURLToPath } from 'node:url';
 import { defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/

@@ -19,6 +19,7 @@ import swiftuiIcon from '@/assets/skills/swiftui.svg';
 import tailwindIcon from '@/assets/skills/tailwindcss.svg';
 import typescriptIcon from '@/assets/skills/typescript.svg';
 import zustandIcon from '@/assets/skills/zustand.svg';
+
 import { GridBeam } from '@/components/grid-beam';
 import Lanyard from '@/components/lanyard';
 import TextType from '@/components/text-type';

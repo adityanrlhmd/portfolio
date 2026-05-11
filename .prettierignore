@@ -1,0 +1,68 @@
+# ============================================================================
+# .prettierignore
+# ============================================================================
+# Files and directories that should not be formatted by Prettier
+# ============================================================================
+
+# Dependencies
+node_modules/
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+bun.lock
+
+# Build outputs 
+dist/ 
+
+# Testing
+coverage/ 
+*.test.js.snap
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Vercel
+.vercel/
+
+# Documentation (Prettier can format markdown, but ignore if you prefer manual control)
+# Uncomment below if you want to ignore markdown files:
+# *.md
+# !README.md
+
+# Binary files
+*.otf
+*.ttf
+*.woff
+*.woff2
+*.eot
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.svg
+*.webp
+*.pdf
+
+# Config files that might have custom formatting
+*.min.js
+*.min.css
+CHANGELOG.md
+LICENSE
+
+# Others
+.husky/

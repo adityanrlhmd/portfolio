@@ -113,7 +113,7 @@ const Experience = () => {
 
         <div className="md:col-span-3">
           <Accordion>
-            {experience.map((exp) => (
+            {experience.map(exp => (
               <AccordionItem key={exp.id} value={exp.id}>
                 <AccordionTrigger hideArrow className="items-end">
                   <div className="flex flex-col text-base">

@@ -6,6 +6,7 @@ import {
 } from '@remixicon/react';
 
 import { Logo } from '@/assets/logo';
+
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -13,6 +14,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
+
 import { useActiveSection } from '@/hooks/use-active-section';
 
 import { ToggleButton } from './toggle-button';
@@ -42,7 +44,7 @@ const navigations = [
 
 export const Navigation = () => {
   const activeSection = useActiveSection(
-    navigations.map((nav) => nav.href.replace('#', ''))
+    navigations.map(nav => nav.href.replace('#', ''))
   );
 
   return (
@@ -55,7 +57,7 @@ export const Navigation = () => {
 
           <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
-              {navigations.map((nav) => (
+              {navigations.map(nav => (
                 <NavigationMenuItem key={nav.title}>
                   <NavigationMenuLink
                     data-active={activeSection === nav.href.replace('#', '')}
@@ -75,7 +77,7 @@ export const Navigation = () => {
 
       <nav className="bottom-t bg-background fixed inset-x-0 bottom-0 z-50 sm:hidden">
         <ul className="flex items-center justify-evenly">
-          {navigations.map((nav) => (
+          {navigations.map(nav => (
             <li key={nav.title}>
               <a
                 data-active={activeSection === nav.href.replace('#', '')}

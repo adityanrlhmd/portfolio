@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Environment,
   Lightformer,
@@ -18,6 +17,8 @@ import {
 } from '@react-three/rapier';
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 // replace with your own imports, see the usage snippet for details
 import cardGLB from '@/assets/lanyard/card.glb';
@@ -165,7 +166,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
-      [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
+      [card, j1, j2, j3, fixed].forEach(ref => ref.current?.wakeUp());
       card.current?.setNextKinematicTranslation({
         x: vec.x - dragged.x,
         y: vec.y - dragged.y,
@@ -173,7 +174,7 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
       });
     }
     if (fixed.current) {
-      [j1, j2].forEach((ref) => {
+      [j1, j2].forEach(ref => {
         if (!ref.current.lerped)
           ref.current.lerped = new THREE.Vector3().copy(
             ref.current.translation()

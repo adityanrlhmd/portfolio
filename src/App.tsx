@@ -1,6 +1,7 @@
 import AnnouncementBar from '@/components/announcement-bar';
 import { Navigation } from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
+
 import Experience from '@/sections/experience';
 import Hero from '@/sections/hero';
 

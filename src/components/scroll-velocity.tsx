@@ -1,4 +1,3 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
   motion,
   useAnimationFrame,
@@ -8,6 +7,8 @@ import {
   useTransform,
   useVelocity,
 } from 'motion/react';
+
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -119,7 +120,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
       return mod + min;
     }
 
-    const x = useTransform(baseX, (v) => {
+    const x = useTransform(baseX, v => {
       if (copyWidth === 0) return '0px';
       return `${wrap(-copyWidth, 0, v)}px`;
     });

@@ -1,3 +1,10 @@
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useTransform,
+} from 'motion/react';
+
 import React, {
   ReactNode,
   useCallback,
@@ -5,12 +12,6 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import {
-  motion,
-  useAnimationFrame,
-  useMotionValue,
-  useTransform,
-} from 'motion/react';
 
 interface ShinyTextProps {
   text: ReactNode;
@@ -48,7 +49,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   const animationDuration = speed * 1000;
   const delayDuration = delay * 1000;
 
-  useAnimationFrame((time) => {
+  useAnimationFrame(time => {
     if (disabled || isPaused) {
       lastTimeRef.current = null;
       return;
@@ -111,7 +112,7 @@ const ShinyText: React.FC<ShinyTextProps> = ({
   // Transform: p=0 -> 150% (shine off right), p=100 -> -50% (shine off left)
   const backgroundPosition = useTransform(
     progress,
-    (p) => `${150 - p * 2}% center`
+    p => `${150 - p * 2}% center`
   );
 
   const handleMouseEnter = useCallback(() => {

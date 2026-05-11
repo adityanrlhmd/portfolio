@@ -45,7 +45,7 @@ export function useActiveSection(sectionIds: string[]) {
       threshold: Array.from({ length: 21 }, (_, i) => i * 0.05),
     });
 
-    sectionIds?.forEach((id) => {
+    sectionIds?.forEach(id => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
@@ -56,7 +56,7 @@ export function useActiveSection(sectionIds: string[]) {
     updateActive(); // initial check on mount
 
     return () => {
-      sectionIds?.forEach((id) => {
+      sectionIds?.forEach(id => {
         const el = document.getElementById(id);
         if (el) observer.unobserve(el);
       });
