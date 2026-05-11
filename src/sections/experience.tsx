@@ -7,8 +7,6 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-import './experience.css';
-
 const Experience = () => {
   const experience = [
     {
@@ -146,8 +144,8 @@ const Experience = () => {
           <ScrollVelocity
             texts={['DEVELOPMENT • ARCHITECTURE • INTERFACE •']}
             velocity={100}
-            className="bg-text pointer-events-none text-[14rem] leading-[0.8] md:text-[17rem]"
-            numCopies={6}
+            className="text-stroke pointer-events-none text-[14rem] leading-[0.8] font-black md:text-[17rem]"
+            numCopies={2}
             damping={50}
             stiffness={400}
           />

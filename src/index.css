@@ -281,3 +281,13 @@
     right: 0;
   }
 }
+
+.text-stroke {
+  color: transparent;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: color-mix(
+    in oklab,
+    var(--foreground) 20%,
+    transparent
+  );
+}
