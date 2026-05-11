@@ -47,8 +47,8 @@ export const Navigation = () => {
 
   return (
     <>
-      <header className="bg-background sticky top-0 z-50 flex h-(--header-height) justify-center border-b px-4 sm:px-8">
-        <div className="container mx-auto flex w-full items-center justify-between">
+      <header className="sm:bg-background sticky top-0 z-50 flex h-(--header-height) justify-center sm:border-b">
+        <div className="container flex w-full items-center justify-between">
           <div className="hover:text-primary">
             <Logo />
           </div>
@@ -73,7 +73,7 @@ export const Navigation = () => {
         </div>
       </header>
 
-      <nav className="fixed inset-x-0 bottom-0 z-50 backdrop-blur-lg sm:hidden md:hidden">
+      <nav className="bottom-t bg-background fixed inset-x-0 bottom-0 z-50 sm:hidden">
         <ul className="flex items-center justify-evenly">
           {navigations.map((nav) => (
             <li key={nav.title}>

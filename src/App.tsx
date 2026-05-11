@@ -1,6 +1,7 @@
 import AnnouncementBar from '@/components/announcement-bar';
 import { Navigation } from '@/components/navigation';
 import { ThemeProvider } from '@/components/theme-provider';
+import Experience from '@/sections/experience';
 import Hero from '@/sections/hero';
 
 function App() {
@@ -9,9 +10,9 @@ function App() {
       <AnnouncementBar />
       <Navigation />
 
-      <main className="flex flex-col">
+      <main className="flex flex-col pb-14 md:pb-0">
         <Hero />
-        <div className="h-screen" />
+        <Experience />
       </main>
     </ThemeProvider>
   );

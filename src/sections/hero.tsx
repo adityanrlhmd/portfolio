@@ -62,14 +62,20 @@ const Hero = () => {
   ];
 
   return (
-    <section id="home" className="relative">
+    <section id="home">
       <GridBeam>
-        <div className="container mx-auto flex flex-col items-center gap-8 lg:flex-row">
+        <div className="container flex flex-col items-center gap-8 lg:flex-row">
           <div className="h-[400px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
-            <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
+            <div className="hidden h-full w-full lg:block">
+              <Lanyard position={[-5, 0, 15]} gravity={[0, -40, 0]} />
+            </div>
+
+            <div className="h-full w-full lg:hidden">
+              <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
+            </div>
           </div>
 
-          <div className="z-10 w-full space-y-4 p-6 pt-0 lg:w-2/3 lg:p-0">
+          <div className="z-10 w-full space-y-4 pt-0 lg:w-2/3 lg:p-0">
             <TextType
               text={headlines}
               typingSpeed={75}
@@ -85,7 +91,7 @@ const Hero = () => {
               A frontend engineer & typescript enthusiast
             </h1>
 
-            <p className="text-sm sm:text-base lg:text-lg">
+            <p className="text-foreground/80 text-sm sm:text-base lg:text-lg">
               I develop scalable frontend architectures with a focus on
               type-safety and performance, ensuring every line of code
               contributes to a fast and reliable digital product.
@@ -108,7 +114,7 @@ const Hero = () => {
             }),
           ]}
           opts={{ dragFree: true, loop: true, watchDrag: false }}
-          className="flex h-20 w-full items-center justify-center border-y"
+          className="mt-10 flex h-20 w-full items-center justify-center border-y md:mt-0"
         >
           <CarouselContent className="-ml-1 items-center">
             {SKILLS.map((skill, index) => (

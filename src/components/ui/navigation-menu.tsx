@@ -5,7 +5,7 @@ import { cva } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const navigationMenuTriggerStyle = cva(
-  'text-foreground/50 hover:text-foreground group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-xs/relaxed font-medium transition-all outline-none focus:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:text-foreground/80 data-popup-open:hover:text-foreground data-open:text-foreground/80 data-open:hover:text-foreground data-open:focus:text-foreground'
+  'text-foreground/80 hover:text-foreground group/navigation-menu-trigger inline-flex h-9 w-max items-center justify-center rounded-lg px-2.5 py-1.5 text-xs/relaxed font-medium transition-all outline-none focus:text-foreground focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-popup-open:text-foreground/80 data-popup-open:hover:text-foreground data-open:text-foreground/80 data-open:hover:text-foreground data-open:focus:text-foreground'
 );
 
 function NavigationMenu({
@@ -134,7 +134,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "group text-foreground/50 hover:text-foreground focus-visible:ring-ring/30 data-[active=true]:text-foreground/80 data-[active=true]:hover:text-foreground data-[active=true]:focus:text-foreground flex items-center gap-1.5 rounded-lg p-2 text-xs/relaxed transition-all outline-none hover:bg-transparent focus:bg-transparent focus-visible:ring-2 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
+        "group text-foreground/80 hover:text-foreground focus-visible:ring-ring/30 data-[active=true]:text-foreground/80 data-[active=true]:hover:text-foreground data-[active=true]:focus:text-foreground flex items-center gap-1.5 rounded-lg p-2 text-xs/relaxed transition-all outline-none hover:bg-transparent focus:bg-transparent focus-visible:ring-2 focus-visible:outline-1 in-data-[slot=navigation-menu-content]:rounded-md [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

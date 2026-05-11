@@ -1,7 +1,7 @@
 const AnnouncementBar = () => {
   return (
     <div className="bg-primary text-primary-foreground">
-      <div className="container mx-auto px-4 py-2 text-center text-xs">
+      <div className="container py-2 text-center text-xs">
         <p>
           Building a better showcase for my work. Curious about what I've been
           up to?{' '}
