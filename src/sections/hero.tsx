@@ -65,7 +65,7 @@ const Hero = () => {
     <section id="home">
       <GridBeam>
         <div className="container flex flex-col items-center gap-8 lg:flex-row">
-          <div className="h-[400px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
+          <div className="h-[500px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
             <div className="hidden h-full w-full lg:block">
               <Lanyard position={[-5, 0, 15]} gravity={[0, -40, 0]} />
             </div>

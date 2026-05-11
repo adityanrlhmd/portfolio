@@ -1,45 +1,66 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+// How much of the VIEWPORT must be covered by a section to be "active".
+// This is viewport-coverage based, not element-coverage based —
+// so it works correctly even when sections are taller than the viewport (mobile).
+const VIEWPORT_COVERAGE_THRESHOLD = 0.65;
 
 export function useActiveSection(sectionIds: string[]) {
   const [activeId, setActiveId] = useState<string | null>(null);
-  // Track which sections are currently intersecting
-  const intersectingRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const updateActive = () => {
-      // Among all currently intersecting sections, pick the one
-      // that appears first (topmost) in the sectionIds order.
-      const topmost = sectionIds.find((id) => intersectingRef.current.has(id));
-      if (topmost) {
-        setActiveId(topmost);
+      const viewportHeight = window.innerHeight;
+      let bestId: string | null = null;
+      let bestCoverage = 0;
+
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+
+        const { top, bottom } = el.getBoundingClientRect();
+
+        // Pixels of this section that are currently inside the viewport
+        const visibleTop = Math.max(0, top);
+        const visibleBottom = Math.min(viewportHeight, bottom);
+        const visiblePx = Math.max(0, visibleBottom - visibleTop);
+
+        // Coverage = how much of the VIEWPORT this section fills
+        const coverage = visiblePx / viewportHeight;
+
+        if (coverage > bestCoverage) {
+          bestCoverage = coverage;
+          bestId = id;
+        }
+      }
+
+      if (bestId && bestCoverage >= VIEWPORT_COVERAGE_THRESHOLD) {
+        setActiveId(bestId);
       }
     };
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.65) {
-            intersectingRef.current.add(entry.target.id);
-          } else {
-            intersectingRef.current.delete(entry.target.id);
-          }
-        });
-        updateActive();
-      },
-      // Section is only considered active when at least 65% of it is visible.
-      { threshold: 0.65 }
-    );
+    // IntersectionObserver fires whenever any section enters/leaves —
+    // use it to trigger recalculation without blocking the main thread.
+    const observer = new IntersectionObserver(() => updateActive(), {
+      threshold: Array.from({ length: 21 }, (_, i) => i * 0.05),
+    });
 
     sectionIds?.forEach((id) => {
-      const element = document.getElementById(id);
-      if (element) observer.observe(element);
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
     });
+
+    // Scroll listener for smooth mid-section transitions
+    window.addEventListener('scroll', updateActive, { passive: true });
+
+    updateActive(); // initial check on mount
 
     return () => {
       sectionIds?.forEach((id) => {
-        const element = document.getElementById(id);
-        if (element) observer.unobserve(element);
+        const el = document.getElementById(id);
+        if (el) observer.unobserve(el);
       });
+      window.removeEventListener('scroll', updateActive);
     };
   }, [sectionIds]);
 
