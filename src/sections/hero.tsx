@@ -63,7 +63,7 @@ const Hero = () => {
   ];
 
   return (
-    <section id="home">
+    <section id="home" className="scroll-mt-(--header-height)">
       <GridBeam>
         <div className="container flex flex-col items-center gap-8 lg:flex-row">
           <div className="h-[500px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">

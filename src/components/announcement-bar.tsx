@@ -3,8 +3,10 @@ const AnnouncementBar = () => {
     <div className="bg-primary text-primary-foreground">
       <div className="container py-2 text-center text-xs">
         <p>
-          Building a better showcase for my work. Curious about what I've been
-          up to?{' '}
+          <span className="hidden sm:inline-block">
+            Building a better showcase for my work.
+          </span>{' '}
+          Curious about what I've been up to?{' '}
           <a
             href="https://www.linkedin.com/in/adityanurulhamda/"
             target="_blank"
