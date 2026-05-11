@@ -19,6 +19,7 @@ import swiftuiIcon from '@/assets/skills/swiftui.svg';
 import tailwindIcon from '@/assets/skills/tailwindcss.svg';
 import typescriptIcon from '@/assets/skills/typescript.svg';
 import zustandIcon from '@/assets/skills/zustand.svg';
+import { GridBeam } from '@/components/grid-beam';
 import Lanyard from '@/components/lanyard';
 import TextType from '@/components/text-type';
 import { Button } from '@/components/ui/button';
@@ -62,77 +63,79 @@ const Hero = () => {
 
   return (
     <section id="home" className="relative">
-      <div className="container mx-auto flex flex-col items-center gap-8 lg:flex-row">
-        <div className="h-[400px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
-          <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
-        </div>
+      <GridBeam>
+        <div className="container mx-auto flex flex-col items-center gap-8 lg:flex-row">
+          <div className="h-[400px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
+            <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
+          </div>
 
-        <div className="z-10 w-full space-y-4 p-6 pt-0 lg:w-2/3 lg:p-0">
-          <TextType
-            text={headlines}
-            typingSpeed={75}
-            pauseDuration={1500}
-            showCursor
-            cursorCharacter="_"
-            deletingSpeed={50}
-            variableSpeed={{ min: 60, max: 120 }}
-            cursorBlinkDuration={0.5}
-            className="text-3xl font-bold lg:text-6xl"
-          />
-          <h1 className="sr-only">
-            A frontend engineer & typescript enthusiast
-          </h1>
+          <div className="z-10 w-full space-y-4 p-6 pt-0 lg:w-2/3 lg:p-0">
+            <TextType
+              text={headlines}
+              typingSpeed={75}
+              pauseDuration={1500}
+              showCursor
+              cursorCharacter="_"
+              deletingSpeed={50}
+              variableSpeed={{ min: 60, max: 120 }}
+              cursorBlinkDuration={0.5}
+              className="text-3xl font-bold lg:text-6xl"
+            />
+            <h1 className="sr-only">
+              A frontend engineer & typescript enthusiast
+            </h1>
 
-          <p className="text-sm sm:text-base lg:text-lg">
-            I develop scalable frontend architectures with a focus on
-            type-safety and performance, ensuring every line of code contributes
-            to a fast and reliable digital product.
-          </p>
+            <p className="text-sm sm:text-base lg:text-lg">
+              I develop scalable frontend architectures with a focus on
+              type-safety and performance, ensuring every line of code
+              contributes to a fast and reliable digital product.
+            </p>
 
-          <Button
-            size="lg"
-            className="decrypted-btn hover:bg-primary h-12 px-4 text-base font-bold lg:h-14"
-          >
-            <span>My Resume</span>
-          </Button>
-        </div>
-      </div>
-
-      <Carousel
-        plugins={[
-          AutoScroll({
-            stopOnInteraction: false,
-            speed: 1.5,
-          }),
-        ]}
-        opts={{ dragFree: true, loop: true, watchDrag: false }}
-        className="flex h-20 w-full items-center justify-center border-y"
-      >
-        <CarouselContent className="-ml-1 items-center">
-          {SKILLS.map((skill, index) => (
-            <CarouselItem
-              key={index}
-              className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/9 xl:basis-1/11"
+            <Button
+              size="lg"
+              className="decrypted-btn hover:bg-primary h-12 px-4 text-base font-bold lg:h-14"
             >
-              <div className="p-1">
-                <Card className="hover:text-primary h-fit border-none bg-transparent p-0 shadow-none">
-                  <CardContent className="flex h-fit items-center justify-center gap-2 border-none px-2 py-2">
-                    <img
-                      src={skill.icon}
-                      alt={skill.name}
-                      title={skill.name}
-                      className="size-4 object-contain sm:size-6"
-                    />
-                    <span className="text-xs whitespace-nowrap">
-                      {skill.name}
-                    </span>
-                  </CardContent>
-                </Card>
-              </div>
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+              <span>My Resume</span>
+            </Button>
+          </div>
+        </div>
+
+        <Carousel
+          plugins={[
+            AutoScroll({
+              stopOnInteraction: false,
+              speed: 1.5,
+            }),
+          ]}
+          opts={{ dragFree: true, loop: true, watchDrag: false }}
+          className="flex h-20 w-full items-center justify-center border-y"
+        >
+          <CarouselContent className="-ml-1 items-center">
+            {SKILLS.map((skill, index) => (
+              <CarouselItem
+                key={index}
+                className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/9 xl:basis-1/11"
+              >
+                <div className="p-1">
+                  <Card className="hover:text-primary h-fit border-none bg-transparent p-0 shadow-none">
+                    <CardContent className="flex h-fit items-center justify-center gap-2 border-none px-2 py-2">
+                      <img
+                        src={skill.icon}
+                        alt={skill.name}
+                        title={skill.name}
+                        className="size-4 object-contain sm:size-6"
+                      />
+                      <span className="text-xs whitespace-nowrap">
+                        {skill.name}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </GridBeam>
     </section>
   );
 };
