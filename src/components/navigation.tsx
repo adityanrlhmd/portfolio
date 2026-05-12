@@ -75,7 +75,7 @@ export const Navigation = () => {
         </div>
       </header>
 
-      <nav className="bottom-t bg-background fixed inset-x-0 bottom-0 z-50 sm:hidden">
+      <nav className="bg-background fixed inset-x-0 bottom-0 z-50 border-t sm:hidden">
         <ul className="flex items-center justify-evenly">
           {navigations.map(nav => (
             <li key={nav.title}>

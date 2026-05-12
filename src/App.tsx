@@ -5,6 +5,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import Experience from '@/sections/experience';
 import Hero from '@/sections/hero';
 
+import Projects from './sections/projects';
+
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -14,6 +16,7 @@ function App() {
       <main className="flex flex-col pb-14 md:pb-0">
         <Hero />
         <Experience />
+        <Projects />
       </main>
     </ThemeProvider>
   );

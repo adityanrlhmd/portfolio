@@ -84,7 +84,7 @@ const Experience = () => {
   ];
 
   return (
-    <section id="experience" className="space-y-10 py-16">
+    <section id="experience" className="space-y-10 border-b py-16">
       <div className="container grid grid-cols-1 gap-6 md:grid-cols-5">
         <div className="relative md:col-span-2">
           <div className="sticky top-[calc(var(--header-height)+2rem)] space-y-4">

@@ -1,16 +1,20 @@
 import AutoScroll from 'embla-carousel-auto-scroll';
 
 import cssIcon from '@/assets/skills/css.svg';
+import directusIcon from '@/assets/skills/directus.svg';
 import expoIcon from '@/assets/skills/expo.svg';
 import expressIcon from '@/assets/skills/expressjs.svg';
+import firebaseIcon from '@/assets/skills/firebase.svg';
 import framermotionIcon from '@/assets/skills/framer-motion.svg';
 import gitIcon from '@/assets/skills/git.svg';
 import htmlIcon from '@/assets/skills/html.svg';
 import javascriptIcon from '@/assets/skills/javascript.svg';
+import jestIcon from '@/assets/skills/jest.svg';
 import mongodbIcon from '@/assets/skills/mongodb.svg';
 import mysqlIcon from '@/assets/skills/mysql.svg';
 import nextjsIcon from '@/assets/skills/nextjs.svg';
 import nodejsIcon from '@/assets/skills/nodejs.svg';
+import reactqueryIcon from '@/assets/skills/react-query.svg';
 import reactIcon from '@/assets/skills/react.svg';
 import reduxIcon from '@/assets/skills/redux.svg';
 import supabaseIcon from '@/assets/skills/supabase.svg';
@@ -18,6 +22,8 @@ import swiftIcon from '@/assets/skills/swift.svg';
 import swiftuiIcon from '@/assets/skills/swiftui.svg';
 import tailwindIcon from '@/assets/skills/tailwindcss.svg';
 import typescriptIcon from '@/assets/skills/typescript.svg';
+import viteIcon from '@/assets/skills/vite.svg';
+import vitestIcon from '@/assets/skills/vitest.svg';
 import zustandIcon from '@/assets/skills/zustand.svg';
 
 import { GridBeam } from '@/components/grid-beam';
@@ -41,14 +47,20 @@ const SKILLS = [
   { name: 'Next.js', icon: nextjsIcon },
   { name: 'React Native', icon: reactIcon },
   { name: 'Expo', icon: expoIcon },
+  { name: 'React Query', icon: reactqueryIcon },
   { name: 'Redux', icon: reduxIcon },
   { name: 'Zustand', icon: zustandIcon },
+  { name: 'Vite', icon: viteIcon },
+  { name: 'Vitest', icon: vitestIcon },
+  { name: 'Jest', icon: jestIcon },
   { name: 'TailwindCSS', icon: tailwindIcon },
   { name: 'Framer Motion', icon: framermotionIcon },
   { name: 'Express.js', icon: expressIcon },
+  { name: 'Firebase', icon: firebaseIcon },
   { name: 'Supabase', icon: supabaseIcon },
   { name: 'MongoDB', icon: mongodbIcon },
   { name: 'MySQL', icon: mysqlIcon },
+  { name: 'Directus', icon: directusIcon },
   { name: 'Swift', icon: swiftIcon },
   { name: 'SwiftUI', icon: swiftuiIcon },
   { name: 'GIT', icon: gitIcon },
