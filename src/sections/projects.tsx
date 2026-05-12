@@ -6,7 +6,7 @@ const Projects = () => {
       <div className="container">
         <div className="max-w-3xl space-y-4">
           <ShinyText
-            text="⚡︎ My Work"
+            text="⚡︎ Selected Works"
             speed={2}
             delay={0}
             color="var(--primary)"
@@ -22,10 +22,9 @@ const Projects = () => {
             Projects
           </h2>
           <p className="text-foreground/80 text-sm md:text-base">
-            A showcase of my journey and evolution in frontend engineering. Each
-            project represents a milestone in mastering complex architectures
-            and my continuous commitment to building better, more efficient
-            digital experiences.
+            A curated collection of my journey in frontend engineering. Each
+            project marks a milestone in mastering complex architectures and my
+            commitment to crafting better digital experiences.
           </p>
         </div>
       </div>

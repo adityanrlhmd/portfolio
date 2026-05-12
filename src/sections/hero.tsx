@@ -17,6 +17,7 @@ import nodejsIcon from '@/assets/skills/nodejs.svg';
 import reactqueryIcon from '@/assets/skills/react-query.svg';
 import reactIcon from '@/assets/skills/react.svg';
 import reduxIcon from '@/assets/skills/redux.svg';
+import socketioIcon from '@/assets/skills/socket-io.svg';
 import supabaseIcon from '@/assets/skills/supabase.svg';
 import swiftIcon from '@/assets/skills/swift.svg';
 import swiftuiIcon from '@/assets/skills/swiftui.svg';
@@ -36,6 +37,8 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+
+import { cn } from '@/lib/utils';
 
 const SKILLS = [
   { name: 'HTML', icon: htmlIcon },
@@ -61,6 +64,7 @@ const SKILLS = [
   { name: 'MongoDB', icon: mongodbIcon },
   { name: 'MySQL', icon: mysqlIcon },
   { name: 'Directus', icon: directusIcon },
+  { name: 'Socket.io', icon: socketioIcon },
   { name: 'Swift', icon: swiftIcon },
   { name: 'SwiftUI', icon: swiftuiIcon },
   { name: 'GIT', icon: gitIcon },
@@ -142,7 +146,12 @@ const Hero = () => {
                         src={skill.icon}
                         alt={skill.name}
                         title={skill.name}
-                        className="size-4 object-contain sm:size-6"
+                        className={cn(
+                          'size-4 object-contain sm:size-6',
+                          skill.name.toLowerCase() === 'socket.io'
+                            ? 'dark:invert'
+                            : ''
+                        )}
                       />
                       <span className="text-xs whitespace-nowrap">
                         {skill.name}
