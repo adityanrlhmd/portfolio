@@ -66,7 +66,7 @@ export const SKILLS = {
     icon: framermotionIcon,
     inverted: false,
   },
-  turborepo: { name: 'Turborepo', icon: turborepoIcon, inverted: false },
+  turborepo: { name: 'Turborepo', icon: turborepoIcon, inverted: true },
   'express-js': { name: 'Express.js', icon: expressIcon, inverted: false },
   firebase: { name: 'Firebase', icon: firebaseIcon, inverted: false },
   supabase: { name: 'Supabase', icon: supabaseIcon, inverted: false },

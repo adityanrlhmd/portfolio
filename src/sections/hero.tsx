@@ -75,7 +75,7 @@ const Hero = () => {
             }),
           ]}
           opts={{ dragFree: true, loop: true, watchDrag: false }}
-          className="mt-10 flex h-20 w-full items-center justify-center border-y md:mt-0"
+          className="mt-10 flex h-20 w-full items-center justify-center border-y lg:mt-0"
         >
           <CarouselContent className="-ml-1 items-center">
             {Object.values(SKILLS).map((skill, index) => (

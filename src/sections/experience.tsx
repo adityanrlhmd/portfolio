@@ -168,9 +168,10 @@ const Experience = () => {
         </div>
 
         <div className="container max-w-4xl space-y-4">
-          <h4 className="text-3xl font-bold md:text-4xl">
-            Years of Building Better Web & Mobile Apps
-          </h4>
+          <h3 className="text-3xl font-bold md:text-4xl">
+            <span className="sr-only">5⁺</span> Years of Building Better Web &
+            Mobile Apps
+          </h3>
 
           <p className="text-muted-foreground text-sm md:text-base">
             Over half a decade of experience in driving digital transformation.

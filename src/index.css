@@ -64,7 +64,7 @@
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.147 0.004 49.25);
-  --card: oklch(1 0 0);
+  --card: oklch(100% 0.00011 271.152 / 0);
   --card-foreground: oklch(0.147 0.004 49.25);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.147 0.004 49.25);
@@ -99,7 +99,7 @@
 .dark {
   --background: oklch(0.147 0.004 49.25);
   --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.147 0.004 49.25);
+  --card: oklch(14.69% 0.00412 49.1 / 0);
   --card-foreground: oklch(0.985 0.001 106.423);
   --popover: oklch(0.216 0.006 56.043);
   --popover-foreground: oklch(0.985 0.001 106.423);
@@ -132,18 +132,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      border-color 0.3s ease,
-      text-decoration-color 0.3s ease,
-      fill 0.3s ease,
-      stroke 0.3s ease,
-      outline-color 0.3s ease,
-      box-shadow 0.3s ease,
-      caret-color 0.3s ease,
-      accent-color 0.3s ease;
+    @apply border-border outline-ring/50 transition-colors;
   }
   body {
     @apply bg-background text-foreground overflow-x-hidden;

@@ -41,6 +41,7 @@ const PROJECTS = [
     img_padding: true,
     description:
       'A high-performance company landing page optimized for SEO. I implemented a Headless CMS integration using Directus, enabling the SEO team to manage and update content independently. Built with Next.js for superior performance and TanStack Query for efficient data fetching and caching.',
+    link: 'https://edot.id/en',
     stacks: [
       SKILLS['next-js'],
       SKILLS.tailwindcss,
@@ -296,8 +297,12 @@ const Projects = () => {
               </div>
 
               <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
-                <CardDescription>{project.alter}</CardDescription>
+                <CardTitle>
+                  <h3>{project.title}</h3>
+                </CardTitle>
+                <CardDescription>
+                  <p>{project.alter}</p>
+                </CardDescription>
                 <CardAction>
                   <a
                     href={project.link}
