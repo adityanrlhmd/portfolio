@@ -13,7 +13,7 @@ import prestige from '@/assets/projects/prestige.png';
 import qsr from '@/assets/projects/qsr.png';
 import rooma from '@/assets/projects/rooma.png';
 
-import ShinyText from '@/components/shiny-text';
+import { ShinyText } from '@/components/shiny-text';
 import {
   Card,
   CardAction,

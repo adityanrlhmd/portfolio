@@ -1,5 +1,5 @@
 import ScrollVelocity from '@/components/scroll-velocity';
-import ShinyText from '@/components/shiny-text';
+import { ShinyText } from '@/components/shiny-text';
 import {
   Accordion,
   AccordionContent,

@@ -69,7 +69,7 @@ const renderHighlighted = (originalText: string, visibleLength: number) => {
   );
 };
 
-const TextType = ({
+export const TextType = ({
   text,
   as: Component = 'div',
   typingSpeed = 50,
@@ -255,5 +255,3 @@ const TextType = ({
     )
   );
 };
-
-export default TextType;

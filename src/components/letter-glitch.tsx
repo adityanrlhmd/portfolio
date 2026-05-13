@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const LetterGlitch = ({
+export const LetterGlitch = ({
   glitchColors = ['#2b4539', '#61dca3', '#61b3dc'],
   glitchSpeed = 50,
   centerVignette = false,
@@ -232,5 +232,3 @@ const LetterGlitch = ({
     </div>
   );
 };
-
-export default LetterGlitch;

@@ -1,10 +1,12 @@
+import emailjs from '@emailjs/browser';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { useId } from 'react';
+import { useId, useState } from 'react';
 
-import ShinyText from '@/components/shiny-text';
+import { ShinyText } from '@/components/shiny-text';
 import { Button } from '@/components/ui/button';
 import {
   Field,
@@ -25,7 +27,7 @@ const contactSchema = z.object({
   email: z.string().email('Invalid email address.'),
   message: z
     .string()
-    .min(10, 'Message must be at least 10 characters.')
+    .min(1, 'Message must be at least 1 characters.')
     .max(500, 'Message must be at most 500 characters.'),
 });
 
@@ -34,6 +36,8 @@ const Contact = () => {
   const nameId = useId();
   const emailId = useId();
   const messageId = useId();
+
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
 
   const contactForm = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
@@ -44,10 +48,28 @@ const Contact = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof contactSchema>) {
-    // Do something with the form values.
-    console.log(data);
-  }
+  const onSubmit = (data: z.infer<typeof contactSchema>) => {
+    setIsLoadingSubmit(true);
+    emailjs
+      .send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        { ...data, reply_to: data.email },
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+      )
+      .then(
+        () => {
+          toast.success('Message sent successfully!');
+          contactForm.reset();
+        },
+        () => {
+          toast.error('Failed to send message.');
+        }
+      )
+      .finally(() => {
+        setIsLoadingSubmit(false);
+      });
+  };
 
   return (
     <section id="contact" className="py-16">
@@ -138,7 +160,12 @@ const Contact = () => {
             />
           </FieldGroup>
 
-          <Button type="submit" size="xl" className="w-full">
+          <Button
+            type="submit"
+            size="xl"
+            className="w-full"
+            isLoading={isLoadingSubmit}
+          >
             Submit
           </Button>
         </form>

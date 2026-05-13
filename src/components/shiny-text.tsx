@@ -27,7 +27,7 @@ interface ShinyTextProps {
   delay?: number;
 }
 
-const ShinyText: React.FC<ShinyTextProps> = ({
+export const ShinyText: React.FC<ShinyTextProps> = ({
   text,
   disabled = false,
   speed = 2,
@@ -142,7 +142,3 @@ const ShinyText: React.FC<ShinyTextProps> = ({
     </motion.span>
   );
 };
-
-export default ShinyText;
-//   plugins: [],
-// };

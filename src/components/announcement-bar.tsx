@@ -1,4 +1,4 @@
-const AnnouncementBar = () => {
+export const AnnouncementBar = () => {
   return (
     <div className="bg-primary text-primary-foreground">
       <div className="container py-2 text-center text-xs">
@@ -17,5 +17,3 @@ const AnnouncementBar = () => {
     </div>
   );
 };
-
-export default AnnouncementBar;

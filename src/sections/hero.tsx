@@ -1,8 +1,8 @@
 import AutoScroll from 'embla-carousel-auto-scroll';
 
 import { GridBeam } from '@/components/grid-beam';
-import Lanyard from '@/components/lanyard';
-import TextType from '@/components/text-type';
+import { Lanyard } from '@/components/lanyard';
+import { TextType } from '@/components/text-type';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {

@@ -1,7 +1,8 @@
-import AnnouncementBar from '@/components/announcement-bar';
+import { AnnouncementBar } from '@/components/announcement-bar';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
+import { Toaster } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 import Contact from '@/sections/contact';
@@ -25,6 +26,7 @@ function App() {
 
         <Footer />
       </TooltipProvider>
+      <Toaster />
     </ThemeProvider>
   );
 }

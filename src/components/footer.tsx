@@ -9,7 +9,7 @@ import {
 
 import { Logo } from '@/assets/logo';
 
-import LetterGlitch from './letter-glitch';
+import { LetterGlitch } from './letter-glitch';
 
 const LINKS = [
   {
