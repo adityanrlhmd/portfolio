@@ -269,7 +269,10 @@ const PROJECTS = [
 
 const Projects = () => {
   return (
-    <section id="projects" className="border-b py-16">
+    <section
+      id="projects"
+      className="scroll-mt-(--header-height) border-b py-16"
+    >
       <div className="container space-y-10">
         <div className="max-w-3xl space-y-4">
           <ShinyText

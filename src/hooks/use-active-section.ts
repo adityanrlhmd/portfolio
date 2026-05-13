@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // How much of the VIEWPORT must be covered by a section to be "active".
 // This is viewport-coverage based, not element-coverage based —
 // so it works correctly even when sections are taller than the viewport (mobile).
-const VIEWPORT_COVERAGE_THRESHOLD = 0.65;
+const VIEWPORT_COVERAGE_THRESHOLD = 0.5;
 
 export function useActiveSection(sectionIds: string[]) {
   const [activeId, setActiveId] = useState<string | null>(null);
