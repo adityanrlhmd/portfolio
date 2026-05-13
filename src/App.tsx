@@ -14,7 +14,9 @@ function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <TooltipProvider>
-        <AnnouncementBar />
+        {import.meta.env.VITE_SHOW_ANNOUNCEMENT_BAR === 'true' && (
+          <AnnouncementBar />
+        )}
         <Header />
 
         <main className="flex flex-col">
