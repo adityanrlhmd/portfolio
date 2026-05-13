@@ -12,6 +12,7 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
+    dedupe: ['three'],
   },
   build: {
     chunkSizeWarningLimit: 4000,
@@ -21,5 +22,10 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
     css: true,
+    server: {
+      deps: {
+        inline: ['three'],
+      },
+    },
   },
 });
