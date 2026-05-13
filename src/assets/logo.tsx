@@ -1,8 +1,8 @@
-export const Logo = () => {
+export const Logo = ({ size = 35 }: { size?: number }) => {
   return (
     <svg
-      width="35"
-      height="35"
+      width={size}
+      height={size}
       viewBox="-35 -10 220 220"
       preserveAspectRatio="xMidYMid meet"
       fill="currentColor"

@@ -28,6 +28,7 @@ interface TextTypeProps {
   variableSpeed?: { min: number; max: number };
   onSentenceComplete?: (sentence: string, index: number) => void;
   startOnVisible?: boolean;
+  pauseWhenHidden?: boolean;
   reverseMode?: boolean;
 }
 
@@ -86,6 +87,7 @@ const TextType = ({
   variableSpeed,
   onSentenceComplete,
   startOnVisible = false,
+  pauseWhenHidden = false,
   reverseMode = false,
   ...props
 }: TextTypeProps & React.HTMLAttributes<HTMLElement>) => {
@@ -114,12 +116,17 @@ const TextType = ({
   };
 
   useEffect(() => {
-    if (!startOnVisible || !containerRef.current) return;
+    if (!containerRef.current) return;
+    if (!startOnVisible && !pauseWhenHidden) return;
 
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if (pauseWhenHidden) {
+            // Continuously toggle based on visibility
+            setIsVisible(entry.isIntersecting);
+          } else if (startOnVisible && entry.isIntersecting) {
+            // One-shot: start once visible, never pause
             setIsVisible(true);
           }
         });
@@ -129,7 +136,7 @@ const TextType = ({
 
     observer.observe(containerRef.current);
     return () => observer.disconnect();
-  }, [startOnVisible]);
+  }, [startOnVisible, pauseWhenHidden]);
 
   useEffect(() => {
     if (showCursor && cursorRef.current) {

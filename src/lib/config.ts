@@ -29,6 +29,7 @@ import tailwindIcon from '@/assets/skills/tailwindcss.svg';
 import testinglibraryIcon from '@/assets/skills/testing-library.svg';
 import turborepoIcon from '@/assets/skills/turborepo.svg';
 import typescriptIcon from '@/assets/skills/typescript.svg';
+import vercelIcon from '@/assets/skills/vercel.svg';
 import viteIcon from '@/assets/skills/vite.svg';
 import vitestIcon from '@/assets/skills/vitest.svg';
 import vueIcon from '@/assets/skills/vue.svg';
@@ -81,4 +82,5 @@ export const SKILLS = {
   swift: { name: 'Swift', icon: swiftIcon, inverted: false },
   swiftui: { name: 'SwiftUI', icon: swiftuiIcon, inverted: false },
   git: { name: 'GIT', icon: gitIcon, inverted: false },
+  vercel: { name: 'Vercel', icon: vercelIcon, inverted: true },
 };

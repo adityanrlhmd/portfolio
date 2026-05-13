@@ -1,8 +1,10 @@
 import AnnouncementBar from '@/components/announcement-bar';
-import { Navigation } from '@/components/navigation';
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
+import Contact from '@/sections/contact';
 import Experience from '@/sections/experience';
 import Hero from '@/sections/hero';
 import Projects from '@/sections/projects';
@@ -12,13 +14,16 @@ function App() {
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <TooltipProvider>
         <AnnouncementBar />
-        <Navigation />
+        <Header />
 
-        <main className="flex flex-col pb-14 md:pb-0">
+        <main className="flex flex-col">
           <Hero />
           <Experience />
           <Projects />
+          <Contact />
         </main>
+
+        <Footer />
       </TooltipProvider>
     </ThemeProvider>
   );

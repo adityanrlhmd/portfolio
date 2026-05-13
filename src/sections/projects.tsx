@@ -51,6 +51,7 @@ const PROJECTS = [
       SKILLS['react-query'],
       SKILLS.jest,
       SKILLS['testing-library'],
+      SKILLS.git,
     ],
   },
   {
@@ -75,6 +76,7 @@ const PROJECTS = [
       SKILLS.firebase,
       SKILLS.sonarqube,
       SKILLS.turborepo,
+      SKILLS.git,
     ],
   },
   {
@@ -96,6 +98,7 @@ const PROJECTS = [
       SKILLS['testing-library'],
       SKILLS.firebase,
       SKILLS.sonarqube,
+      SKILLS.git,
     ],
   },
   {
@@ -106,6 +109,7 @@ const PROJECTS = [
     img_padding: true,
     description:
       'A dynamic workforce management tool featuring real-time collaboration. I integrated Socket.io for live updates and Google Maps API for location-based services. The project utilizes a modern stack of Next.js and Tailwind CSS, focusing on a responsive and interactive user experience.',
+    link: 'https://edot.id/en/products/ework',
     stacks: [
       SKILLS['next-js'],
       SKILLS.tailwindcss,
@@ -118,6 +122,7 @@ const PROJECTS = [
       SKILLS['testing-library'],
       SKILLS.firebase,
       SKILLS.sonarqube,
+      SKILLS.git,
     ],
   },
   {
@@ -140,6 +145,7 @@ const PROJECTS = [
       SKILLS.firebase,
       SKILLS.sonarqube,
       SKILLS.turborepo,
+      SKILLS.git,
     ],
   },
   {
@@ -158,6 +164,7 @@ const PROJECTS = [
       SKILLS['react-query'],
       SKILLS['socket-io'],
       SKILLS['indexed-db'],
+      SKILLS.git,
     ],
   },
   {
@@ -175,6 +182,7 @@ const PROJECTS = [
       SKILLS.typescript,
       SKILLS.directus,
       SKILLS.zustand,
+      SKILLS.git,
     ],
   },
   {
@@ -191,6 +199,7 @@ const PROJECTS = [
       SKILLS['ant-design'],
       SKILLS.zustand,
       SKILLS.supabase,
+      SKILLS.git,
     ],
   },
   {
@@ -205,6 +214,7 @@ const PROJECTS = [
       SKILLS.tailwindcss,
       SKILLS.typescript,
       SKILLS.zustand,
+      SKILLS.git,
     ],
   },
   {
@@ -220,6 +230,7 @@ const PROJECTS = [
       SKILLS.tailwindcss,
       SKILLS.supabase,
       SKILLS.zustand,
+      SKILLS.git,
     ],
   },
   {
@@ -230,7 +241,13 @@ const PROJECTS = [
     description:
       'A Multi-purpose Video Platform that integrates Web3 technology into a mobile experience. Developed with React Native, this app features a cross-platform interface where users can interact with video content and blockchain assets through Moralis and Web3 integrations.',
     link: 'https://play.google.com/store/apps/details?id=com.leslarmetaverse.cuantv&pli=1',
-    stacks: [SKILLS['react-native'], SKILLS.expo, SKILLS.moralis, SKILLS.web3],
+    stacks: [
+      SKILLS['react-native'],
+      SKILLS.expo,
+      SKILLS.moralis,
+      SKILLS.web3,
+      SKILLS.git,
+    ],
   },
   {
     title: 'Leslar Metaverse',
@@ -245,6 +262,7 @@ const PROJECTS = [
       SKILLS.tailwindcss,
       SKILLS.moralis,
       SKILLS.web3,
+      SKILLS.git,
     ],
   },
 ];
@@ -281,7 +299,7 @@ const Projects = () => {
           {PROJECTS.map((project, index) => (
             <Card
               key={index}
-              className="group/card hover:border-primary border-b ring-0 transition-opacity group-has-[*:hover]/grid:opacity-40 hover:opacity-100 focus:opacity-100"
+              className="group/card hover:border-primary border-b ring-0 transition-opacity lg:group-has-[*:hover]/grid:opacity-40 lg:hover:opacity-100"
             >
               <div
                 className={cn(
@@ -292,7 +310,7 @@ const Projects = () => {
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="relative w-full object-cover transition-transform duration-300 ease-in-out group-hover/card:scale-105"
+                  className="relative w-full object-cover transition-transform lg:group-hover/card:scale-105"
                 />
               </div>
 

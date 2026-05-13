@@ -3,7 +3,7 @@ import AutoScroll from 'embla-carousel-auto-scroll';
 import { GridBeam } from '@/components/grid-beam';
 import Lanyard from '@/components/lanyard';
 import TextType from '@/components/text-type';
-import { Button } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
@@ -47,6 +47,7 @@ const Hero = () => {
               variableSpeed={{ min: 60, max: 120 }}
               cursorBlinkDuration={0.5}
               className="text-3xl font-bold lg:text-6xl"
+              pauseWhenHidden
             />
             <h1 className="sr-only">
               A frontend engineer & typescript enthusiast
@@ -58,12 +59,19 @@ const Hero = () => {
               contributes to a fast and reliable digital product.
             </p>
 
-            <Button
-              size="lg"
-              className="cursor-target decrypted-btn hover:bg-primary h-12 px-4 text-base font-bold lg:h-14"
+            <a
+              href="#contact"
+              className={cn(
+                buttonVariants({
+                  variant: 'default',
+                  size: 'lg',
+                  className:
+                    'decrypted-btn hover:bg-primary h-12 px-4 text-sm/relaxed',
+                })
+              )}
             >
-              <span>My Resume</span>
-            </Button>
+              <span>Let's Connect</span>
+            </a>
           </div>
         </div>
 
@@ -95,9 +103,7 @@ const Hero = () => {
                           skill.inverted && 'dark:invert'
                         )}
                       />
-                      <span className="text-xs whitespace-nowrap">
-                        {skill.name}
-                      </span>
+                      <span className="line-clamp-1 text-xs">{skill.name}</span>
                     </CardContent>
                   </Card>
                 </div>

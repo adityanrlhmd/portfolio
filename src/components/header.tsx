@@ -42,7 +42,7 @@ const navigations = [
   },
 ] as const;
 
-export const Navigation = () => {
+export const Header = () => {
   const activeSection = useActiveSection(
     navigations.map(nav => nav.href.replace('#', ''))
   );
@@ -51,9 +51,9 @@ export const Navigation = () => {
     <>
       <header className="sm:bg-background sticky top-0 z-50 flex h-(--header-height) justify-center sm:border-b">
         <div className="container flex w-full items-center justify-between">
-          <div className="hover:text-primary">
+          <a href="/" className="hover:text-primary">
             <Logo />
-          </div>
+          </a>
 
           <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
