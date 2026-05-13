@@ -81,7 +81,7 @@ export const Navigation = () => {
             <li key={nav.title}>
               <a
                 data-active={activeSection === nav.href.replace('#', '')}
-                className="text-foreground/80 hover:text-primary data-[active=true]:text-primary flex flex-col items-center justify-center p-4 text-sm"
+                className="text-muted-foreground hover:text-primary data-[active=true]:text-primary flex flex-col items-center justify-center p-4 text-sm"
                 href={nav.href}
               >
                 {nav.icon}

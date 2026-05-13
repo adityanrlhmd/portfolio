@@ -1,32 +1,5 @@
 import AutoScroll from 'embla-carousel-auto-scroll';
 
-import cssIcon from '@/assets/skills/css.svg';
-import directusIcon from '@/assets/skills/directus.svg';
-import expoIcon from '@/assets/skills/expo.svg';
-import expressIcon from '@/assets/skills/expressjs.svg';
-import firebaseIcon from '@/assets/skills/firebase.svg';
-import framermotionIcon from '@/assets/skills/framer-motion.svg';
-import gitIcon from '@/assets/skills/git.svg';
-import htmlIcon from '@/assets/skills/html.svg';
-import javascriptIcon from '@/assets/skills/javascript.svg';
-import jestIcon from '@/assets/skills/jest.svg';
-import mongodbIcon from '@/assets/skills/mongodb.svg';
-import mysqlIcon from '@/assets/skills/mysql.svg';
-import nextjsIcon from '@/assets/skills/nextjs.svg';
-import nodejsIcon from '@/assets/skills/nodejs.svg';
-import reactqueryIcon from '@/assets/skills/react-query.svg';
-import reactIcon from '@/assets/skills/react.svg';
-import reduxIcon from '@/assets/skills/redux.svg';
-import socketioIcon from '@/assets/skills/socket-io.svg';
-import supabaseIcon from '@/assets/skills/supabase.svg';
-import swiftIcon from '@/assets/skills/swift.svg';
-import swiftuiIcon from '@/assets/skills/swiftui.svg';
-import tailwindIcon from '@/assets/skills/tailwindcss.svg';
-import typescriptIcon from '@/assets/skills/typescript.svg';
-import viteIcon from '@/assets/skills/vite.svg';
-import vitestIcon from '@/assets/skills/vitest.svg';
-import zustandIcon from '@/assets/skills/zustand.svg';
-
 import { GridBeam } from '@/components/grid-beam';
 import Lanyard from '@/components/lanyard';
 import TextType from '@/components/text-type';
@@ -38,46 +11,17 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 
+import { SKILLS } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
-const SKILLS = [
-  { name: 'HTML', icon: htmlIcon },
-  { name: 'CSS', icon: cssIcon },
-  { name: 'JavaScript', icon: javascriptIcon },
-  { name: 'TypeScript', icon: typescriptIcon },
-  { name: 'Node.js', icon: nodejsIcon },
-  { name: 'React.js', icon: reactIcon },
-  { name: 'Next.js', icon: nextjsIcon },
-  { name: 'React Native', icon: reactIcon },
-  { name: 'Expo', icon: expoIcon },
-  { name: 'React Query', icon: reactqueryIcon },
-  { name: 'Redux', icon: reduxIcon },
-  { name: 'Zustand', icon: zustandIcon },
-  { name: 'Vite', icon: viteIcon },
-  { name: 'Vitest', icon: vitestIcon },
-  { name: 'Jest', icon: jestIcon },
-  { name: 'TailwindCSS', icon: tailwindIcon },
-  { name: 'Framer Motion', icon: framermotionIcon },
-  { name: 'Express.js', icon: expressIcon },
-  { name: 'Firebase', icon: firebaseIcon },
-  { name: 'Supabase', icon: supabaseIcon },
-  { name: 'MongoDB', icon: mongodbIcon },
-  { name: 'MySQL', icon: mysqlIcon },
-  { name: 'Directus', icon: directusIcon },
-  { name: 'Socket.io', icon: socketioIcon },
-  { name: 'Swift', icon: swiftIcon },
-  { name: 'SwiftUI', icon: swiftuiIcon },
-  { name: 'GIT', icon: gitIcon },
+const HEADLINES = [
+  'Welcome to **my digital space**',
+  'A **frontend engineer** & typescript enthusiast',
+  'Transforming complex logic into **seamless experiences**',
+  "Let's create something **impactful** together",
 ];
 
 const Hero = () => {
-  const headlines = [
-    'Welcome to **my digital space**',
-    'A **frontend engineer** & typescript enthusiast',
-    'Transforming complex logic into **seamless experiences**',
-    "Let's create something **impactful** together",
-  ];
-
   return (
     <section id="home" className="scroll-mt-(--header-height)">
       <GridBeam>
@@ -94,7 +38,7 @@ const Hero = () => {
 
           <div className="z-10 w-full space-y-4 pt-0 lg:w-2/3 lg:p-0">
             <TextType
-              text={headlines}
+              text={HEADLINES}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor
@@ -108,7 +52,7 @@ const Hero = () => {
               A frontend engineer & typescript enthusiast
             </h1>
 
-            <p className="text-foreground/80 text-sm sm:text-base lg:text-lg">
+            <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
               I develop scalable frontend architectures with a focus on
               type-safety and performance, ensuring every line of code
               contributes to a fast and reliable digital product.
@@ -116,7 +60,7 @@ const Hero = () => {
 
             <Button
               size="lg"
-              className="decrypted-btn hover:bg-primary h-12 px-4 text-base font-bold lg:h-14"
+              className="cursor-target decrypted-btn hover:bg-primary h-12 px-4 text-base font-bold lg:h-14"
             >
               <span>My Resume</span>
             </Button>
@@ -134,13 +78,13 @@ const Hero = () => {
           className="mt-10 flex h-20 w-full items-center justify-center border-y md:mt-0"
         >
           <CarouselContent className="-ml-1 items-center">
-            {SKILLS.map((skill, index) => (
+            {Object.values(SKILLS).map((skill, index) => (
               <CarouselItem
                 key={index}
                 className="basis-[40%] pl-1 md:basis-1/6 lg:basis-1/9 xl:basis-1/11"
               >
                 <div className="p-1">
-                  <Card className="hover:text-primary h-fit border-none bg-transparent p-0 shadow-none">
+                  <Card className="hover:text-primary h-fit border-none p-0 shadow-none">
                     <CardContent className="flex h-fit items-center justify-center gap-2 border-none px-2 py-2">
                       <img
                         src={skill.icon}
@@ -148,9 +92,7 @@ const Hero = () => {
                         title={skill.name}
                         className={cn(
                           'size-4 object-contain sm:size-6',
-                          skill.name.toLowerCase() === 'socket.io'
-                            ? 'dark:invert'
-                            : ''
+                          skill.inverted && 'dark:invert'
                         )}
                       />
                       <span className="text-xs whitespace-nowrap">

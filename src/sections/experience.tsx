@@ -102,7 +102,7 @@ const Experience = () => {
               className="text-primary font-bold"
             />
             <h2 className="text-4xl font-bold lg:text-5xl">Experience</h2>
-            <p className="text-foreground/80 text-sm md:text-base">
+            <p className="text-muted-foreground text-sm md:text-base">
               Here's a look at my professional journey and the impactful roles
               I've undertaken.
             </p>
@@ -116,18 +116,18 @@ const Experience = () => {
                 <AccordionTrigger hideArrow className="items-end">
                   <div className="flex flex-col text-base">
                     {exp.company}
-                    <span className="text-foreground/80 text-xs">
+                    <span className="text-muted-foreground text-xs">
                       {exp.role}
                     </span>
                   </div>
 
-                  <span className="text-foreground/80 whitespace-nowrap">
+                  <span className="text-muted-foreground whitespace-nowrap">
                     {exp.duration}
                   </span>
                 </AccordionTrigger>
 
                 <AccordionContent>
-                  <ul className="text-foreground/80 list-disc space-y-2 pl-4">
+                  <ul className="text-muted-foreground list-disc space-y-2 pl-4">
                     {exp.jobdesc.map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
@@ -172,7 +172,7 @@ const Experience = () => {
             Years of Building Better Web & Mobile Apps
           </h4>
 
-          <p className="text-foreground/80 text-sm md:text-base">
+          <p className="text-muted-foreground text-sm md:text-base">
             Over half a decade of experience in driving digital transformation.
             Specialized in crafting SEO-friendly landing pages and
             high-performance applications through modern micro-frontend
