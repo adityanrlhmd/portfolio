@@ -72,7 +72,7 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="scroll-mt-(--header-height) py-16">
+    <section id="contact" className="py-16 sm:scroll-mt-(--header-height)">
       <div className="container grid grid-cols-1 gap-8 md:grid-cols-2">
         <div className="space-y-4">
           <ShinyText
