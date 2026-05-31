@@ -155,7 +155,7 @@ const Experience = () => {
 
           <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 translate-y-[-45%]">
             <ShinyText
-              text="5⁺"
+              text="4⁺"
               speed={2}
               delay={0}
               color="var(--primary)"
