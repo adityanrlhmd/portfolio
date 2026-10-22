@@ -10,9 +10,36 @@ import {
 const Experience = () => {
   const experience = [
     {
+      id: 'govtech-procurement',
+      company: 'GovTech Procurement',
+      role: 'Frontend Engineer',
+      duration: 'Jul 2026 - Present',
+      jobdesc: [
+        'Government E-Procurement Platform: Building features across multiple apps in a large Next.js, React, and TypeScript monorepo (Turborepo) for a national-scale procurement platform.',
+        'Order & Contract Lifecycle: Own end-to-end order flows, including order review, contract approval, and contract amendments with before/after comparison previews and payment schedule changes.',
+        'Legacy Migration: Migrated key flows from a legacy app into a new app, reusing shared modules to keep behaviour consistent.',
+        'PDF Document Generation: Generated official, print-ready contract documents with React PDF, handling page breaks, long-text wrapping, and font coverage.',
+        'Typed Data Layer: Built against GraphQL APIs with typed codegen, React Query, and Zod-validated forms, working closely with backend, QA, and product teams.',
+        'Code Quality: Kept quality high through code reviews, CI checks (typecheck, lint, build), static analysis fixes, and shared UI components over one-off styling.',
+      ],
+    },
+    {
+      id: 'bank-jakarta',
+      company: 'Bank Jakarta',
+      role: 'Frontend Engineer',
+      duration: 'Jun 2026 - Jul 2026',
+      jobdesc: [
+        'Core Banking Feature Delivery: Built Branch Delivery System (BDS) modules that let tellers process cash deposits, withdrawals, and internal/external transfers.',
+        'Architecture & Project Setup: Initialized the frontend project from scratch in full compliance with enterprise development guidelines.',
+        "Custom UI Implementation: Translated Figma designs into pixel-perfect interfaces by customizing Ant Design components to match the bank's design system.",
+        'Multi-Transaction State Flow: Engineered a global state flow that lets tellers run multiple concurrent transactions within a single session.',
+        'Optimization & Clean Code: Applied code-splitting and clean code principles to reduce bundle size, speed up load times, and keep the codebase maintainable.',
+      ],
+    },
+    {
       id: 'edot',
       company: 'PT. Elektronik Distribusi Otomatisasi Terkemuka (eDOT)',
-      role: 'Front End Developer',
+      role: 'Frontend Engineer',
       duration: 'Jan 2024 - May 2026',
       jobdesc: [
         'SEO & Headless CMS Integration: Developed a high-performance company landing page integrated with a Headless CMS, enabling the SEO team to manage and update content independently while maintaining optimal search engine visibility.',
@@ -31,28 +58,24 @@ const Experience = () => {
       role: 'Software Engineer',
       duration: 'Apr 2023 - Dec 2023',
       jobdesc: [
-        'Develop user interfaces for web and mobile applications using ReactJS, React Native, Next.js, Vue.js, and Tailwind CSS.',
-        'Build server-side applications using Node.js, including data processing and integration with databases or external services.',
-        'Utilize Supabase for data storage, real-time updates, and user authentication.',
-        'Develop cross-platform mobile applications using React Native (Expo).',
-        'Develop native iOS applications using Swift and SwiftUI.',
-        'Implement animations and transitions using Framer Motion.',
-        'Optimize application performance through caching and minimizing network requests.',
-        'Write clean and maintainable code using TypeScript, Swift, and relevant languages.',
+        'Built web and mobile interfaces with React, Next.js, Vue.js, React Native, and Tailwind CSS.',
+        'Developed Node.js services for data processing and integration with databases and third-party APIs.',
+        'Used Supabase for data storage, real-time updates, and user authentication.',
+        'Shipped cross-platform mobile apps with React Native (Expo) and native iOS apps with Swift and SwiftUI.',
+        'Crafted smooth animations and transitions with Framer Motion.',
+        'Improved performance through caching and reducing redundant network requests.',
       ],
     },
     {
       id: 'leslar',
       company: 'LESLAR Metaverse',
-      role: 'Front End Developer',
+      role: 'Frontend Engineer',
       duration: 'Aug 2022 - Mar 2023',
       jobdesc: [
-        'Develop web and mobile user interfaces using ReactJS, React Native, and Next.js.',
-        'Integrate with Moralis and Web3 for blockchain interaction and dApp handling.',
-        'Build server-side applications using Node.js, including data processing and database integration.',
-        'Design and implement optimized GraphQL APIs, defining schemas and resolving queries and mutations.',
-        'Develop cross-platform mobile applications using React Native (Expo), leveraging platform-specific features and UI components.',
-        'Collaborate with designers to implement UI/UX designs and ensure consistency across applications.',
+        'Built web and mobile interfaces with React, Next.js, and React Native (Expo).',
+        'Integrated Moralis and Web3 for blockchain interactions and dApp features.',
+        'Designed GraphQL schemas, queries, and mutations backed by Node.js services.',
+        'Worked closely with designers to keep UI/UX consistent across web and mobile.',
       ],
     },
     {
@@ -61,24 +84,20 @@ const Experience = () => {
       role: 'Web Developer',
       duration: 'Sep 2021 - Aug 2022',
       jobdesc: [
-        'Build a full stack website project with the team.',
-        'Create user friendly Front End Web App.',
-        'Create responsive layout website and mobile app.',
-        'Collaborate with designer dan other programmer to build great apps.',
-        'Implementation of javascript frameworks like Reactjs and Nextjs.',
+        'Delivered full-stack website projects as part of a cross-functional team.',
+        'Built responsive, user-friendly web apps with React and Next.js.',
+        'Collaborated with designers and engineers from design handoff to release.',
       ],
     },
     {
       id: 'omindtech',
       company: 'OmindTech',
-      role: 'Front End Developer',
+      role: 'Frontend Engineer (Internship)',
       duration: 'Apr 2021 - Nov 2021',
       jobdesc: [
-        "Designing and building a landing page for the agency's company profile information system.",
-        'Implement CSS and JavaScript frameworks such as Bootstrap and VueJS.',
-        'Using CSS preprocessor, namely SASS (Syntactically Awesome Style Sheets).',
-        'Ensuring web design is optimized for mobile devices.',
-        'Developing features to enhance web user experience.',
+        'Designed and built the company profile landing page for the agency.',
+        'Developed mobile-first, responsive layouts with Vue.js, Bootstrap, and Sass.',
+        'Shipped UI improvements to enhance the overall user experience.',
       ],
     },
   ];
@@ -155,7 +174,7 @@ const Experience = () => {
 
           <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 translate-y-[-45%]">
             <ShinyText
-              text="4⁺"
+              text="5⁺"
               speed={2}
               delay={0}
               color="var(--primary)"
