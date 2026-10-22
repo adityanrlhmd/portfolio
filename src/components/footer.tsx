@@ -28,8 +28,9 @@ export const Footer = () => {
   return (
     <footer className="border-t">
       <div className="text-muted-foreground container text-xs lg:text-sm">
-        <div className="flex flex-col items-center py-8 md:flex-row md:items-start md:justify-between">
-          <div className="flex flex-col items-center gap-4">
+        {/* equal columns keep "Navigate" on the page's center line, aligned with the copyright */}
+        <div className="flex flex-col items-center py-8 md:grid md:grid-cols-3 md:items-start">
+          <div className="flex flex-col items-center gap-4 md:justify-self-start">
             <div className="group/flex flex items-center gap-8 md:gap-4 lg:gap-8">
               {LINKS.map((link, index) => (
                 <a
@@ -61,10 +62,10 @@ export const Footer = () => {
                 </li>
               ))}
             </ul>
-            <p>Frontend Engineer based in Indonesia</p>
+            <p className="text-center">Frontend Engineer based in Indonesia</p>
           </div>
 
-          <div className="mt-10 max-w-md md:mt-0 lg:max-w-2xl">
+          <div className="mt-10 max-w-md md:mt-0 md:h-36 md:w-full md:justify-self-end lg:max-w-2xl">
             <LetterGlitch glitchColors={['#35530e', '#7ccf00']} />
           </div>
         </div>
