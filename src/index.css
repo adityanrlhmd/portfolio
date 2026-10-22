@@ -279,3 +279,10 @@
     transparent
   );
 }
+
+/* theme toggle: circular reveal is driven from toggle-button.tsx */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

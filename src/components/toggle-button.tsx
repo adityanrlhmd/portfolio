@@ -1,13 +1,53 @@
 import { RiMoonFill, RiSunFill } from '@remixicon/react';
 
+import { flushSync } from 'react-dom';
+
 import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 
 export function ToggleButton() {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
 
-  const toggleTheme = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // read the applied class so 'system' toggles correctly too
+    const next = document.documentElement.classList.contains('dark')
+      ? 'light'
+      : 'dark';
+
+    if (
+      !document.startViewTransition ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      setTheme(next);
+      return;
+    }
+
+    const { left, top, width, height } =
+      event.currentTarget.getBoundingClientRect();
+    const x = left + width / 2;
+    const y = top + height / 2;
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    document
+      .startViewTransition(() => flushSync(() => setTheme(next)))
+      .ready.then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [
+              `circle(0px at ${x}px ${y}px)`,
+              `circle(${radius}px at ${x}px ${y}px)`,
+            ],
+          },
+          {
+            duration: 700,
+            easing: 'cubic-bezier(0.65, 0, 0.35, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          }
+        );
+      });
   };
 
   return (
