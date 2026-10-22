@@ -69,19 +69,31 @@ const Hero = () => {
               the next person can work on them without guessing.
             </p>
 
-            <a
-              href="#contact"
-              className={cn(
-                buttonVariants({
-                  variant: 'default',
+            <div className="flex flex-wrap gap-3">
+              <a
+                href="#contact"
+                className={cn(
+                  buttonVariants({
+                    variant: 'default',
+                    size: 'lg',
+                    className:
+                      'decrypted-btn hover:bg-primary h-12 px-4 text-sm/relaxed',
+                  })
+                )}
+              >
+                <span>Let's Connect</span>
+              </a>
+              <a
+                href="/resume"
+                className={buttonVariants({
+                  variant: 'outline',
                   size: 'lg',
-                  className:
-                    'decrypted-btn hover:bg-primary h-12 px-4 text-sm/relaxed',
-                })
-              )}
-            >
-              <span>Let's Connect</span>
-            </a>
+                  className: 'h-12 px-4 text-sm/relaxed',
+                })}
+              >
+                Build Your Resume
+              </a>
+            </div>
           </div>
         </div>
 
