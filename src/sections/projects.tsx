@@ -34,34 +34,13 @@ import { cn } from '@/lib/utils';
 
 const PROJECTS = [
   {
-    title: 'eDOT Landing Page',
-    alter: 'Company Profile',
-    category: 'Web',
-    image: edotLP,
-    img_padding: true,
-    description:
-      'A high-performance company landing page optimized for SEO. I implemented a Headless CMS integration using Directus, enabling the SEO team to manage and update content independently. Built with Next.js for superior performance and TanStack Query for efficient data fetching and caching.',
-    link: 'https://edot.id/en',
-    stacks: [
-      SKILLS['next-js'],
-      SKILLS.tailwindcss,
-      SKILLS['shadcn-ui'],
-      SKILLS.typescript,
-      SKILLS.directus,
-      SKILLS.tanstack,
-      SKILLS.jest,
-      SKILLS['testing-library'],
-      SKILLS.git,
-    ],
-  },
-  {
     title: 'emitra',
-    alter: 'Company Platform',
+    alter: 'B2B Marketplace',
     category: 'Web',
     image: emitra,
     img_padding: true,
     description:
-      'Contributed to the architectural migration from a monolithic Next.js setup to a Micro Frontend structure using Turborepo. I worked on modularizing components and features while implementing Zustand for lightweight state management and TanStack Query for efficient API integration and caching.',
+      'A B2B marketplace where suppliers and large businesses order plant-based products in bulk and track each order live. The single Next.js app kept hitting conflicts on almost every merge request, so I helped split it into micro frontends in Turborepo, giving each part a cleaner home of its own. Zustand for light state, TanStack Query for API calls.',
     link: 'https://edot.id/en/products/emitra',
     stacks: [
       SKILLS['next-js'],
@@ -81,12 +60,12 @@ const PROJECTS = [
   },
   {
     title: 'esuite',
-    alter: 'Company Platform',
+    alter: 'Distribution Management System',
     category: 'Web',
     image: esuite,
     img_padding: true,
     description:
-      'An integrated business solution platform designed for corporate efficiency. I leveraged Next.js and Shadcn UI to build a cohesive interface, while utilizing TanStack Query for robust state management and Firebase for real-time features, all backed by comprehensive testing to ensure reliability.',
+      'Puts sales, purchasing, inventory, and finance in one place for distributors, so stock and orders stop living in spreadsheets and manual notes. I built the UI with Next.js and shadcn/ui, used TanStack Query and Firebase for live data, and covered the important flows with tests.',
     link: 'https://edot.id/en/products/esuite',
     stacks: [
       SKILLS['next-js'],
@@ -103,12 +82,12 @@ const PROJECTS = [
   },
   {
     title: 'ework',
-    alter: 'Company Platform',
+    alter: 'Sales Force Automation',
     category: 'Web',
     image: ework,
     img_padding: true,
     description:
-      'A dynamic workforce management tool featuring real-time collaboration. I integrated Socket.io for live updates and Google Maps API for location-based services. The project utilizes a modern stack of Next.js and Tailwind CSS, focusing on a responsive and interactive user experience.',
+      "Gives sales managers a live view of their field team: where they are, which stores they've visited, and what orders came in. I added real-time updates with Socket.io and visit routes and locations with the Google Maps API, on top of Next.js and Tailwind CSS.",
     link: 'https://edot.id/en/products/ework',
     stacks: [
       SKILLS['next-js'],
@@ -127,12 +106,12 @@ const PROJECTS = [
   },
   {
     title: 'QSR (Quick Service Restaurant) POS System',
-    alter: 'Company Platform',
+    alter: 'Restaurant POS',
     category: 'Web',
     image: qsr,
     img_padding: true,
     description:
-      'A specialized Point of Sale system tailored for fast-paced restaurant environments. Developed using Next.js within a Turborepo environment, I implemented complex business logic and state management with TanStack Query to ensure fast transaction processing and seamless UI responsiveness.',
+      'A cashier system for busy restaurants, where every second at checkout counts during rush hour. I worked on the transaction logic in Next.js inside Turborepo, using TanStack Query to keep it quick and responsive.',
     stacks: [
       SKILLS['next-js'],
       SKILLS.tailwindcss,
@@ -155,7 +134,7 @@ const PROJECTS = [
     image: edotChat,
     img_padding: true,
     description:
-      'An enterprise-grade messaging platform designed for high-performance real-time communication. I integrated Socket.io for instant data synchronization and leveraged IndexedDB for persistent local storage, combined with TanStack Query to manage complex message caching and ensure seamless performance even with large conversation histories.',
+      'An internal chat app, so companies can keep work conversations in their own tool. Socket.io keeps messages in sync, IndexedDB stores chats locally, and TanStack Query handles caching, so even long histories open quickly.',
     stacks: [
       SKILLS['next-js'],
       SKILLS.tailwindcss,
@@ -168,12 +147,33 @@ const PROJECTS = [
     ],
   },
   {
+    title: 'eDOT Landing Page',
+    alter: 'Company Profile',
+    category: 'Web',
+    image: edotLP,
+    img_padding: true,
+    description:
+      'The eDOT company site, where marketing needed to publish and tune content for search without waiting on developers. I connected it to Directus as a headless CMS so the SEO team can do that on their own, with Next.js keeping pages fast.',
+    link: 'https://edot.id/en',
+    stacks: [
+      SKILLS['next-js'],
+      SKILLS.tailwindcss,
+      SKILLS['shadcn-ui'],
+      SKILLS.typescript,
+      SKILLS.directus,
+      SKILLS.tanstack,
+      SKILLS.jest,
+      SKILLS['testing-library'],
+      SKILLS.git,
+    ],
+  },
+  {
     title: 'Prestige Promotions',
     alter: 'Company Profile',
     category: 'Web',
     image: prestige,
     description:
-      'A high-performance Company Profile website built for an event promoter. I focused on creating a seamless user experience using Next.js and Framer Motion for fluid animations, while implementing Directus as a Headless CMS to allow the team to manage content dynamically and efficiently.',
+      'A site for an event promoter to show off their events and keep them up to date without calling a developer. Built with Next.js and Framer Motion, with Directus as a headless CMS so the team can update content themselves.',
     link: 'https://prestigepromotions.id',
     stacks: [
       SKILLS['next-js'],
@@ -191,7 +191,7 @@ const PROJECTS = [
     category: 'Web',
     image: phantom,
     description:
-      'A robust Booking Application designed for the nightlife and entertainment industry. I utilized Zustand for scalable state management and Supabase for real-time database capabilities and secure authentication, all wrapped in a clean UI powered by Ant Design.',
+      'Lets guests book at nightlife and entertainment venues online, so reservations no longer go through back-and-forth chats. Zustand for state, Supabase for the real-time database and auth, and Ant Design for the UI.',
     link: 'https://phantomclub.id',
     stacks: [
       SKILLS['next-js'],
@@ -204,11 +204,11 @@ const PROJECTS = [
   },
   {
     title: 'Hodler',
-    alter: 'Cryptocurrency web.',
+    alter: 'Crypto Website',
     category: 'Web',
     image: hodler,
     description:
-      'A modern Cryptocurrency web platform built with a focus on speed and reliability. By using TypeScript and Next.js, I ensured a type-safe codebase and optimized performance, providing users with a fast and responsive interface to explore the crypto ecosystem.',
+      'The front door for a crypto community project: it explains the token and points new holders to where they can buy and join the community. Built with Next.js and TypeScript, kept light so it loads fast.',
     stacks: [
       SKILLS['next-js'],
       SKILLS.tailwindcss,
@@ -223,7 +223,7 @@ const PROJECTS = [
     category: 'Web',
     image: rooma,
     description:
-      'An Interior Design Reservation platform that streamlines the booking process between clients and designers. I leveraged Supabase for backend services to handle user data and reservations instantly, integrated with a sleek, responsive frontend built using Next.js.',
+      'Connects clients with interior designers, so booking a consultation takes a few clicks instead of a long back-and-forth. Supabase handles users and reservations, with a responsive Next.js frontend on top.',
     link: 'https://rooma.co.id',
     stacks: [
       SKILLS['next-js'],
@@ -235,11 +235,11 @@ const PROJECTS = [
   },
   {
     title: 'Cuan TV',
-    alter: 'Multi-purpose video platform with Web3',
+    alter: 'Web3 Video Platform',
     category: 'Mobile',
     image: cuantv,
     description:
-      'A Multi-purpose Video Platform that integrates Web3 technology into a mobile experience. Developed with React Native, this app features a cross-platform interface where users can interact with video content and blockchain assets through Moralis and Web3 integrations.',
+      "Brings the project's video content and Web3 assets together in one mobile app, so users don't need a separate wallet site. Built with React Native for Android and iOS, using Moralis and Web3 for the blockchain side.",
     link: 'https://play.google.com/store/apps/details?id=com.leslarmetaverse.cuantv&pli=1',
     stacks: [
       SKILLS['react-native'],
@@ -251,11 +251,11 @@ const PROJECTS = [
   },
   {
     title: 'Leslar Metaverse',
-    alter: 'Blockchain Web',
+    alter: 'Blockchain Website',
     category: 'Web',
     image: leslar,
     description:
-      "A specialized Blockchain-integrated web platform. I implemented Web3 functionalities and Moralis to bridge the gap between blockchain smart contracts and the user interface, providing a gateway into the project's digital ecosystem.",
+      'The main entry point into a blockchain project, where users go from reading about it to actually using it. I used Web3 and Moralis to connect the smart contracts to the UI.',
     link: 'https://www.leslarmetaverse.com',
     stacks: [
       SKILLS['next-js'],
@@ -292,9 +292,8 @@ const Projects = () => {
             Projects
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
-            A curated collection of my journey in frontend engineering. Each
-            project marks a milestone in mastering complex architectures and my
-            commitment to crafting better digital experiences.
+            Some of the things I've worked on, from enterprise platforms to
+            client sites, and what I handled on each.
           </p>
         </div>
 

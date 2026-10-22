@@ -15,12 +15,12 @@ const Experience = () => {
       role: 'Frontend Engineer',
       duration: 'Jul 2026 - Present',
       jobdesc: [
-        'Government E-Procurement Platform: Building features across multiple apps in a large Next.js, React, and TypeScript monorepo (Turborepo) for a national-scale procurement platform.',
-        'Order & Contract Lifecycle: Own end-to-end order flows, including order review, contract approval, and contract amendments with before/after comparison previews and payment schedule changes.',
-        'Legacy Migration: Migrated key flows from a legacy app into a new app, reusing shared modules to keep behaviour consistent.',
-        'PDF Document Generation: Generated official, print-ready contract documents with React PDF, handling page breaks, long-text wrapping, and font coverage.',
-        'Typed Data Layer: Built against GraphQL APIs with typed codegen, React Query, and Zod-validated forms, working closely with backend, QA, and product teams.',
-        'Code Quality: Kept quality high through code reviews, CI checks (typecheck, lint, build), static analysis fixes, and shared UI components over one-off styling.',
+        'Government E-Procurement Platform: Building features across several apps in a large Next.js, React, and TypeScript monorepo (Turborepo) for a national procurement platform.',
+        'Order & Contract Flows: Own the order and contract flows end to end, from order review and contract approval to amendments with before/after previews and payment schedule changes.',
+        'Legacy Migration: Moved key flows from the old app to the new one, reusing shared modules so everything still behaves the same.',
+        'Contract PDFs: Generate official, print-ready contract documents with React PDF, sorting out page breaks, long text, and font coverage along the way.',
+        'Typed Data Layer: Work with GraphQL APIs using typed codegen, TanStack Query, and Zod-validated forms, together with the backend, QA, and product teams.',
+        'Code Reviews & Quality: Review PRs to make sure both the code and the business logic hold up, keep CI checks (typecheck, lint, build) green, and push for shared UI components over one-off styling.',
       ],
     },
     {
@@ -29,11 +29,11 @@ const Experience = () => {
       role: 'Frontend Engineer',
       duration: 'Jun 2026 - Jul 2026',
       jobdesc: [
-        'Core Banking Feature Delivery: Built Branch Delivery System (BDS) modules that let tellers process cash deposits, withdrawals, and internal/external transfers.',
-        'Architecture & Project Setup: Initialized the frontend project from scratch in full compliance with enterprise development guidelines.',
-        "Custom UI Implementation: Translated Figma designs into pixel-perfect interfaces by customizing Ant Design components to match the bank's design system.",
-        'Multi-Transaction State Flow: Engineered a global state flow that lets tellers run multiple concurrent transactions within a single session.',
-        'Optimization & Clean Code: Applied code-splitting and clean code principles to reduce bundle size, speed up load times, and keep the codebase maintainable.',
+        'Core Banking Features: Built Branch Delivery System (BDS) modules so tellers can handle cash deposits, withdrawals, and internal/external transfers.',
+        "Project Setup: Set up the frontend project from scratch, following the bank's development guidelines.",
+        "UI Implementation: Turned Figma designs into working screens by customizing Ant Design components to fit the bank's design system.",
+        'Multi-Transaction Flow: Designed the state flow that lets a teller run several transactions at once in a single session.',
+        'Performance & Maintainability: Used code-splitting to keep the bundle small and pages quick to load, and kept the code easy to work on.',
       ],
     },
     {
@@ -42,14 +42,13 @@ const Experience = () => {
       role: 'Frontend Engineer',
       duration: 'Jan 2024 - May 2026',
       jobdesc: [
-        'SEO & Headless CMS Integration: Developed a high-performance company landing page integrated with a Headless CMS, enabling the SEO team to manage and update content independently while maintaining optimal search engine visibility.',
-        'Micro Frontend Architecture: Engineered and maintained scalable web applications using Micro Frontend architecture to improve modularity and streamline cross-team development.',
-        'Document Management System (DMS): Developed a robust DMS module focusing on complex file handling, versioning, and high-performance data rendering using React/Next.js.',
-        'Automated Testing & Quality Assurance: Implemented comprehensive Unit Testing and integration tests to ensure code reliability, reducing bugs and maintaining a stable production environment.',
-        'Real-time Interaction: Developed low-latency real-time chatting features, ensuring seamless user communication and synchronized data states.',
-        'Performance Optimization: Optimized application performance by implementing code-splitting, lazy loading, and efficient State Management, resulting in faster load times and a smoother user experience.',
-        'Clean Architecture: Applied Clean Architecture principles and integrated GraphQL/REST APIs to ensure a clean, maintainable, and scalable codebase.',
-        'AI-Enhanced Workflow: Leveraged AI-assisted coding to accelerate development cycles and deliver high-quality features with maximum efficiency.',
+        'Micro Frontends: Built and maintained apps on a micro frontend setup, so each team could work on and ship its part without stepping on the others.',
+        "Architecture Discussions: Talked through architecture options with the team, weighing what fits and what doesn't before we committed to one.",
+        "Onboarding: Walked new teammates through how the codebase is structured, why it's set up that way, and how new features should fit in.",
+        'Landing Page & Headless CMS: Built the company landing page on a headless CMS, so the SEO team could update content on their own without hurting search visibility.',
+        'Document Management System: Built the DMS module, covering file handling, versioning, and rendering large amounts of data smoothly.',
+        'Real-time Chat: Built the real-time chat, keeping messages and state in sync for everyone in the conversation.',
+        'Testing & Performance: Wrote unit and integration tests to catch bugs before production, and used code-splitting and lazy loading to keep things fast.',
       ],
     },
     {
@@ -125,8 +124,8 @@ const Experience = () => {
             />
             <h2 className="text-4xl font-bold lg:text-5xl">Experience</h2>
             <p className="text-muted-foreground text-sm md:text-base">
-              Here's a look at my professional journey and the impactful roles
-              I've undertaken.
+              Where I've worked and what I did there, from government and
+              banking to enterprise platforms.
             </p>
           </div>
         </div>
@@ -191,15 +190,14 @@ const Experience = () => {
 
         <div className="container max-w-4xl space-y-4">
           <h3 className="text-3xl font-bold md:text-4xl">
-            <span className="sr-only">5⁺</span> Years of Building Better Web &
-            Mobile Apps
+            <span className="sr-only">5⁺</span> Years of Shipping Web & Mobile
+            Products
           </h3>
 
           <p className="text-muted-foreground text-sm md:text-base">
-            Over half a decade of experience in driving digital transformation.
-            Specialized in crafting SEO-friendly landing pages and
-            high-performance applications through modern micro-frontend
-            architectures and seamless API integrations.
+            From national procurement to core banking and enterprise platforms.
+            These days most of my time goes into architecture, PR reviews, and
+            helping new teammates get up to speed.
           </p>
         </div>
       </div>

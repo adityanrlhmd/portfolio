@@ -24,9 +24,9 @@ const Lanyard = lazy(() =>
 
 const HEADLINES = [
   'Welcome to **my digital space**',
-  'A **frontend engineer** & typescript enthusiast',
-  'Transforming complex logic into **seamless experiences**',
-  "Let's create something **impactful** together",
+  'A **frontend engineer** who sweats the details',
+  'Turning messy business logic into **simple UIs**',
+  "Let's **build something** together",
 ];
 
 const Hero = () => {
@@ -60,14 +60,13 @@ const Hero = () => {
               className="text-3xl font-bold lg:text-6xl"
               pauseWhenHidden
             />
-            <h1 className="sr-only">
-              A frontend engineer & typescript enthusiast
-            </h1>
+            <h1 className="sr-only">Aditya Hamda, frontend engineer</h1>
 
             <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
-              I develop scalable frontend architectures with a focus on
-              type-safety and performance, ensuring every line of code
-              contributes to a fast and reliable digital product.
+              I build frontends for government, banking, and enterprise
+              products. I like owning a feature from the first discussion all
+              the way to production, and keeping big codebases tidy enough that
+              the next person can work on them without guessing.
             </p>
 
             <a

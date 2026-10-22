@@ -27,7 +27,7 @@ const contactSchema = z.object({
   email: z.string().email('Invalid email address.'),
   message: z
     .string()
-    .min(1, 'Message must be at least 1 characters.')
+    .min(1, 'Message is required.')
     .max(500, 'Message must be at most 500 characters.'),
 });
 
@@ -92,9 +92,8 @@ const Contact = () => {
             Contact
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
-            I'm always open to new opportunities and would love to hear from
-            you. Whether it's a challenging project, a potential collaboration,
-            or just a chat about technology, feel free to reach out.
+            Open to new roles, freelance work, or just a chat about frontend.
+            Drop me a message and I'll get back to you soon.
           </p>
         </div>
 
