@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { encodeResume } from '@/lib/resume/embed';
 import { EMPTY_RESUME } from '@/lib/resume/schema';
 import { saveResume } from '@/lib/resume/storage';
 
@@ -84,6 +85,30 @@ describe('ResumePage', () => {
       )
     ).toBeInTheDocument();
     expect(fullName()).toHaveValue('');
+  });
+
+  it('warns when storage is blocked from the start', async () => {
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new DOMException('blocked', 'SecurityError');
+    });
+    render(<ResumePage />);
+    expect(
+      await screen.findByText("Couldn't save your progress in this browser.")
+    ).toBeInTheDocument();
+  });
+
+  it('asks before an import replaces typed data, keeps it on cancel', async () => {
+    vi.spyOn(window, 'confirm').mockReturnValue(false);
+    render(<ResumePage />);
+    await user.type(fullName(), 'Budi');
+    // the mocked renderer can't embed data, so build the marker by hand
+    const exported = `%PDF (${encodeResume({ ...EMPTY_RESUME, name: 'Old' })})`;
+    await user.upload(
+      screen.getByLabelText('Import PDF'),
+      new File([exported], 'old.pdf', { type: 'application/pdf' })
+    );
+    expect(window.confirm).toHaveBeenCalled();
+    expect(fullName()).toHaveValue('Budi');
   });
 
   it('moves an experience down with the keyboard and keeps edits on the right item', async () => {

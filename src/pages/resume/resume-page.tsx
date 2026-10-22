@@ -66,6 +66,11 @@ const ResumeBuilder = () => {
       toast.error('Only resumes made with this generator can be imported.');
       return;
     }
+    if (
+      !isBlank(form.getValues()) &&
+      !window.confirm('Replace what you have typed with the imported resume?')
+    )
+      return;
     form.reset({ ...imported, photo: form.getValues('photo') });
     toast.success('Resume imported.');
   };
@@ -179,8 +184,9 @@ const ResumeBuilder = () => {
 
 const ResumePage = () => (
   <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-    <ResumeBuilder />
+    {/* before the builder, so toasts fired from its mount effects aren't dropped */}
     <Toaster />
+    <ResumeBuilder />
   </ThemeProvider>
 );
 
