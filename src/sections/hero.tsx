@@ -1,7 +1,8 @@
 import AutoScroll from 'embla-carousel-auto-scroll';
 
+import { Suspense, lazy } from 'react';
+
 import { GridBeam } from '@/components/grid-beam';
-import { Lanyard } from '@/components/lanyard';
 import { TextType } from '@/components/text-type';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,8 +12,15 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 
+import { useMediaQuery } from '@/hooks/use-media-query';
+
 import { SKILLS } from '@/lib/config';
 import { cn } from '@/lib/utils';
+
+// three.js + rapier live in their own chunk so the page renders before the 3D card
+const Lanyard = lazy(() =>
+  import('@/components/lanyard').then(m => ({ default: m.Lanyard }))
+);
 
 const HEADLINES = [
   'Welcome to **my digital space**',
@@ -22,18 +30,21 @@ const HEADLINES = [
 ];
 
 const Hero = () => {
+  const isLarge = useMediaQuery('(min-width: 1024px)');
+
   return (
     <section id="home" className="scroll-mt-(--header-height)">
       <GridBeam>
         <div className="container flex flex-col items-center gap-8 lg:flex-row">
-          <div className="h-[500px] w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
-            <div className="hidden h-full w-full lg:block">
-              <Lanyard position={[-5, 0, 15]} gravity={[0, -40, 0]} />
-            </div>
-
-            <div className="h-full w-full lg:hidden">
-              <Lanyard position={[-5, 0, 10]} gravity={[0, -40, 0]} />
-            </div>
+          <div className="h-125 w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
+            <Suspense>
+              {/* key remounts the canvas, since the camera is only read on mount */}
+              <Lanyard
+                key={isLarge ? 'lg' : 'sm'}
+                position={[-5, 0, isLarge ? 15 : 10]}
+                gravity={[0, -40, 0]}
+              />
+            </Suspense>
           </div>
 
           <div className="z-10 w-full space-y-4 pt-0 lg:w-2/3 lg:p-0">

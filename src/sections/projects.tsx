@@ -1,17 +1,17 @@
 import { RiExternalLinkLine } from '@remixicon/react';
 
-import cuantv from '@/assets/projects/cuantv.png';
-import edotChat from '@/assets/projects/edot-chat.png';
-import edotLP from '@/assets/projects/edot-landing-page.png';
-import emitra from '@/assets/projects/emitra.png';
-import esuite from '@/assets/projects/esuite.png';
-import ework from '@/assets/projects/ework.png';
-import hodler from '@/assets/projects/hodler.png';
-import leslar from '@/assets/projects/leslar.png';
-import phantom from '@/assets/projects/phantom.png';
-import prestige from '@/assets/projects/prestige.png';
-import qsr from '@/assets/projects/qsr.png';
-import rooma from '@/assets/projects/rooma.png';
+import cuantv from '@/assets/projects/cuantv.webp';
+import edotChat from '@/assets/projects/edot-chat.webp';
+import edotLP from '@/assets/projects/edot-landing-page.webp';
+import emitra from '@/assets/projects/emitra.webp';
+import esuite from '@/assets/projects/esuite.webp';
+import ework from '@/assets/projects/ework.webp';
+import hodler from '@/assets/projects/hodler.webp';
+import leslar from '@/assets/projects/leslar.webp';
+import phantom from '@/assets/projects/phantom.webp';
+import prestige from '@/assets/projects/prestige.webp';
+import qsr from '@/assets/projects/qsr.webp';
+import rooma from '@/assets/projects/rooma.webp';
 
 import { ShinyText } from '@/components/shiny-text';
 import {
@@ -313,6 +313,8 @@ const Projects = () => {
                 <img
                   src={project.image}
                   alt={project.title}
+                  loading="lazy"
+                  decoding="async"
                   className="relative w-full object-cover transition-transform lg:group-hover/card:scale-105"
                 />
               </div>
@@ -355,6 +357,7 @@ const Projects = () => {
                             <img
                               src={stack.icon}
                               alt={stack.name}
+                              loading="lazy"
                               title={stack.name}
                               className={cn(
                                 'size-4 object-contain sm:size-6',

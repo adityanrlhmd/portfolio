@@ -18,11 +18,12 @@ import {
 import { MeshLineGeometry, MeshLineMaterial } from 'meshline';
 import * as THREE from 'three';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
-// replace with your own imports, see the usage snippet for details
 import cardGLB from '@/assets/lanyard/card.glb';
 import lanyard from '@/assets/lanyard/lanyard.png';
+
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
@@ -49,9 +50,13 @@ export function Lanyard({
         }
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
-        </Physics>
+        {/* keep asset/wasm loading inside the canvas: if it suspends outward, a parent
+            Suspense hides the canvas and StrictMode remounts kill its WebGL context */}
+        <Suspense fallback={null}>
+          <Physics gravity={gravity} timeStep={1 / 60}>
+            <Band />
+          </Physics>
+        </Suspense>
         <Environment blur={0.75}>
           <Lightformer
             intensity={2}
@@ -115,34 +120,23 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
   };
 
   const { nodes, materials } = useGLTF(cardGLB) as any;
-  const texture = useTexture(lanyard);
-  const [curve] = useState(
-    () =>
-      new THREE.CatmullRomCurve3([
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-        new THREE.Vector3(),
-      ])
-  );
+  const texture = useTexture(lanyard, t => {
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  });
+  const [curve] = useState(() => {
+    const c = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+      new THREE.Vector3(),
+    ]);
+    c.curveType = 'chordal';
+    return c;
+  });
   const [dragged, drag] = useState<false | THREE.Vector3>(false);
   const [hovered, hover] = useState(false);
 
-  const [isSmall, setIsSmall] = useState<boolean>(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth < 1024;
-    }
-    return false;
-  });
-
-  useEffect(() => {
-    const handleResize = (): void => {
-      setIsSmall(window.innerWidth < 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return (): void => window.removeEventListener('resize', handleResize);
-  }, []);
+  const isSmall = useMediaQuery('(max-width: 1023px)');
 
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
@@ -199,20 +193,13 @@ function Band({ maxSpeed = 50, minSpeed = 0 }: BandProps) {
     }
   });
 
-  curve.curveType = 'chordal';
-  (texture as THREE.Texture).wrapS = (texture as THREE.Texture).wrapT =
-    THREE.RepeatWrapping;
-
   const meshLineGeom = useMemo(() => new MeshLineGeometry(), []);
   const meshLineMat = useMemo(() => {
     // MeshLineMaterial expects some non-React props; create it imperatively and keep it stable.
     const mat: any = new MeshLineMaterial({
       color: 'white',
       depthTest: false,
-      resolution: new THREE.Vector2(
-        isSmall ? 1000 : 1000,
-        isSmall ? 2000 : 1000
-      ),
+      resolution: new THREE.Vector2(1000, isSmall ? 2000 : 1000),
       useMap: true,
       map: texture,
       repeat: new THREE.Vector2(-4, 1),
