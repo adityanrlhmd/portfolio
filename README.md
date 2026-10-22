@@ -1,40 +1,46 @@
 # Aditya Hamda | Frontend Engineer
 
-A frontend engineer who loves to develop scalable frontend architectures with a focus on type-safety and performance, ensuring every line of code contributes to a fast and reliable digital product.
+Source code for my personal portfolio — a frontend engineer with 5+ years of experience building scalable web and mobile apps with React, Next.js, and React Native, from banking systems to micro frontend platforms.
 
 [![Website](https://img.shields.io/badge/Website-adityahamda.vercel.app-blue?style=flat-square&logo=vercel)](https://adityahamda.vercel.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Aditya%20Hamda-0A66C2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/adityanurulhamda/)
-[![email](https://img.shields.io/badge/Email-Aditya%20Hamda-0A66C2?style=flat-square&logo=email)](mailto:adityanurulhamda@gmail.com)
+[![Email](https://img.shields.io/badge/Email-Aditya%20Hamda-0A66C2?style=flat-square&logo=gmail)](mailto:aditya.nrlhamda@gmail.com)
 
----
+## ✨ Highlights
 
-## 👋 Welcome to My Digital Home
+- Interactive 3D lanyard built with React Three Fiber + Rapier physics
+- Scroll-driven animations with GSAP and Motion
+- Light / dark theme
+- Contact form powered by EmailJS with Zod validation
 
-The reconstruction is complete! This site serves as my professional hub where I showcase my latest work, technical journey, and insights into modern software engineering.
+## 🛠️ Tech Stack
 
-> "Crafting seamless digital experiences through clean code and robust architecture."
+- **Core:** React 19, TypeScript, Vite
+- **Styling:** Tailwind CSS v4, shadcn/ui (Base UI)
+- **Animation & 3D:** GSAP, Motion, Three.js, React Three Fiber
+- **Forms:** React Hook Form, Zod, EmailJS
+- **Testing & Quality:** Vitest, Testing Library, ESLint, Prettier, Husky, Commitlint
+- **Deployment:** Vercel
 
-## 🚀 Technical Focus & Expertise
+## 🚀 Getting Started
 
-- **Frontend Architectures:** Designing scalable and maintainable web applications.
-- **Type-Safety:** Leveraging TypeScript to ensure robust and error-free codebases.
-- **Performance:** Optimizing for speed and seamless user experiences.
+```bash
+bun install
+cp .env.example .env   # fill in EmailJS keys
+bun dev
+```
 
-## 🛠️ Core Tech Stack
-
-- **Frameworks:** React 19, Vite
-- **Styling:** Tailwind CSS
-- **Language:** TypeScript
-- **Deployment & Infrastructure:** Vercel
+| Script          | Description           |
+| --------------- | --------------------- |
+| `bun dev`       | Start the dev server  |
+| `bun run build` | Type-check and build  |
+| `bun run test`  | Run tests with Vitest |
+| `bun run lint`  | Lint the codebase     |
 
 ## 📬 Let's Connect
 
-I am always open to discussing frontend architecture, software engineering best practices, or potential project collaborations.
+I'm always open to discussing frontend architecture, engineering best practices, or new opportunities.
 
-- **Website:** [Aditya Hamda](https://adityahamda.vercel.app/)
+- **Website:** [adityahamda.vercel.app](https://adityahamda.vercel.app/)
 - **LinkedIn:** [Aditya Nurul Hamda](https://www.linkedin.com/in/adityanurulhamda/)
-- **Email:** [adityanurulhamda@gmail.com](mailto:adityanurulhamda@gmail.com)
-
----
-
-_Built with passion by Aditya Hamda._
+- **Email:** [aditya.nrlhamda@gmail.com](mailto:aditya.nrlhamda@gmail.com)
