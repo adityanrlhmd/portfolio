@@ -1,10 +1,3 @@
-import {
-  RiBarChartHorizontalLine,
-  RiFolderLine,
-  RiHomeLine,
-  RiSendPlaneLine,
-} from '@remixicon/react';
-
 import { Logo } from '@/assets/logo';
 
 import {
@@ -17,34 +10,13 @@ import {
 
 import { useActiveSection } from '@/hooks/use-active-section';
 
-import { ToggleButton } from './toggle-button';
+import { NAVIGATIONS } from '@/lib/config';
 
-const navigations = [
-  {
-    title: 'Home',
-    href: '#home',
-    icon: <RiHomeLine />,
-  },
-  {
-    title: 'Experience',
-    href: '#experience',
-    icon: <RiBarChartHorizontalLine />,
-  },
-  {
-    title: 'Projects',
-    href: '#projects',
-    icon: <RiFolderLine />,
-  },
-  {
-    title: 'Contact',
-    href: '#contact',
-    icon: <RiSendPlaneLine />,
-  },
-] as const;
+import { ToggleButton } from './toggle-button';
 
 export const Header = () => {
   const activeSection = useActiveSection(
-    navigations.map(nav => nav.href.replace('#', ''))
+    NAVIGATIONS.map(nav => nav.href.replace('#', ''))
   );
 
   return (
@@ -57,7 +29,7 @@ export const Header = () => {
 
           <NavigationMenu className="hidden sm:flex">
             <NavigationMenuList>
-              {navigations.map(nav => (
+              {NAVIGATIONS.map(nav => (
                 <NavigationMenuItem key={nav.title}>
                   <NavigationMenuLink
                     data-active={activeSection === nav.href.replace('#', '')}
@@ -77,14 +49,14 @@ export const Header = () => {
 
       <nav className="bg-background fixed inset-x-0 bottom-0 z-50 border-t sm:hidden">
         <ul className="flex items-center justify-evenly">
-          {navigations.map(nav => (
+          {NAVIGATIONS.map(nav => (
             <li key={nav.title}>
               <a
                 data-active={activeSection === nav.href.replace('#', '')}
                 className="text-muted-foreground hover:text-primary data-[active=true]:text-primary flex flex-col items-center justify-center p-4 text-sm"
                 href={nav.href}
               >
-                {nav.icon}
+                <nav.icon />
                 <span className="text-xs">{nav.title}</span>
               </a>
             </li>

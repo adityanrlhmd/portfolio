@@ -1,3 +1,10 @@
+import {
+  RiBarChartHorizontalLine,
+  RiFolderLine,
+  RiHomeLine,
+  RiSendPlaneLine,
+} from '@remixicon/react';
+
 import antdesignIcon from '@/assets/skills/ant-design.svg';
 import apolloIcon from '@/assets/skills/apollo.svg';
 import cssIcon from '@/assets/skills/css.svg';
@@ -92,3 +99,26 @@ export const SKILLS = {
   git: { name: 'Git', icon: gitIcon, inverted: false },
   vercel: { name: 'Vercel', icon: vercelIcon, inverted: true },
 };
+
+export const NAVIGATIONS = [
+  {
+    title: 'Home',
+    href: '#home',
+    icon: RiHomeLine,
+  },
+  {
+    title: 'Experience',
+    href: '#experience',
+    icon: RiBarChartHorizontalLine,
+  },
+  {
+    title: 'Projects',
+    href: '#projects',
+    icon: RiFolderLine,
+  },
+  {
+    title: 'Contact',
+    href: '#contact',
+    icon: RiSendPlaneLine,
+  },
+] as const;

@@ -1,13 +1,8 @@
-import {
-  RiGithubFill,
-  RiLinkedinBoxFill,
-  RiMailFill,
-  RiReactjsFill,
-  RiTailwindCssFill,
-  RiVercelFill,
-} from '@remixicon/react';
+import { RiGithubFill, RiLinkedinBoxFill, RiMailFill } from '@remixicon/react';
 
 import { Logo } from '@/assets/logo';
+
+import { NAVIGATIONS } from '@/lib/config';
 
 import { LetterGlitch } from './letter-glitch';
 
@@ -24,7 +19,7 @@ const LINKS = [
   },
   {
     label: 'Gmail',
-    href: 'mailto:adityanurulhamda@gmail.com',
+    href: 'mailto:aditya.nrlhamda@gmail.com',
     icon: <RiMailFill size={32} />,
   },
 ];
@@ -52,17 +47,22 @@ export const Footer = () => {
             </a>
           </div>
 
-          <ul className="mt-5 space-y-1.5 md:mt-0">
-            <li className="flex items-center gap-2">
-              <span>Build with</span> <RiReactjsFill /> React.js
-            </li>
-            <li className="flex items-center gap-2">
-              <span>Styled with</span> <RiTailwindCssFill /> Tailwind CSS
-            </li>
-            <li className="flex items-center gap-2">
-              <span>Deployed on</span> <RiVercelFill /> Vercel
-            </li>
-          </ul>
+          <div className="mt-8 flex flex-col items-center gap-3 md:mt-0">
+            <p className="text-foreground font-semibold">Navigate</p>
+            <ul className="flex gap-4 text-center md:flex-col md:gap-1.5">
+              {NAVIGATIONS.map(nav => (
+                <li key={nav.href}>
+                  <a
+                    href={nav.href}
+                    className="hover:text-foreground transition-all"
+                  >
+                    {nav.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p>Frontend Engineer based in Indonesia</p>
+          </div>
 
           <div className="mt-10 max-w-md md:mt-0 lg:max-w-2xl">
             <LetterGlitch glitchColors={['#35530e', '#7ccf00']} />
@@ -71,7 +71,8 @@ export const Footer = () => {
 
         <div className="border-t py-4">
           <p className="text-center">
-            Copyright © 2026 Aditya Hamda. All rights reserved.
+            Copyright © {new Date().getFullYear()} Aditya Hamda. All rights
+            reserved.
           </p>
         </div>
       </div>
