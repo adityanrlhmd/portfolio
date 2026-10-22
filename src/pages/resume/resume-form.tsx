@@ -1,5 +1,8 @@
+import { Collapsible } from '@base-ui/react/collapsible';
 import {
   RiAddLine,
+  RiArrowDownSLine,
+  RiArrowUpSLine,
   RiDeleteBinLine,
   RiDraggable,
   RiImageAddLine,
@@ -37,15 +40,20 @@ const TextField = ({
   label,
   hint,
   multiline,
+  hideLabel,
 }: {
   form: Form;
   name: FieldPath<Resume>;
   label: string;
   hint?: string;
   multiline?: boolean;
+  // for a field that is alone in its section, whose title already names it
+  hideLabel?: boolean;
 }) => (
   <Field>
-    <FieldLabel htmlFor={name}>{label}</FieldLabel>
+    <FieldLabel htmlFor={name} className={cn(hideLabel && 'sr-only')}>
+      {label}
+    </FieldLabel>
     {multiline ? (
       <Textarea id={name} className="min-h-24" {...form.register(name)} />
     ) : (
@@ -72,6 +80,8 @@ const Section = ({
 
 const SortableItem = ({
   id,
+  title,
+  placeholder,
   index,
   count,
   onMove,
@@ -79,6 +89,8 @@ const SortableItem = ({
   children,
 }: {
   id: string;
+  title: string;
+  placeholder: string;
   index: number;
   count: number;
   onMove: (from: number, to: number) => void;
@@ -92,41 +104,53 @@ const SortableItem = ({
       value={id}
       dragListener={false}
       dragControls={controls}
-      className="bg-background space-y-3 rounded-md border p-3"
+      // "position" moves neighbours without stretching the item while it resizes
+      layout="position"
+      className="bg-background rounded-md border p-2"
     >
-      <div className="flex justify-between">
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Drag to reorder"
-          className="cursor-grab touch-none"
-          onPointerDown={e => controls.start(e)}
-          onKeyDown={e => {
-            const to =
-              e.key === 'ArrowUp'
-                ? index - 1
-                : e.key === 'ArrowDown'
-                  ? index + 1
-                  : -1;
-            if (to < 0 || to >= count) return;
-            e.preventDefault();
-            onMove(index, to);
-          }}
-        >
-          <RiDraggable />
-        </Button>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          aria-label="Remove"
-          onClick={onRemove}
-        >
-          <RiDeleteBinLine />
-        </Button>
-      </div>
-      {children}
+      {/* collapsed entries are easier to drag; blank (new) ones open for typing */}
+      <Collapsible.Root defaultOpen={!title}>
+        <div className="flex items-center gap-1">
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Drag to reorder"
+            className="cursor-grab touch-none"
+            onPointerDown={e => controls.start(e)}
+            onKeyDown={e => {
+              const to =
+                e.key === 'ArrowUp'
+                  ? index - 1
+                  : e.key === 'ArrowDown'
+                    ? index + 1
+                    : -1;
+              if (to < 0 || to >= count) return;
+              e.preventDefault();
+              onMove(index, to);
+            }}
+          >
+            <RiDraggable />
+          </Button>
+          <Collapsible.Trigger className="group/trigger flex min-w-0 flex-1 items-center justify-between gap-2 py-1 text-start text-sm outline-none focus-visible:underline">
+            <span className="truncate">{title || placeholder}</span>
+            <RiArrowDownSLine className="text-muted-foreground size-4 shrink-0 group-data-[panel-open]/trigger:hidden" />
+            <RiArrowUpSLine className="text-muted-foreground hidden size-4 shrink-0 group-data-[panel-open]/trigger:inline" />
+          </Collapsible.Trigger>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            aria-label="Remove"
+            onClick={onRemove}
+          >
+            <RiDeleteBinLine />
+          </Button>
+        </div>
+        <Collapsible.Panel className="h-(--collapsible-panel-height) overflow-hidden transition-[height] duration-200 ease-in-out data-ending-style:h-0 data-starting-style:h-0">
+          <div className="space-y-3 px-1 pt-2 pb-1">{children}</div>
+        </Collapsible.Panel>
+      </Collapsible.Root>
     </Reorder.Item>
   );
 };
@@ -155,6 +179,10 @@ export const ResumeForm = ({ form }: { form: Form }) => {
   const experiences = useSortable(form, 'experiences');
   const educations = useSortable(form, 'educations');
   const photo = form.watch('photo');
+  const watchedExperiences = form.watch('experiences');
+  const watchedEducations = form.watch('educations');
+  const titleOf = (...parts: (string | undefined)[]) =>
+    parts.filter(Boolean).join(' — ');
 
   const onPhoto = async (file: File | undefined) => {
     if (!file) return;
@@ -226,7 +254,13 @@ export const ResumeForm = ({ form }: { form: Form }) => {
       </Section>
 
       <Section value="summary" title="Summary">
-        <TextField form={form} name="summary" label="Summary" multiline />
+        <TextField
+          form={form}
+          name="summary"
+          label="Summary"
+          multiline
+          hideLabel
+        />
       </Section>
 
       <Section value="experience" title="Experience">
@@ -256,6 +290,11 @@ export const ResumeForm = ({ form }: { form: Form }) => {
             <SortableItem
               key={field.id}
               id={field.id}
+              title={titleOf(
+                watchedExperiences[i]?.company,
+                watchedExperiences[i]?.role
+              )}
+              placeholder="New experience"
               index={i}
               count={experiences.fields.length}
               onMove={experiences.move}
@@ -326,6 +365,11 @@ export const ResumeForm = ({ form }: { form: Form }) => {
             <SortableItem
               key={field.id}
               id={field.id}
+              title={titleOf(
+                watchedEducations[i]?.school,
+                watchedEducations[i]?.degree
+              )}
+              placeholder="New education"
               index={i}
               count={educations.fields.length}
               onMove={educations.move}
@@ -362,8 +406,20 @@ export const ResumeForm = ({ form }: { form: Form }) => {
         <TextField
           form={form}
           name="skills"
+          hideLabel
           label="Skills"
           hint="One group per line, e.g. Mobile: React Native, Expo"
+          multiline
+        />
+      </Section>
+
+      <Section value="achievements" title="Certifications & Achievements">
+        <TextField
+          form={form}
+          name="achievements"
+          hideLabel
+          label="Certifications & Achievements"
+          hint="One per line. Left empty, it stays off the PDF."
           multiline
         />
       </Section>

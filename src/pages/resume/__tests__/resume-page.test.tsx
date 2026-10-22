@@ -1,11 +1,22 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { Toaster } from '@/components/ui/sonner';
+
 import { encodeResume } from '@/lib/resume/embed';
 import { EMPTY_RESUME } from '@/lib/resume/schema';
 import { saveResume } from '@/lib/resume/storage';
 
 import ResumePage from '../resume-page';
+
+// the app shell renders the Toaster; the page alone needs one to show toasts
+const renderPage = () =>
+  render(
+    <>
+      <Toaster />
+      <ResumePage />
+    </>
+  );
 
 // Rendering real PDFs is covered by embed.test.tsx; here only the page behavior matters.
 vi.mock('@react-pdf/renderer', () => {
@@ -44,12 +55,12 @@ describe('ResumePage', () => {
   afterEach(() => vi.restoreAllMocks());
 
   it('starts blank', () => {
-    render(<ResumePage />);
+    renderPage();
     expect(fullName()).toHaveValue('');
   });
 
   it("fills Aditya's data on click", async () => {
-    render(<ResumePage />);
+    renderPage();
     await user.click(
       screen.getByRole('button', { name: "Fill with Aditya's data" })
     );
@@ -58,7 +69,7 @@ describe('ResumePage', () => {
 
   it('asks before overwriting typed data, keeps it on cancel', async () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
-    render(<ResumePage />);
+    renderPage();
     await user.type(fullName(), 'Budi');
     await user.click(
       screen.getByRole('button', { name: "Fill with Aditya's data" })
@@ -69,12 +80,12 @@ describe('ResumePage', () => {
 
   it('restores saved progress', () => {
     saveResume({ ...EMPTY_RESUME, name: 'Sari' });
-    render(<ResumePage />);
+    renderPage();
     expect(fullName()).toHaveValue('Sari');
   });
 
   it('rejects a PDF not made here and leaves the form alone', async () => {
-    render(<ResumePage />);
+    renderPage();
     await user.upload(
       screen.getByLabelText('Import PDF'),
       new File(['%PDF-1.4 hi'], 'cv.pdf', { type: 'application/pdf' })
@@ -91,7 +102,7 @@ describe('ResumePage', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('blocked', 'SecurityError');
     });
-    render(<ResumePage />);
+    renderPage();
     expect(
       await screen.findByText("Couldn't save your progress in this browser.")
     ).toBeInTheDocument();
@@ -99,7 +110,7 @@ describe('ResumePage', () => {
 
   it('asks before an import replaces typed data, keeps it on cancel', async () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
-    render(<ResumePage />);
+    renderPage();
     await user.type(fullName(), 'Budi');
     // the mocked renderer can't embed data, so build the marker by hand
     const exported = `%PDF (${encodeResume({ ...EMPTY_RESUME, name: 'Old' })})`;
@@ -111,24 +122,34 @@ describe('ResumePage', () => {
     expect(fullName()).toHaveValue('Budi');
   });
 
-  it('moves an experience down with the keyboard and keeps edits on the right item', async () => {
+  it('moves a collapsed experience down with the keyboard and keeps edits on the right item', async () => {
     saveResume({
       ...EMPTY_RESUME,
       experiences: [
-        { ...blankExperience, company: 'A' },
-        { ...blankExperience, company: 'B' },
+        { ...blankExperience, company: 'A', role: 'Dev' },
+        { ...blankExperience, company: 'B', role: 'Dev' },
       ],
     });
-    render(<ResumePage />);
+    renderPage();
     await user.click(screen.getByRole('button', { name: 'Experience' }));
+    // filled entries start collapsed: no inputs, just their titles
+    expect(screen.queryAllByLabelText('Company')).toHaveLength(0);
     screen.getAllByRole('button', { name: 'Drag to reorder' })[0].focus();
     await user.keyboard('{ArrowDown}');
-    const companies = () =>
+    const titles = () =>
       screen
-        .getAllByLabelText('Company')
-        .map(input => (input as HTMLInputElement).value);
-    expect(companies()).toEqual(['B', 'A']);
-    await user.type(screen.getAllByLabelText('Company')[0], '!');
-    expect(companies()).toEqual(['B!', 'A']);
+        .getAllByRole('button', { name: /— Dev$/ })
+        .map(button => button.textContent);
+    expect(titles()).toEqual(['B — Dev', 'A — Dev']);
+    await user.click(screen.getByRole('button', { name: 'B — Dev' }));
+    await user.type(screen.getByLabelText('Company'), '!');
+    expect(titles()).toEqual(['B! — Dev', 'A — Dev']);
+  });
+
+  it('opens a newly added experience for editing', async () => {
+    renderPage();
+    await user.click(screen.getByRole('button', { name: 'Experience' }));
+    await user.click(screen.getByRole('button', { name: 'Add experience' }));
+    expect(screen.getByLabelText('Company')).toBeInTheDocument();
   });
 });

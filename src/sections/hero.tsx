@@ -1,20 +1,24 @@
+import { RiDownloadLine } from '@remixicon/react';
 import AutoScroll from 'embla-carousel-auto-scroll';
+import { toast } from 'sonner';
 
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState } from 'react';
 
 import { GridBeam } from '@/components/grid-beam';
 import { TextType } from '@/components/text-type';
-import { buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { Spinner } from '@/components/ui/spinner';
 
 import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { SKILLS } from '@/lib/config';
+import { ADITYA_RESUME } from '@/lib/resume/aditya';
 import { cn } from '@/lib/utils';
 
 // three.js + rapier live in their own chunk so the page renders before the 3D card
@@ -31,12 +35,26 @@ const HEADLINES = [
 
 const Hero = () => {
   const isLarge = useMediaQuery('(min-width: 1024px)');
+  const [downloading, setDownloading] = useState(false);
+
+  const downloadCv = async () => {
+    setDownloading(true);
+    try {
+      // the PDF library only loads when someone actually asks for the CV
+      const { downloadResume } = await import('@/pages/resume/download');
+      await downloadResume(ADITYA_RESUME);
+    } catch {
+      toast.error("Couldn't create the CV. Please try again.");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <section id="home" className="scroll-mt-(--header-height)">
       <GridBeam>
         <div className="container flex flex-col items-center gap-8 lg:flex-row">
-          <div className="h-125 w-full lg:h-[calc(100vh-calc(var(--header-height)+5rem))] lg:w-1/3">
+          <div className="h-125 w-full lg:h-[calc(100vh-var(--header-height)-var(--announcement-height)-5rem)] lg:w-1/3">
             <Suspense>
               {/* key remounts the canvas, since the camera is only read on mount */}
               <Lanyard
@@ -83,16 +101,17 @@ const Hero = () => {
               >
                 <span>Let's Connect</span>
               </a>
-              <a
-                href="/resume"
-                className={buttonVariants({
-                  variant: 'outline',
-                  size: 'lg',
-                  className: 'h-12 px-4 text-sm/relaxed',
-                })}
+              <Button
+                type="button"
+                variant="outline"
+                size="lg"
+                className="h-12 px-4 text-sm/relaxed"
+                disabled={downloading}
+                onClick={downloadCv}
               >
-                Build Your Resume
-              </a>
+                {downloading ? <Spinner /> : <RiDownloadLine />}
+                My Resume
+              </Button>
             </div>
           </div>
         </div>

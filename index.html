@@ -43,6 +43,19 @@
       property="twitter:image"
       content="https://adityahamda.vercel.app/aditt.jpg"
     />
+    <!-- applies the saved theme before first paint, so a dark page never flashes white while JS loads -->
+    <script>
+      try {
+        var theme = localStorage.getItem('vite-ui-theme') || 'dark';
+        if (theme === 'system')
+          theme = matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+        document.documentElement.classList.add(theme);
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
 
   <body>

@@ -1,5 +1,5 @@
-import { pdf } from '@react-pdf/renderer';
 import {
+  RiArrowLeftLine,
   RiDownloadLine,
   RiFileUploadLine,
   RiRefreshLine,
@@ -10,12 +10,7 @@ import { toast } from 'sonner';
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Logo } from '@/assets/logo';
-
-import { ThemeProvider } from '@/components/theme-provider';
-import { ToggleButton } from '@/components/toggle-button';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Toaster } from '@/components/ui/sonner';
 
 import { ADITYA_RESUME } from '@/lib/resume/aditya';
 import { decodeResumeFromPdf } from '@/lib/resume/embed';
@@ -23,9 +18,21 @@ import { EMPTY_RESUME, type Resume } from '@/lib/resume/schema';
 import { clearResume, loadResume, saveResume } from '@/lib/resume/storage';
 import { cn } from '@/lib/utils';
 
-import { ResumeDocument } from './resume-document';
+import { downloadResume } from './download';
 import { ResumeForm } from './resume-form';
 import { ResumePreview } from './resume-preview';
+
+// Back keeps the visitor's scroll spot on the portfolio; only when they came from it,
+// otherwise (opened directly, or from another site) the link just goes home.
+const backToPortfolio = (event: React.MouseEvent) => {
+  try {
+    if (new URL(document.referrer).origin !== window.location.origin) return;
+  } catch {
+    return; // no referrer
+  }
+  event.preventDefault();
+  window.history.back();
+};
 
 const isBlank = (resume: Resume) =>
   JSON.stringify(resume) === JSON.stringify(EMPTY_RESUME);
@@ -81,41 +88,22 @@ const ResumeBuilder = () => {
     clearResume();
   };
 
-  const download = async () => {
-    const resume = form.getValues();
-    const blob = await pdf(<ResumeDocument resume={resume} />).toBlob();
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = resume.name.trim()
-      ? `${resume.name.trim()} - Resume.pdf`
-      : 'Resume.pdf';
-    link.click();
-    // some browsers start the download after click() returns
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-  };
-
   return (
-    <div className="min-h-svh">
-      <header className="bg-background sticky top-0 z-50 border-b">
-        <div className="container flex h-(--header-height) items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <a href="/" className="hover:text-primary" aria-label="Home">
-              <Logo />
-            </a>
-            <div>
-              <h1 className="text-sm font-bold">Resume Builder</h1>
-              <p className="text-muted-foreground hidden text-xs sm:block">
-                Everything stays in your browser. Nothing is uploaded.
-              </p>
-            </div>
-          </div>
-          <ToggleButton />
-        </div>
-      </header>
-
-      <div className="container grid gap-6 py-6 lg:grid-cols-2">
+    <main className="min-h-svh">
+      {/* minmax(0, 1fr) columns stop wide content from stretching the page past the screen;
+          the auto/1fr rows give any spare height to the form row, not the toolbar */}
+      <div className="container grid grid-cols-1 gap-x-6 gap-y-4 py-6 lg:grid-cols-2 lg:grid-rows-[auto_1fr]">
         <div className="space-y-4">
+          <a
+            href="/"
+            onClick={backToPortfolio}
+            className={buttonVariants({
+              variant: 'ghost',
+              className: '-ms-2',
+            })}
+          >
+            <RiArrowLeftLine /> Back to portfolio
+          </a>
           <p className="text-muted-foreground text-xs sm:hidden">
             Everything stays in your browser. Nothing is uploaded.
           </p>
@@ -144,50 +132,46 @@ const ResumeBuilder = () => {
             <Button type="button" variant="outline" onClick={resetAll}>
               <RiRefreshLine /> Reset
             </Button>
-            <Button type="button" onClick={download}>
+            <Button
+              type="button"
+              onClick={() => downloadResume(form.getValues())}
+            >
               <RiDownloadLine /> Download PDF
             </Button>
           </div>
+        </div>
 
-          <div className="flex gap-2 lg:hidden">
-            {(['edit', 'preview'] as const).map(value => (
-              <Button
-                key={value}
-                type="button"
-                variant={tab === value ? 'secondary' : 'ghost'}
-                aria-pressed={tab === value}
-                onClick={() => setTab(value)}
-                className="capitalize"
-              >
-                {value}
-              </Button>
-            ))}
-          </div>
+        {/* stays under the header so switching never needs a scroll back up */}
+        <div className="bg-background sticky top-(--header-height) z-40 -mx-4 flex gap-2 border-b px-4 py-2 sm:-mx-8 sm:px-8 lg:hidden">
+          {(['edit', 'preview'] as const).map(value => (
+            <Button
+              key={value}
+              type="button"
+              variant={tab === value ? 'secondary' : 'ghost'}
+              aria-pressed={tab === value}
+              onClick={() => setTab(value)}
+              className="capitalize"
+            >
+              {value}
+            </Button>
+          ))}
+        </div>
 
-          <div className={cn(tab !== 'edit' && 'hidden', 'lg:block')}>
-            <ResumeForm form={form} />
-          </div>
+        <div className={cn(tab !== 'edit' && 'hidden', 'lg:block')}>
+          <ResumeForm form={form} />
         </div>
 
         <div
           className={cn(
             tab !== 'preview' && 'hidden',
-            'h-[calc(100svh-var(--header-height)-3rem)] lg:sticky lg:top-[calc(var(--header-height)+1.5rem)] lg:block'
+            'h-[calc(100svh-var(--header-height)-6rem)] lg:sticky lg:top-[calc(var(--header-height)+1.5rem)] lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:block lg:h-[calc(100svh-var(--header-height)-3rem)] lg:self-start'
           )}
         >
           <ResumePreview resume={debounced} />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
-const ResumePage = () => (
-  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-    {/* before the builder, so toasts fired from its mount effects aren't dropped */}
-    <Toaster />
-    <ResumeBuilder />
-  </ThemeProvider>
-);
-
-export default ResumePage;
+export default ResumeBuilder;

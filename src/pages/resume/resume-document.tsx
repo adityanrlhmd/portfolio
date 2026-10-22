@@ -192,6 +192,12 @@ export const ResumeDocument = ({ resume }: { resume: Resume }) => {
             </View>
           </Section>
         )}
+
+        {splitLines(resume.achievements).length > 0 && (
+          <Section title="Certifications & Achievements">
+            <View style={s.entry}>{bullets(resume.achievements)}</View>
+          </Section>
+        )}
       </Page>
     </Document>
   );

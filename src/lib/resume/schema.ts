@@ -10,6 +10,8 @@ export const resumeSchema = z.object({
   summary: z.string(),
   photo: z.string(),
   skills: z.string(),
+  // default keeps progress and PDFs saved before this field existed loadable
+  achievements: z.string().default(''),
   experiences: z.array(
     z.object({
       company: z.string(),
@@ -41,6 +43,7 @@ export const EMPTY_RESUME: Resume = {
   summary: '',
   photo: '',
   skills: '',
+  achievements: '',
   experiences: [],
   educations: [],
 };

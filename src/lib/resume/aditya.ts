@@ -115,10 +115,10 @@ export const ADITYA_RESUME: Resume = {
   name: 'Aditya Nurul Hamda',
   phone: '+6285961082180',
   email: 'aditya.nrlhamda@gmail.com',
-  location: 'Sukabumi, West Java, Indonesia',
+  location: 'Sukabumi, Indonesia',
   links: 'linkedin.com/in/adityanurulhamda/\nhttps://adityahamda.vercel.app/',
   summary:
-    'Frontend Engineer with extensive experience in scalable web and mobile technologies, specializing in React, Next.js, and React Native with additional proficiency in Vue. I have a proven track record of building complex, enterprise-grade systems such as Enterprise Resource Planning (ERP), Document Management Systems (DMS), real-time chat applications, and Micro Frontend architectures. My strengths lie in implementing Clean Architecture and seamless API integrations to deliver scalable solutions. By leveraging an AI-assisted workflow, I consistently achieve high productivity and ensure rapid delivery without compromising code quality.',
+    'Frontend Engineer with 5+ years building web and mobile apps with React, Next.js, and React Native, from government procurement and core banking to enterprise platforms. I like owning features end to end and keeping big codebases easy for the next person to work on.',
   photo: '',
   skills: [
     'Programming Language: JavaScript (ES6+), TypeScript, HTML5, CSS3, Swift.',
@@ -128,6 +128,7 @@ export const ADITYA_RESUME: Resume = {
     'Data & State Management: GraphQL, Apollo Client, REST API, Supabase, Redux/Zustand.',
     'Specialized Tech & Tools: Web3 (Moralis, Web3.js), Framer Motion (Animations), AI-Assisted Coding (TRAE/AntiGravity), Node.js, Git.',
   ].join('\n'),
+  achievements: '',
   experiences: EXPERIENCES.map(exp => ({
     company: exp.company,
     location: exp.location,

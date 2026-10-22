@@ -18,6 +18,13 @@ describe('resume storage', () => {
     expect(loadResume()).toBeNull();
   });
 
+  it('loads progress saved before achievements existed', () => {
+    const older: Partial<typeof ADITYA_RESUME> = { ...ADITYA_RESUME };
+    delete older.achievements;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(older));
+    expect(loadResume()).toEqual({ ...ADITYA_RESUME, achievements: '' });
+  });
+
   it('returns false when storage is full', () => {
     vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
       throw new DOMException('full', 'QuotaExceededError');
