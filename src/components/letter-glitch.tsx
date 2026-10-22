@@ -27,7 +27,7 @@ export const LetterGlitch = ({
   >([]);
   const grid = useRef({ columns: 0, rows: 0 });
   const context = useRef<CanvasRenderingContext2D | null>(null);
-  const lastGlitchTime = useRef(Date.now());
+  const lastGlitchTime = useRef(0);
 
   const lettersAndSymbols = Array.from(characters);
 
@@ -177,8 +177,8 @@ export const LetterGlitch = ({
     }
   };
 
-  const animate = () => {
-    const now = Date.now();
+  // rAF passes its own timestamp, so no impure clock call during render
+  const animate = (now: number) => {
     if (now - lastGlitchTime.current >= glitchSpeed) {
       updateLetters();
       drawLetters();
@@ -198,7 +198,7 @@ export const LetterGlitch = ({
 
     context.current = canvas.getContext('2d');
     resizeCanvas();
-    animate();
+    animate(performance.now());
 
     let resizeTimeout: ReturnType<typeof setTimeout>;
 
@@ -207,7 +207,7 @@ export const LetterGlitch = ({
       resizeTimeout = setTimeout(() => {
         cancelAnimationFrame(animationRef.current as number);
         resizeCanvas();
-        animate();
+        animate(performance.now());
       }, 100);
     };
 

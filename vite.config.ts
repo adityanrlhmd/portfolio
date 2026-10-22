@@ -1,20 +1,11 @@
 /// <reference types="vitest" />
 import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import { URL, fileURLToPath } from 'node:url';
-import { createLogger } from 'vite';
 import { defineConfig } from 'vitest/config';
-
-const logger = createLogger();
-const originalWarning = logger.warn;
-logger.warn = (msg, options) => {
-  if (msg.includes('optimizeDeps.esbuildOptions')) return;
-  originalWarning(msg, options);
-};
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  customLogger: logger,
   plugins: [react(), tailwindcss()],
   assetsInclude: ['**/*.glb'],
   resolve: {
@@ -24,7 +15,8 @@ export default defineConfig({
     dedupe: ['three'],
   },
   build: {
-    chunkSizeWarningLimit: 4000,
+    // rapier inlines its wasm (~2.2MB); anything bigger than that is a regression
+    chunkSizeWarningLimit: 2500,
   },
   test: {
     globals: true,

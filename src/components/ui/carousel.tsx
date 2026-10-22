@@ -95,12 +95,15 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return;
+    // sync initial scroll state from the external Embla instance
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     onSelect(api);
     api.on('reInit', onSelect);
     api.on('select', onSelect);
 
     return () => {
-      api?.off('select', onSelect);
+      api.off('reInit', onSelect);
+      api.off('select', onSelect);
     };
   }, [api, onSelect]);
 

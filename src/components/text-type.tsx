@@ -2,7 +2,6 @@ import { gsap } from 'gsap';
 
 import {
   ElementType,
-  createElement,
   useCallback,
   useEffect,
   useMemo,
@@ -230,28 +229,36 @@ export const TextType = ({
     hideCursorWhileTyping &&
     (currentCharIndex < currentStrippedText.length || isDeleting);
 
-  return createElement(
-    Component,
-    {
-      ref: containerRef,
-      className: `inline-block whitespace-pre-wrap tracking-tight ${className}`,
-      ...props,
-    },
-    <span
-      className="inline"
-      style={{ color: getCurrentTextColor() || 'inherit' }}
+  // any tag works at runtime; narrow it so JSX accepts the shared props + ref
+  const Tag = Component as ElementType<
+    React.HTMLAttributes<HTMLElement> & React.RefAttributes<HTMLElement>
+  >;
+
+  return (
+    <Tag
+      ref={containerRef}
+      className={`inline-block tracking-tight whitespace-pre-wrap ${className}`}
+      {...props}
     >
-      {reverseMode
-        ? displayedText
-        : renderHighlighted(textArray[currentTextIndex], displayedText.length)}
-    </span>,
-    showCursor && (
       <span
-        ref={cursorRef}
-        className={`ml-1 inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
+        className="inline"
+        style={{ color: getCurrentTextColor() || 'inherit' }}
       >
-        {cursorCharacter}
+        {reverseMode
+          ? displayedText
+          : renderHighlighted(
+              textArray[currentTextIndex],
+              displayedText.length
+            )}
       </span>
-    )
+      {showCursor && (
+        <span
+          ref={cursorRef}
+          className={`ml-1 inline-block opacity-100 ${shouldHideCursor ? 'hidden' : ''} ${cursorClassName}`}
+        >
+          {cursorCharacter}
+        </span>
+      )}
+    </Tag>
   );
 };
