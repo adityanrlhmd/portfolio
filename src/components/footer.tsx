@@ -38,6 +38,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
                   <a
                     key={index}
                     href={link.href}
+                    aria-label={link.label}
                     className="hover:text-foreground transition-all lg:group-has-[*:hover]/flex:opacity-40 lg:hover:opacity-100"
                   >
                     {link.icon}
@@ -45,14 +46,18 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
                 ))}
               </div>
 
-              <a href="/" className="hover:text-foreground transition-all">
+              <a
+                href="/"
+                aria-label="Home"
+                className="hover:text-foreground transition-all"
+              >
                 <Logo size={100} />
               </a>
             </div>
 
             <div className="mt-8 flex flex-col items-center gap-3 md:mt-0">
               <p className="text-foreground font-semibold">Navigate</p>
-              <ul className="flex gap-4 text-center md:flex-col md:gap-1.5">
+              <ul className="flex gap-4 text-center md:flex-col md:gap-2.5">
                 {NAVIGATIONS.map(nav => (
                   <li key={nav.href}>
                     <a

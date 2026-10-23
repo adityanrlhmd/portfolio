@@ -56,7 +56,7 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
       >
         <div className="container flex w-full items-center justify-between">
           <div className="flex min-w-0 items-center gap-3">
-            <a href="/" className="hover:text-primary">
+            <a href="/" aria-label="Home" className="hover:text-primary">
               <Logo />
             </a>
             {resume && (
@@ -115,7 +115,7 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
       {!resume && (
         <nav
           data-slot="bottom-nav"
-          className="bg-background fixed inset-x-0 bottom-0 z-50 border-t sm:hidden"
+          className="bg-background/80 fixed inset-x-0 bottom-0 z-50 border-t backdrop-blur-md sm:hidden"
         >
           <ul className="flex items-center justify-evenly">
             {NAVIGATIONS.map(nav => (

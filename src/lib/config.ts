@@ -48,29 +48,26 @@ import zodIcon from '@/assets/skills/zod.svg';
 import zustandIcon from '@/assets/skills/zustand.svg';
 
 export const SKILLS = {
+  // Languages
   typescript: { name: 'TypeScript', icon: typescriptIcon, inverted: false },
   javascript: { name: 'JavaScript', icon: javascriptIcon, inverted: false },
+  swift: { name: 'Swift', icon: swiftIcon, inverted: false },
+  // Frameworks
   'react-js': { name: 'React.js', icon: reactIcon, inverted: false },
   'next-js': { name: 'Next.js', icon: nextjsIcon, inverted: false },
   'react-native': { name: 'React Native', icon: reactIcon, inverted: false },
-  'node-js': { name: 'Node.js', icon: nodejsIcon, inverted: false },
+  expo: { name: 'Expo', icon: expoIcon, inverted: false },
+  'vue-js': { name: 'Vue.js', icon: vueIcon, inverted: false },
+  swiftui: { name: 'SwiftUI', icon: swiftuiIcon, inverted: false },
+  // State & data
+  redux: { name: 'Redux', icon: reduxIcon, inverted: false },
+  zustand: { name: 'Zustand', icon: zustandIcon, inverted: false },
   tanstack: { name: 'TanStack', icon: tanstackIcon, inverted: false },
   graphql: { name: 'GraphQL', icon: graphqlIcon, inverted: false },
   apollo: { name: 'Apollo Client', icon: apolloIcon, inverted: true },
   zod: { name: 'Zod', icon: zodIcon, inverted: false },
-  redux: { name: 'Redux', icon: reduxIcon, inverted: false },
-  zustand: { name: 'Zustand', icon: zustandIcon, inverted: false },
-  turborepo: { name: 'Turborepo', icon: turborepoIcon, inverted: true },
-  vite: { name: 'Vite', icon: viteIcon, inverted: false },
-  vitest: { name: 'Vitest', icon: vitestIcon, inverted: false },
-  jest: { name: 'Jest', icon: jestIcon, inverted: false },
-  'testing-library': {
-    name: 'Testing Library',
-    icon: testinglibraryIcon,
-    inverted: false,
-  },
-  sonarqube: { name: 'SonarQube', icon: sonarqubeIcon, inverted: false },
-  git: { name: 'Git', icon: gitIcon, inverted: false },
+  'socket-io': { name: 'Socket.io', icon: socketioIcon, inverted: true },
+  // UI & styling
   tailwindcss: { name: 'Tailwind CSS', icon: tailwindIcon, inverted: false },
   'shadcn-ui': { name: 'shadcn/ui', icon: shadcnIcon, inverted: true },
   'ant-design': { name: 'Ant Design', icon: antdesignIcon, inverted: false },
@@ -80,6 +77,18 @@ export const SKILLS = {
     inverted: false,
   },
   'react-pdf': { name: 'React PDF', icon: reactpdfIcon, inverted: false },
+  'google-maps': { name: 'Google Maps', icon: googlemapsIcon, inverted: false },
+  // Testing & quality
+  vitest: { name: 'Vitest', icon: vitestIcon, inverted: false },
+  jest: { name: 'Jest', icon: jestIcon, inverted: false },
+  'testing-library': {
+    name: 'Testing Library',
+    icon: testinglibraryIcon,
+    inverted: false,
+  },
+  sonarqube: { name: 'SonarQube', icon: sonarqubeIcon, inverted: false },
+  // Backend & database
+  'node-js': { name: 'Node.js', icon: nodejsIcon, inverted: false },
   'express-js': { name: 'Express.js', icon: expressIcon, inverted: false },
   supabase: { name: 'Supabase', icon: supabaseIcon, inverted: false },
   firebase: { name: 'Firebase', icon: firebaseIcon, inverted: false },
@@ -87,15 +96,15 @@ export const SKILLS = {
   mysql: { name: 'MySQL', icon: mysqlIcon, inverted: false },
   directus: { name: 'Directus', icon: directusIcon, inverted: false },
   'indexed-db': { name: 'IndexedDB', icon: indexeddbIcon, inverted: true },
-  'socket-io': { name: 'Socket.io', icon: socketioIcon, inverted: true },
-  expo: { name: 'Expo', icon: expoIcon, inverted: false },
-  'vue-js': { name: 'Vue.js', icon: vueIcon, inverted: false },
-  'google-maps': { name: 'Google Maps', icon: googlemapsIcon, inverted: false },
-  moralis: { name: 'Moralis', icon: moralisIcon, inverted: false },
+  // Web3
   web3: { name: 'Web3', icon: web3Icon, inverted: false },
-  swift: { name: 'Swift', icon: swiftIcon, inverted: false },
-  swiftui: { name: 'SwiftUI', icon: swiftuiIcon, inverted: false },
+  moralis: { name: 'Moralis', icon: moralisIcon, inverted: false },
+  // Tooling & deploy
+  git: { name: 'Git', icon: gitIcon, inverted: false },
+  vite: { name: 'Vite', icon: viteIcon, inverted: false },
+  turborepo: { name: 'Turborepo', icon: turborepoIcon, inverted: true },
   vercel: { name: 'Vercel', icon: vercelIcon, inverted: true },
+  // Keep this skills in the last
   html: { name: 'HTML', icon: htmlIcon, inverted: false },
   css: { name: 'CSS', icon: cssIcon, inverted: false },
 };

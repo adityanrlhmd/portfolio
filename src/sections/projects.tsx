@@ -32,12 +32,16 @@ import {
 import { SKILLS } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
+// stacks render in the same group order as SKILLS in config
+const SKILL_ORDER = Object.values(SKILLS);
+
 const PROJECTS = [
   {
     title: 'emitra',
     alter: 'B2B Marketplace',
     category: 'Web',
     image: emitra,
+    imageSize: [1600, 915],
     img_padding: true,
     description:
       'A B2B marketplace where suppliers and large businesses order plant-based products in bulk and track each order live. The single Next.js app kept hitting conflicts on almost every merge request, so I helped split it into micro frontends in Turborepo, giving each part a cleaner home of its own. Zustand for light state, TanStack Query for API calls.',
@@ -63,6 +67,7 @@ const PROJECTS = [
     alter: 'Distribution Management System',
     category: 'Web',
     image: esuite,
+    imageSize: [1076, 608],
     img_padding: true,
     description:
       'Puts sales, purchasing, inventory, and finance in one place for distributors, so stock and orders stop living in spreadsheets and manual notes. I built the UI with Next.js and shadcn/ui, used TanStack Query and Firebase for live data, and covered the important flows with tests.',
@@ -85,6 +90,7 @@ const PROJECTS = [
     alter: 'Sales Force Automation',
     category: 'Web',
     image: ework,
+    imageSize: [1056, 601],
     img_padding: true,
     description:
       "Gives sales managers a live view of their field team: where they are, which stores they've visited, and what orders came in. I added real-time updates with Socket.io and visit routes and locations with the Google Maps API, on top of Next.js and Tailwind CSS.",
@@ -109,6 +115,7 @@ const PROJECTS = [
     alter: 'Restaurant POS',
     category: 'Web',
     image: qsr,
+    imageSize: [974, 550],
     img_padding: true,
     description:
       'A cashier system for busy restaurants, where every second at checkout counts during rush hour. I worked on the transaction logic in Next.js inside Turborepo, using TanStack Query to keep it quick and responsive.',
@@ -132,6 +139,7 @@ const PROJECTS = [
     alter: 'Company Platform',
     category: 'Web',
     image: edotChat,
+    imageSize: [1176, 576],
     img_padding: true,
     description:
       'An internal chat app, so companies can keep work conversations in their own tool. Socket.io keeps messages in sync, IndexedDB stores chats locally, and TanStack Query handles caching, so even long histories open quickly.',
@@ -151,6 +159,7 @@ const PROJECTS = [
     alter: 'Company Profile',
     category: 'Web',
     image: edotLP,
+    imageSize: [1600, 915],
     img_padding: true,
     description:
       'The eDOT company site, where marketing needed to publish and tune content for search without waiting on developers. I connected it to Directus as a headless CMS so the SEO team can do that on their own, with Next.js keeping pages fast.',
@@ -172,6 +181,7 @@ const PROJECTS = [
     alter: 'Company Profile',
     category: 'Web',
     image: prestige,
+    imageSize: [1600, 965],
     description:
       'A site for an event promoter to show off their events and keep them up to date without calling a developer. Built with Next.js and Framer Motion, with Directus as a headless CMS so the team can update content themselves.',
     link: 'https://prestigepromotions.id',
@@ -190,6 +200,7 @@ const PROJECTS = [
     alter: 'Booking App',
     category: 'Web',
     image: phantom,
+    imageSize: [1600, 965],
     description:
       'Lets guests book at nightlife and entertainment venues online, so reservations no longer go through back-and-forth chats. Zustand for state, Supabase for the real-time database and auth, and Ant Design for the UI.',
     link: 'https://phantomclub.id',
@@ -207,6 +218,7 @@ const PROJECTS = [
     alter: 'Crypto Website',
     category: 'Web',
     image: hodler,
+    imageSize: [1600, 965],
     description:
       'The front door for a crypto community project: it explains the token and points new holders to where they can buy and join the community. Built with Next.js and TypeScript, kept light so it loads fast.',
     stacks: [
@@ -222,6 +234,7 @@ const PROJECTS = [
     alter: 'Interior Design Reservations',
     category: 'Web',
     image: rooma,
+    imageSize: [1600, 965],
     description:
       'Connects clients with interior designers, so booking a consultation takes a few clicks instead of a long back-and-forth. Supabase handles users and reservations, with a responsive Next.js frontend on top.',
     link: 'https://rooma.co.id',
@@ -238,6 +251,7 @@ const PROJECTS = [
     alter: 'Web3 Video Platform',
     category: 'Mobile',
     image: cuantv,
+    imageSize: [1600, 965],
     description:
       "Brings the project's video content and Web3 assets together in one mobile app, so users don't need a separate wallet site. Built with React Native for Android and iOS, using Moralis and Web3 for the blockchain side.",
     link: 'https://play.google.com/store/apps/details?id=com.leslarmetaverse.cuantv&pli=1',
@@ -254,6 +268,7 @@ const PROJECTS = [
     alter: 'Blockchain Website',
     category: 'Web',
     image: leslar,
+    imageSize: [1600, 965],
     description:
       'The main entry point into a blockchain project, where users go from reading about it to actually using it. I used Web3 and Moralis to connect the smart contracts to the UI.',
     link: 'https://www.leslarmetaverse.com',
@@ -312,6 +327,8 @@ const Projects = () => {
                 <img
                   src={project.image}
                   alt={project.title}
+                  width={project.imageSize[0]}
+                  height={project.imageSize[1]}
                   loading="lazy"
                   decoding="async"
                   className="relative w-full object-cover transition-transform lg:group-hover/card:scale-105"
@@ -326,19 +343,20 @@ const Projects = () => {
                   <p>{project.alter}</p>
                 </CardDescription>
                 <CardAction>
-                  <a
-                    href={project.link}
-                    target="_blank"
-                    className={cn(
-                      'flex items-center gap-2 text-xs',
-                      project.link
-                        ? 'hover:text-primary'
-                        : 'pointer-events-none'
-                    )}
-                  >
-                    {project.category}
-                    {project.link && <RiExternalLinkLine size={20} />}
-                  </a>
+                  {project.link ? (
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${project.title} (${project.category}, opens in a new tab)`}
+                      className="hover:text-primary flex items-center gap-2 text-xs"
+                    >
+                      {project.category}
+                      <RiExternalLinkLine size={20} />
+                    </a>
+                  ) : (
+                    <span className="text-xs">{project.category}</span>
+                  )}
                 </CardAction>
               </CardHeader>
 
@@ -348,29 +366,33 @@ const Projects = () => {
 
               <CardFooter>
                 <ul className="flex flex-wrap gap-2">
-                  {project.stacks.map((stack, index) => (
-                    <li key={index}>
-                      <Tooltip>
-                        <TooltipTrigger>
-                          <div className="border p-2">
-                            <img
-                              src={stack.icon}
-                              alt={stack.name}
-                              loading="lazy"
-                              title={stack.name}
-                              className={cn(
-                                'size-4 object-contain sm:size-6',
-                                stack.inverted && 'dark:invert'
-                              )}
-                            />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>{stack.name}</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </li>
-                  ))}
+                  {[...project.stacks]
+                    .sort(
+                      (a, b) => SKILL_ORDER.indexOf(a) - SKILL_ORDER.indexOf(b)
+                    )
+                    .map((stack, index) => (
+                      <li key={index}>
+                        <Tooltip>
+                          <TooltipTrigger>
+                            <div className="border p-2">
+                              <img
+                                src={stack.icon}
+                                alt={stack.name}
+                                loading="lazy"
+                                title={stack.name}
+                                className={cn(
+                                  'size-4 object-contain sm:size-6',
+                                  stack.inverted && 'dark:invert'
+                                )}
+                              />
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{stack.name}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </li>
+                    ))}
                 </ul>
               </CardFooter>
             </Card>
