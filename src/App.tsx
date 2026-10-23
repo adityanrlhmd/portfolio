@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 
 import { AnnouncementBar } from '@/components/announcement-bar';
 import { Footer } from '@/components/footer';
@@ -8,13 +8,24 @@ import { Toaster } from '@/components/ui/sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
-import Contact from '@/sections/contact';
-import Experience from '@/sections/experience';
 import Hero from '@/sections/hero';
-import Projects from '@/sections/projects';
 
 // Its own chunk, so the PDF library never loads on the home page
 const ResumePage = lazy(() => import('@/pages/resume/resume-page'));
+
+// Below the fold, so their code (the contact form's zod/emailjs, motion) stays out of the first load
+const Experience = lazy(() => import('@/sections/experience'));
+const Projects = lazy(() => import('@/sections/projects'));
+const Contact = lazy(() => import('@/sections/contact'));
+
+// The browser jumps to #hash before lazy sections exist, so redo it once they mount
+const ScrollToHash = () => {
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) document.getElementById(hash)?.scrollIntoView();
+  }, []);
+  return null;
+};
 
 function App() {
   const isResume = window.location.pathname.replace(/\/$/, '') === '/resume';
@@ -47,9 +58,13 @@ function App() {
           <>
             <main className="flex flex-col">
               <Hero />
-              <Experience />
-              <Projects />
-              <Contact />
+              {/* min-h-svh keeps the footer from jumping up while the chunk loads */}
+              <Suspense fallback={<div className="min-h-svh" />}>
+                <Experience />
+                <Projects />
+                <Contact />
+                <ScrollToHash />
+              </Suspense>
             </main>
 
             <Footer />

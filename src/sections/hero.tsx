@@ -2,7 +2,7 @@ import { RiDownloadLine } from '@remixicon/react';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import { toast } from 'sonner';
 
-import { Suspense, lazy, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 
 import { GridBeam } from '@/components/grid-beam';
 import { TextType } from '@/components/text-type';
@@ -36,6 +36,16 @@ const HEADLINES = [
 const Hero = () => {
   const isLarge = useMediaQuery('(min-width: 1024px)');
   const [downloading, setDownloading] = useState(false);
+  // start fetching the 3D card once the page has painted, so it doesn't compete with the first render
+  const [show3d, setShow3d] = useState(false);
+
+  useEffect(() => {
+    const ric =
+      window.requestIdleCallback ?? ((cb: () => void) => setTimeout(cb, 200));
+    const cic = window.cancelIdleCallback ?? clearTimeout;
+    const id = ric(() => setShow3d(true));
+    return () => cic(id);
+  }, []);
 
   const downloadCv = async () => {
     setDownloading(true);
@@ -57,11 +67,13 @@ const Hero = () => {
           <div className="h-125 w-full lg:h-[calc(100vh-var(--header-height)-var(--announcement-height)-5rem)] lg:w-1/3">
             <Suspense>
               {/* key remounts the canvas, since the camera is only read on mount */}
-              <Lanyard
-                key={isLarge ? 'lg' : 'sm'}
-                position={[-5, 0, isLarge ? 15 : 10]}
-                gravity={[0, -40, 0]}
-              />
+              {show3d && (
+                <Lanyard
+                  key={isLarge ? 'lg' : 'sm'}
+                  position={[-5, 0, isLarge ? 15 : 10]}
+                  gravity={[0, -40, 0]}
+                />
+              )}
             </Suspense>
           </div>
 
@@ -75,7 +87,8 @@ const Hero = () => {
               deletingSpeed={50}
               variableSpeed={{ min: 60, max: 120 }}
               cursorBlinkDuration={0.5}
-              className="text-3xl font-bold lg:text-6xl"
+              // reserve the longest headline's lines so typing doesn't push the content down (CLS)
+              className="min-h-[3lh] text-3xl font-bold sm:min-h-[2lh] lg:text-6xl"
               pauseWhenHidden
             />
             <h1 className="sr-only">Aditya Hamda, frontend engineer</h1>

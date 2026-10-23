@@ -1,5 +1,3 @@
-import { gsap } from 'gsap';
-
 import {
   ElementType,
   useCallback,
@@ -138,16 +136,19 @@ export const TextType = ({
   }, [startOnVisible, pauseWhenHidden]);
 
   useEffect(() => {
-    if (showCursor && cursorRef.current) {
-      gsap.set(cursorRef.current, { opacity: 1 });
-      gsap.to(cursorRef.current, {
-        opacity: 0,
-        duration: cursorBlinkDuration,
-        repeat: -1,
-        yoyo: true,
-        ease: 'power2.inOut',
-      });
-    }
+    if (!showCursor || !cursorRef.current) return;
+    // Web Animations API, so the hero doesn't ship gsap for one blinking cursor
+    // optional: jsdom (tests) and very old browsers lack element.animate
+    const blink = cursorRef.current.animate?.(
+      [{ opacity: 1 }, { opacity: 0 }],
+      {
+        duration: cursorBlinkDuration * 1000,
+        iterations: Infinity,
+        direction: 'alternate',
+        easing: 'ease-in-out',
+      }
+    );
+    return () => blink?.cancel();
   }, [showCursor, cursorBlinkDuration]);
 
   useEffect(() => {

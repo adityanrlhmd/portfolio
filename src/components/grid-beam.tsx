@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 import React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -30,32 +28,25 @@ export const Beam = () => {
         strokeWidth={1.5}
       />
       <defs>
-        <motion.linearGradient
-          id="grad1"
-          variants={{
-            initial: {
-              x1: '40%',
-              x2: '50%',
-              y1: '160%',
-              y2: '180%',
-            },
-            animate: {
-              x1: '0%',
-              x2: '10%',
-              y1: '-40%',
-              y2: '-20%',
-            },
-          }}
-          animate="animate"
-          initial="initial"
-          transition={{
-            duration: 1.8,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'linear',
-            repeatDelay: 1,
-          }}
-        >
+        <linearGradient id="grad1" x1="40%" x2="50%" y1="160%" y2="180%">
+          {/* native SMIL instead of framer-motion: 1.8s sweep, then 1s hold before looping */}
+          {(
+            [
+              ['x1', '40%', '0%'],
+              ['x2', '50%', '10%'],
+              ['y1', '160%', '-40%'],
+              ['y2', '180%', '-20%'],
+            ] as const
+          ).map(([attr, from, to]) => (
+            <animate
+              key={attr}
+              attributeName={attr}
+              values={`${from};${to};${to}`}
+              keyTimes="0;0.643;1"
+              dur="2.8s"
+              repeatCount="indefinite"
+            />
+          ))}
           <stop style={{ stopColor: 'var(--chart-5)' }} stopOpacity="0" />
           <stop style={{ stopColor: 'var(--chart-1)' }} />
           <stop offset="0.325" style={{ stopColor: 'var(--primary)' }} />
@@ -64,7 +55,7 @@ export const Beam = () => {
             style={{ stopColor: 'var(--primary)' }}
             stopOpacity="0"
           />
-        </motion.linearGradient>
+        </linearGradient>
       </defs>
     </svg>
   );
