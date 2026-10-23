@@ -15,7 +15,7 @@ import {
 } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import type { ReactNode } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import {
   Accordion,
@@ -28,9 +28,11 @@ import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
-import { toSquareJpeg } from '@/lib/resume/photo';
+import { type Crop, toSquareJpeg } from '@/lib/resume/photo';
 import type { Resume } from '@/lib/resume/schema';
 import { cn } from '@/lib/utils';
+
+import { PhotoCropper } from './photo-cropper';
 
 type Form = UseFormReturn<Resume>;
 
@@ -184,10 +186,30 @@ export const ResumeForm = ({ form }: { form: Form }) => {
   const titleOf = (...parts: (string | undefined)[]) =>
     parts.filter(Boolean).join(' — ');
 
-  const onPhoto = async (file: File | undefined) => {
+  // the picked photo waits here, shown in the cropper, until the visitor confirms it
+  const [picked, setPicked] = useState<{ file: File; url: string }>();
+  useEffect(
+    () => () => {
+      if (picked) URL.revokeObjectURL(picked.url);
+    },
+    [picked]
+  );
+
+  const onPhoto = (file: File | undefined) => {
     if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please choose an image file.');
+      return;
+    }
+    setPicked({ file, url: URL.createObjectURL(file) });
+  };
+
+  const confirmPhoto = async (crop: Crop) => {
+    if (!picked) return;
     try {
-      form.setValue('photo', await toSquareJpeg(file), { shouldDirty: true });
+      const photo = await toSquareJpeg(picked.file, crop);
+      form.setValue('photo', photo, { shouldDirty: true });
+      setPicked(undefined);
     } catch (error) {
       toast.error((error as Error).message);
     }
@@ -250,6 +272,19 @@ export const ResumeForm = ({ form }: { form: Form }) => {
               </Button>
             )}
           </div>
+          {picked && (
+            <PhotoCropper
+              src={picked.url}
+              onDone={confirmPhoto}
+              onCancel={() => setPicked(undefined)}
+              onError={() => {
+                toast.error(
+                  "This image can't be opened here. Try a JPG or PNG."
+                );
+                setPicked(undefined);
+              }}
+            />
+          )}
         </Field>
       </Section>
 

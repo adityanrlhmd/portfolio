@@ -145,6 +145,7 @@ export const ResumeDocument = ({
     >
       <Page size="LETTER" style={s.page}>
         <View style={s.header}>
+          {resume.photo && <Image src={resume.photo} style={s.photo} />}
           <View style={s.headerText}>
             {name.value && (
               <View style={name.faded}>
@@ -176,7 +177,6 @@ export const ResumeDocument = ({
               </View>
             )}
           </View>
-          {resume.photo && <Image src={resume.photo} style={s.photo} />}
         </View>
 
         {experiences.value.length > 0 && (
