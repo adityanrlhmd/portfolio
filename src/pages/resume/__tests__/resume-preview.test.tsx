@@ -1,11 +1,18 @@
-import { render, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { ADITYA_RESUME } from '@/lib/resume/aditya';
 
 import { ResumePreview } from '../resume-preview';
 
+const pdf = vi.hoisted(() =>
+  vi.fn<(doc: React.ReactElement) => { toBlob: () => Promise<Blob> }>(() => ({
+    toBlob: async () => new Blob(['%PDF']),
+  }))
+);
+
 vi.mock('@react-pdf/renderer', () => ({
-  pdf: () => ({ toBlob: async () => new Blob(['%PDF']) }),
+  pdf,
   StyleSheet: { create: <T,>(styles: T) => styles },
 }));
 
@@ -43,5 +50,16 @@ describe('ResumePreview', () => {
     rerender(<ResumePreview resume={{ ...ADITYA_RESUME, name: 'Budi' }} />);
     expect(pages()).toHaveLength(2);
     await waitFor(() => expect(pages()).toHaveLength(2));
+  });
+
+  it('opens the PDF without placeholders', async () => {
+    const tab = { location: { href: '' }, close: vi.fn() };
+    vi.spyOn(window, 'open').mockReturnValue(tab as unknown as Window);
+    render(<ResumePreview resume={ADITYA_RESUME} />);
+
+    await userEvent.click(screen.getByRole('button', { name: 'Open PDF' }));
+
+    await waitFor(() => expect(tab.location.href).toBe('blob:preview'));
+    expect(pdf.mock.lastCall?.[0].props).toEqual({ resume: ADITYA_RESUME });
   });
 });

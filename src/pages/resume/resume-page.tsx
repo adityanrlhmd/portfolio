@@ -47,7 +47,7 @@ const ResumeBuilder = () => {
   const warnedStorage = useRef(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setDebounced(values), 400);
+    const timer = setTimeout(() => setDebounced(values), 200);
     return () => clearTimeout(timer);
   }, [values]);
 

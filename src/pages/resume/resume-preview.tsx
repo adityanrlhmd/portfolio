@@ -4,6 +4,7 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 import { useEffect, useRef, useState } from 'react';
 
+import { PLACEHOLDER_RESUME } from '@/lib/resume/placeholder';
 import type { Resume } from '@/lib/resume/schema';
 
 import { ResumeDocument } from './resume-document';
@@ -21,9 +22,10 @@ export const ResumePreview = ({ resume }: { resume: Resume }) => {
     let stale = false;
 
     (async () => {
-      const blob = await pdf(<ResumeDocument resume={resume} />).toBlob();
+      const blob = await pdf(
+        <ResumeDocument resume={resume} placeholder={PLACEHOLDER_RESUME} />
+      ).toBlob();
       if (stale) return;
-      setUrl(URL.createObjectURL(blob));
 
       const task = getDocument({ data: await blob.arrayBuffer() });
       const doc = await task.promise;
@@ -52,7 +54,22 @@ export const ResumePreview = ({ resume }: { resume: Resume }) => {
     };
   }, [resume]);
 
-  // revokes the previous PDF once the next one is linked, and on unmount
+  // Built on click, without placeholders, so the opened PDF matches the download.
+  // The tab opens before the await, or Safari blocks it as a popup.
+  const openPdf = async () => {
+    const tab = window.open('', '_blank');
+    try {
+      const blob = await pdf(<ResumeDocument resume={resume} />).toBlob();
+      const next = URL.createObjectURL(blob);
+      setUrl(next);
+      if (tab) tab.location.href = next;
+    } catch (error) {
+      tab?.close();
+      console.error(error);
+    }
+  };
+
+  // revokes the previously opened PDF once the next one is made, and on unmount
   useEffect(
     () => () => {
       if (url) URL.revokeObjectURL(url);
@@ -68,16 +85,13 @@ export const ResumePreview = ({ resume }: { resume: Resume }) => {
         aria-label="Resume preview"
         className="flex-1 space-y-3 overflow-y-auto"
       />
-      {url && (
-        <a
-          href={url}
-          target="_blank"
-          rel="noreferrer"
-          className="text-muted-foreground hover:text-foreground self-end text-xs underline underline-offset-3"
-        >
-          Open PDF
-        </a>
-      )}
+      <button
+        type="button"
+        onClick={openPdf}
+        className="text-muted-foreground hover:text-foreground cursor-pointer self-end text-xs underline underline-offset-3"
+      >
+        Open PDF
+      </button>
     </div>
   );
 };

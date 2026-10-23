@@ -8,7 +8,7 @@ import {
   View,
 } from '@react-pdf/renderer';
 
-import { Fragment, type ReactNode } from 'react';
+import { type ComponentProps, Fragment, type ReactNode } from 'react';
 
 import { encodeResume } from '@/lib/resume/embed';
 import { contactItems, skillLines, splitLines } from '@/lib/resume/format';
@@ -59,16 +59,19 @@ const s = StyleSheet.create({
   bullet: { flexDirection: 'row' },
   bulletDot: { width: 10 },
   bulletText: { flex: 1 },
+  faded: { opacity: 0.35 },
 });
 
 const Section = ({
   title,
+  style,
   children,
 }: {
   title: string;
+  style?: ComponentProps<typeof View>['style'];
   children: ReactNode;
 }) => (
-  <View>
+  <View style={style}>
     <Text style={s.sectionTitle} minPresenceAhead={40}>
       {title}
     </Text>
@@ -104,9 +107,35 @@ const Bullet = ({ children }: { children: ReactNode }) => (
   </View>
 );
 
-export const ResumeDocument = ({ resume }: { resume: Resume }) => {
-  const contacts = contactItems(resume);
-  const skills = skillLines(resume.skills);
+const isFilled = (value: Resume[keyof Resume]) =>
+  typeof value === 'string'
+    ? value.trim() !== ''
+    : value.some(item => Object.values(item).some(v => v.trim() !== ''));
+
+export const ResumeDocument = ({
+  resume,
+  placeholder,
+}: {
+  resume: Resume;
+  // preview only: empty blocks show this content, faded; the embedded data stays the real resume
+  placeholder?: Resume;
+}) => {
+  const take = <K extends keyof Resume>(key: K) =>
+    !placeholder || isFilled(resume[key])
+      ? { value: resume[key], faded: undefined }
+      : { value: placeholder[key], faded: s.faded };
+  const name = take('name');
+  const location = take('location');
+  const summary = take('summary');
+  const experiences = take('experiences');
+  const educations = take('educations');
+  const skills = take('skills');
+  const skillList = skillLines(skills.value);
+  const achievements = take('achievements');
+  // phone, email and links share one line, so they switch over together
+  const contactSource =
+    placeholder && !contactItems(resume).length ? placeholder : resume;
+  const contacts = contactItems(contactSource);
 
   return (
     <Document
@@ -117,30 +146,42 @@ export const ResumeDocument = ({ resume }: { resume: Resume }) => {
       <Page size="LETTER" style={s.page}>
         <View style={s.header}>
           <View style={s.headerText}>
-            {resume.name && <Text style={s.name}>{resume.name}</Text>}
+            {name.value && (
+              <View style={name.faded}>
+                <Text style={s.name}>{name.value}</Text>
+              </View>
+            )}
             {contacts.length > 0 && (
-              <Text style={s.contact}>
-                {contacts.map((item, i) => (
-                  <Fragment key={item.href}>
-                    {i > 0 && <Text style={s.bold}> | </Text>}
-                    <Link src={item.href} style={s.link}>
-                      {item.text}
-                    </Link>
-                  </Fragment>
-                ))}
-              </Text>
+              <View style={contactSource === resume ? undefined : s.faded}>
+                <Text style={s.contact}>
+                  {contacts.map((item, i) => (
+                    <Fragment key={item.href}>
+                      {i > 0 && <Text style={s.bold}> | </Text>}
+                      <Link src={item.href} style={s.link}>
+                        {item.text}
+                      </Link>
+                    </Fragment>
+                  ))}
+                </Text>
+              </View>
             )}
-            {resume.location && (
-              <Text style={s.contact}>{resume.location}</Text>
+            {location.value && (
+              <View style={location.faded}>
+                <Text style={s.contact}>{location.value}</Text>
+              </View>
             )}
-            {resume.summary && <Text style={s.summary}>{resume.summary}</Text>}
+            {summary.value && (
+              <View style={summary.faded}>
+                <Text style={s.summary}>{summary.value}</Text>
+              </View>
+            )}
           </View>
           {resume.photo && <Image src={resume.photo} style={s.photo} />}
         </View>
 
-        {resume.experiences.length > 0 && (
-          <Section title="Work Experiences">
-            {resume.experiences.map((exp, i) => (
+        {experiences.value.length > 0 && (
+          <Section title="Work Experiences" style={experiences.faded}>
+            {experiences.value.map((exp, i) => (
               <View key={i} style={s.entry}>
                 {/* keeps the entry's heading with its first bullet across page breaks */}
                 <View wrap={false}>
@@ -161,9 +202,9 @@ export const ResumeDocument = ({ resume }: { resume: Resume }) => {
           </Section>
         )}
 
-        {resume.educations.length > 0 && (
-          <Section title="Education Level">
-            {resume.educations.map((edu, i) => (
+        {educations.value.length > 0 && (
+          <Section title="Education Level" style={educations.faded}>
+            {educations.value.map((edu, i) => (
               <View key={i} style={s.entry}>
                 <EntryHeader
                   title={edu.school}
@@ -176,10 +217,10 @@ export const ResumeDocument = ({ resume }: { resume: Resume }) => {
           </Section>
         )}
 
-        {skills.length > 0 && (
-          <Section title="Skills">
+        {skillList.length > 0 && (
+          <Section title="Skills" style={skills.faded}>
             <View style={s.entry}>
-              {skills.map((skill, i) => (
+              {skillList.map((skill, i) => (
                 <Bullet key={i}>
                   {skill.category && (
                     <>
@@ -193,9 +234,12 @@ export const ResumeDocument = ({ resume }: { resume: Resume }) => {
           </Section>
         )}
 
-        {splitLines(resume.achievements).length > 0 && (
-          <Section title="Certifications & Achievements">
-            <View style={s.entry}>{bullets(resume.achievements)}</View>
+        {splitLines(achievements.value).length > 0 && (
+          <Section
+            title="Certifications & Achievements"
+            style={achievements.faded}
+          >
+            <View style={s.entry}>{bullets(achievements.value)}</View>
           </Section>
         )}
       </Page>
