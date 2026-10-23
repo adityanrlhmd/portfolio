@@ -1,0 +1,2 @@
+# third-party agent skills: keep them out of GitHub language stats
+.agents/** linguist-vendored
