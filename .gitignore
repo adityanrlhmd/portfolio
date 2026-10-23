@@ -23,3 +23,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# agent skills: local only, restore with `git restore --source=86437fc --worktree .claude`
+.claude/
