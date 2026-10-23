@@ -66,3 +66,6 @@ LICENSE
 
 # Others
 .husky/
+# agent skills are third-party, keep them byte-identical to upstream
+.agents
+.claude
