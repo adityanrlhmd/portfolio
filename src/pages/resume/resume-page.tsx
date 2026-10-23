@@ -142,7 +142,7 @@ const ResumeBuilder = () => {
         </div>
 
         {/* stays under the header so switching never needs a scroll back up */}
-        <div className="bg-background sticky top-(--header-height) z-40 -mx-4 flex gap-2 border-b px-4 py-2 sm:-mx-8 sm:px-8 lg:hidden">
+        <div className="bg-background/80 sticky top-(--header-height) z-40 -mx-4 flex gap-2 border-b px-4 py-2 backdrop-blur-md sm:-mx-8 sm:px-8 lg:hidden">
           {(['edit', 'preview'] as const).map(value => (
             <Button
               key={value}

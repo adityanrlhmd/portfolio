@@ -1,5 +1,7 @@
 import { RiFileUserLine } from '@remixicon/react';
 
+import { useEffect, useState } from 'react';
+
 import { Logo } from '@/assets/logo';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -28,14 +30,28 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
   const activeSection = useActiveSection(
     NAVIGATIONS.map(nav => nav.href.replace('#', ''))
   );
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 0);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   return (
     <>
       <header
         className={cn(
-          'sm:bg-background sticky top-0 z-50 flex h-(--header-height) justify-center sm:border-b',
-          // see-through on mobile only over the home hero; the resume form scrolls under it
-          resume && 'bg-background'
+          'sticky top-0 z-50 flex h-(--header-height) justify-center transition-colors',
+          scrolled
+            ? cn(
+                'bg-background/80 border-b backdrop-blur-md',
+                // the resume Edit/Preview bar sticks right below and draws the line instead
+                resume && 'max-lg:border-b-0'
+              )
+            : // see-through on mobile only over the home hero; the resume form scrolls under it
+              cn('sm:bg-background sm:border-b', resume && 'bg-background')
         )}
       >
         <div className="container flex w-full items-center justify-between">
