@@ -87,8 +87,7 @@ const Hero = () => {
               deletingSpeed={50}
               variableSpeed={{ min: 60, max: 120 }}
               cursorBlinkDuration={0.5}
-              // reserve the longest headline's lines so typing doesn't push the content down (CLS)
-              className="min-h-[3lh] text-3xl font-bold sm:min-h-[2lh] lg:text-6xl"
+              className="text-3xl font-bold lg:text-6xl"
               pauseWhenHidden
             />
             <h1 className="sr-only">Aditya Hamda, frontend engineer</h1>
