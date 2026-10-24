@@ -2,7 +2,8 @@
 import { ResumeDocument } from '@/pages/resume/resume-document';
 import { Document, Page, Text, pdf } from '@react-pdf/renderer';
 
-import { ADITYA_RESUME } from '../aditya';
+import { ADITYA_RESUME } from '@/lib/aditya';
+
 import { decodeResumeFromPdf } from '../embed';
 import { PLACEHOLDER_RESUME } from '../placeholder';
 import { EMPTY_RESUME, type Resume } from '../schema';

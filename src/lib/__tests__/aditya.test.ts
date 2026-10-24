@@ -1,5 +1,5 @@
 import { ADITYA_RESUME, EXPERIENCES } from '../aditya';
-import { EMPTY_RESUME, resumeSchema } from '../schema';
+import { EMPTY_RESUME, resumeSchema } from '../resume/schema';
 
 describe('ADITYA_RESUME', () => {
   it('ADITYA_RESUME and EMPTY_RESUME are valid', () => {

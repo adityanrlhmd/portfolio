@@ -1,6 +1,6 @@
-import type { Resume } from './schema';
+import type { Resume } from './resume/schema';
 
-// Shared by the Experience section and the resume builder's default data.
+// Aditya's own data: the Experience section, the hero's CV, and both tools' "Fill with Aditya's data".
 // location and description only show up on the resume.
 export const EXPERIENCES = [
   {

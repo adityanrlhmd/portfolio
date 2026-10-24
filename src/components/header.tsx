@@ -1,5 +1,3 @@
-import { RiFileUserLine } from '@remixicon/react';
-
 import { useEffect, useState } from 'react';
 
 import { Logo } from '@/assets/logo';
@@ -20,13 +18,13 @@ import {
 
 import { useActiveSection } from '@/hooks/use-active-section';
 
-import { NAVIGATIONS } from '@/lib/config';
+import { NAVIGATIONS, TOOLS } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
 import { ToggleButton } from './toggle-button';
 
-// The resume page keeps the same header frame but swaps the navigation for a way back
-export const Header = ({ resume = false }: { resume?: boolean }) => {
+// Tool pages keep the same header frame but swap the navigation for the tool's title
+export const Header = ({ tool }: { tool?: string }) => {
   const activeSection = useActiveSection(
     NAVIGATIONS.map(nav => nav.href.replace('#', ''))
   );
@@ -47,11 +45,11 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
           scrolled
             ? cn(
                 'bg-background/80 border-b backdrop-blur-md',
-                // the resume Edit/Preview bar sticks right below and draws the line instead
-                resume && 'max-lg:border-b-0'
+                // a tool's Edit/Preview bar sticks right below and draws the line instead
+                tool && 'max-lg:border-b-0'
               )
-            : // see-through on mobile only over the home hero; the resume form scrolls under it
-              cn('sm:bg-background sm:border-b', resume && 'bg-background')
+            : // see-through on mobile only over the home hero; a tool's form scrolls under it
+              cn('sm:bg-background sm:border-b', tool && 'bg-background')
         )}
       >
         <div className="container flex w-full items-center justify-between">
@@ -59,9 +57,9 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
             <a href="/" aria-label="Home" className="hover:text-primary">
               <Logo />
             </a>
-            {resume && (
+            {tool && (
               <div className="min-w-0">
-                <h1 className="truncate text-sm font-bold">Resume Builder</h1>
+                <h1 className="truncate text-sm font-bold">{tool}</h1>
                 <p className="text-muted-foreground hidden truncate text-xs sm:block">
                   Everything stays in your browser. Nothing is uploaded.
                 </p>
@@ -69,7 +67,7 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
             )}
           </div>
 
-          {!resume && (
+          {!tool && (
             <NavigationMenu className="hidden sm:flex">
               <NavigationMenuList>
                 {NAVIGATIONS.map(nav => (
@@ -88,31 +86,32 @@ export const Header = ({ resume = false }: { resume?: boolean }) => {
           )}
 
           <div className="flex items-center gap-2">
-            {!resume && (
-              <Tooltip>
-                <TooltipTrigger
-                  render={
-                    <a
-                      href="/resume"
-                      aria-label="Resume Builder"
-                      className={buttonVariants({
-                        variant: 'outline',
-                        size: 'icon',
-                      })}
-                    />
-                  }
-                >
-                  <RiFileUserLine className="size-[1.2rem]" />
-                </TooltipTrigger>
-                <TooltipContent side="bottom">Resume Builder</TooltipContent>
-              </Tooltip>
-            )}
+            {!tool &&
+              TOOLS.map(link => (
+                <Tooltip key={link.href}>
+                  <TooltipTrigger
+                    render={
+                      <a
+                        href={link.href}
+                        aria-label={link.title}
+                        className={buttonVariants({
+                          variant: 'outline',
+                          size: 'icon',
+                        })}
+                      />
+                    }
+                  >
+                    <link.icon className="size-[1.2rem]" />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">{link.title}</TooltipContent>
+                </Tooltip>
+              ))}
             <ToggleButton />
           </div>
         </div>
       </header>
 
-      {!resume && (
+      {!tool && (
         <nav
           data-slot="bottom-nav"
           className="bg-background/80 fixed inset-x-0 bottom-0 z-50 border-t backdrop-blur-md sm:hidden"

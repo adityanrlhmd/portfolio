@@ -8,7 +8,7 @@ import {
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ADITYA_RESUME } from '@/lib/resume/aditya';
+import { ADITYA_RESUME } from '@/lib/aditya';
 
 import App from '../App';
 
@@ -38,6 +38,36 @@ describe('App', () => {
     expect(
       await screen.findByRole('button', { name: "Fill with Aditya's data" })
     ).toBeInTheDocument();
+  });
+
+  it('serves the cover letter tool at /cover-letter', async () => {
+    window.history.pushState({}, '', '/cover-letter');
+    render(<App />);
+    expect(
+      await screen.findByRole('link', { name: 'Back to portfolio' })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Cover Letter' })
+    ).toBeInTheDocument();
+    expect(await screen.findByLabelText('Company')).toBeInTheDocument();
+  });
+
+  it('links to the cover letter from a header icon', () => {
+    render(<App />);
+    expect(
+      within(screen.getByRole('banner')).getByRole('link', {
+        name: 'Cover Letter',
+      })
+    ).toHaveAttribute('href', '/cover-letter');
+  });
+
+  it('lists the cover letter as a free tool in the footer', () => {
+    render(<App />);
+    expect(
+      within(screen.getByRole('contentinfo')).getByRole('link', {
+        name: 'Cover Letter',
+      })
+    ).toHaveAttribute('href', '/cover-letter');
   });
 
   it('links to the resume builder from a header icon, not the section nav', () => {
@@ -97,6 +127,21 @@ describe('App', () => {
         name: 'Back to portfolio',
       });
       // let the click through but stop jsdom from attempting the navigation
+      link.addEventListener('click', e => e.preventDefault());
+      link.click();
+      expect(back).not.toHaveBeenCalled();
+    });
+
+    it('follows the link home when coming from the other tool', async () => {
+      setReferrer(`${window.location.origin}/resume`);
+      const back = vi
+        .spyOn(window.history, 'back')
+        .mockImplementation(() => {});
+      window.history.pushState({}, '', '/cover-letter');
+      render(<App />);
+      const link = await screen.findByRole('link', {
+        name: 'Back to portfolio',
+      });
       link.addEventListener('click', e => e.preventDefault());
       link.click();
       expect(back).not.toHaveBeenCalled();

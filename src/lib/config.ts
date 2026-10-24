@@ -1,7 +1,9 @@
 import {
   RiBarChartHorizontalLine,
+  RiFileUserLine,
   RiFolderLine,
   RiHomeLine,
+  RiQuillPenLine,
   RiSendPlaneLine,
 } from '@remixicon/react';
 
@@ -130,4 +132,10 @@ export const NAVIGATIONS = [
     href: '#contact',
     icon: RiSendPlaneLine,
   },
+] as const;
+
+// The free tools, each a page of its own (see App and vercel.json)
+export const TOOLS = [
+  { title: 'Resume Builder', href: '/resume', icon: RiFileUserLine },
+  { title: 'Cover Letter', href: '/cover-letter', icon: RiQuillPenLine },
 ] as const;

@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { ADITYA_RESUME } from '@/lib/resume/aditya';
+import { ADITYA_RESUME } from '@/lib/aditya';
 
 import { ResumePreview } from '../resume-preview';
 

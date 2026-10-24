@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 
-import { EXPERIENCES } from '@/lib/resume/aditya';
+import { EXPERIENCES } from '@/lib/aditya';
 
 const Experience = () => {
   return (

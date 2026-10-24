@@ -1,3 +1,6 @@
 {
-  "rewrites": [{ "source": "/resume", "destination": "/index.html" }]
+  "rewrites": [
+    { "source": "/resume", "destination": "/index.html" },
+    { "source": "/cover-letter", "destination": "/index.html" }
+  ]
 }

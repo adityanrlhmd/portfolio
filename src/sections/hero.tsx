@@ -17,8 +17,8 @@ import { Spinner } from '@/components/ui/spinner';
 
 import { useMediaQuery } from '@/hooks/use-media-query';
 
+import { ADITYA_RESUME } from '@/lib/aditya';
 import { SKILLS } from '@/lib/config';
-import { ADITYA_RESUME } from '@/lib/resume/aditya';
 import { cn } from '@/lib/utils';
 
 // three.js + rapier live in their own chunk so the page renders before the 3D card

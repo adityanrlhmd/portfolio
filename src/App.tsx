@@ -10,8 +10,17 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 
 import Hero from '@/sections/hero';
 
-// Its own chunk, so the PDF library never loads on the home page
+import { TOOLS } from '@/lib/config';
+
+// Their own chunks, so the PDF library never loads on the home page
 const ResumePage = lazy(() => import('@/pages/resume/resume-page'));
+const CoverLetterPage = lazy(
+  () => import('@/pages/cover-letter/cover-letter-page')
+);
+const TOOL_PAGES: Record<(typeof TOOLS)[number]['href'], React.ReactNode> = {
+  '/resume': <ResumePage />,
+  '/cover-letter': <CoverLetterPage />,
+};
 
 // Below the fold, so their code (the contact form's zod/emailjs, motion) stays out of the first load
 const Experience = lazy(() => import('@/sections/experience'));
@@ -28,29 +37,30 @@ const ScrollToHash = () => {
 };
 
 function App() {
-  const isResume = window.location.pathname.replace(/\/$/, '') === '/resume';
+  const path = window.location.pathname.replace(/\/$/, '');
+  const tool = TOOLS.find(t => t.href === path);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <TooltipProvider>
         {/* first, so toasts fired from a page's mount effects aren't dropped */}
         <Toaster />
-        {!isResume && import.meta.env.VITE_SHOW_ANNOUNCEMENT_BAR === 'true' && (
+        {!tool && import.meta.env.VITE_SHOW_ANNOUNCEMENT_BAR === 'true' && (
           <AnnouncementBar />
         )}
-        <Header resume={isResume} />
+        <Header tool={tool?.title} />
 
-        {isResume ? (
+        {tool ? (
           <>
             <Suspense
               fallback={
-                // same height as the resume page's <main>, so the footer doesn't jump while loading
+                // same height as a tool page's <main>, so the footer doesn't jump while loading
                 <div className="flex min-h-svh items-center justify-center">
                   <Spinner className="size-6" />
                 </div>
               }
             >
-              <ResumePage />
+              {TOOL_PAGES[tool.href]}
             </Suspense>
             <Footer minimal />
           </>

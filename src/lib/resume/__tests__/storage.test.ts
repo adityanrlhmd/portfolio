@@ -1,4 +1,5 @@
-import { ADITYA_RESUME } from '../aditya';
+import { ADITYA_RESUME } from '@/lib/aditya';
+
 import { STORAGE_KEY, loadResume, saveResume } from '../storage';
 
 describe('resume storage', () => {

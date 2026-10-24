@@ -78,6 +78,14 @@ describe('ResumePage', () => {
     expect(fullName()).toHaveValue('Budi');
   });
 
+  it('links to the cover letter', () => {
+    renderPage();
+    expect(screen.getByRole('link', { name: 'Cover Letter' })).toHaveAttribute(
+      'href',
+      '/cover-letter'
+    );
+  });
+
   it('restores saved progress', () => {
     saveResume({ ...EMPTY_RESUME, name: 'Sari' });
     renderPage();
