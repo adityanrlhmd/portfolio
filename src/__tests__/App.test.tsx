@@ -24,47 +24,67 @@ describe('App', () => {
     expect(document.body).toBeInTheDocument();
   });
 
-  it('gives a tool a link back to all tools instead of the site navigation, and a copyright-only footer', async () => {
+  it('gives a tool the tools nav instead of the site navigation, and a copyright-only footer', async () => {
     window.history.pushState({}, '', '/tools/resume');
     render(<App />);
+    // the loading frame already has the nav, so wait for the page itself; its chunk
+    // pulls in the PDF library and can take over a second under a full test run
     expect(
-      await screen.findByRole('link', { name: 'All tools' })
-    ).toHaveAttribute('href', '/tools');
+      await screen.findByRole(
+        'button',
+        { name: "Fill with Aditya's data" },
+        { timeout: 5000 }
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('navigation', { name: 'Tools' })
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'Experience' })
     ).not.toBeInTheDocument();
     expect(screen.getByText(/Copyright ©/)).toBeInTheDocument();
     expect(screen.queryByText('Navigate')).not.toBeInTheDocument();
-    expect(
-      await screen.findByRole('button', { name: "Fill with Aditya's data" })
-    ).toBeInTheDocument();
   });
 
   it('serves the cover letter tool at /cover-letter', async () => {
     window.history.pushState({}, '', '/tools/cover-letter');
     render(<App />);
     expect(
-      await screen.findByRole('link', { name: 'All tools' })
+      await screen.findByRole('navigation', { name: 'Tools' })
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Cover Letter' })
     ).toBeInTheDocument();
-    expect(await screen.findByLabelText('Company')).toBeInTheDocument();
+    // the page's own chunk, not the loading frame
+    expect(
+      await screen.findByLabelText('Company', {}, { timeout: 5000 })
+    ).toBeInTheDocument();
   });
 
-  it('links a tool page to every other tool from the header, not to itself', async () => {
+  it('lists every tool in the tools nav, marks the open one, and opens it from the header menu', async () => {
     window.history.pushState({}, '', '/tools/keyword-check');
     render(<App />);
-    const header = screen.getByRole('banner');
+    const nav = await screen.findByRole('navigation', { name: 'Tools' });
+    expect(within(nav).getByRole('link', { name: 'Tools' })).toHaveAttribute(
+      'href',
+      '/tools'
+    );
     expect(
-      within(header).getByRole('link', { name: 'Resume Builder' })
+      within(nav).getByRole('link', { name: 'Resume Builder' })
     ).toHaveAttribute('href', '/tools/resume');
     expect(
-      within(header).getByRole('link', { name: 'Cover Letter' })
-    ).toHaveAttribute('href', '/tools/cover-letter');
+      within(nav).getByRole('link', { name: 'Keyword Checker' })
+    ).toHaveAttribute('aria-current', 'page');
+
+    await userEvent.click(
+      within(screen.getByRole('banner')).getByRole('button', {
+        name: 'Tools menu',
+      })
+    );
+    const sheet = await screen.findByRole('dialog');
     expect(
-      within(header).queryByRole('link', { name: 'Keyword Checker' })
-    ).not.toBeInTheDocument();
+      within(sheet).getByRole('link', { name: 'Salary Calculator' })
+    ).toHaveAttribute('href', '/tools/salary');
   });
 
   it('lists every tool at /tools, in job hunt order', async () => {
@@ -78,6 +98,7 @@ describe('App', () => {
       '/tools/resume',
       '/tools/keyword-check',
       '/tools/cover-letter',
+      '/tools/salary',
     ]);
   });
 

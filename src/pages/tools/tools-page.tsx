@@ -16,8 +16,9 @@ const ToolsPage = () => (
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Free tools for your job search</h2>
         <p className="text-muted-foreground text-sm">
-          Make your resume, check it against the job, then write the cover
-          letter. Free, no sign-up, and nothing you type leaves your browser.
+          Make your resume, check it against the job, write the cover letter,
+          then see what the offer pays after tax. Free, no sign-up, and nothing
+          you type leaves your browser.
         </p>
       </div>
 

@@ -1,5 +1,6 @@
 import {
   RiBarChartHorizontalLine,
+  RiCalculatorLine,
   RiFileSearchLine,
   RiFileUserLine,
   RiFolderLine,
@@ -159,6 +160,13 @@ export const TOOLS = [
     icon: RiQuillPenLine,
     description:
       'Write a cover letter that matches your resume, with your details filled in.',
+  },
+  {
+    title: 'Salary Calculator',
+    href: '/tools/salary',
+    icon: RiCalculatorLine,
+    description:
+      'See what an Indonesian salary offer pays after BPJS and PPh 21.',
   },
 ] as const;
 

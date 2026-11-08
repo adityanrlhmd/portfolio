@@ -49,6 +49,12 @@ const SkillList = ({
   </section>
 );
 
+// shown faded until a job post is pasted, so the empty preview shows what to expect
+const EXAMPLE = compareSkills(
+  'Built React apps in TypeScript with Tailwind CSS',
+  'Frontend Engineer. React and TypeScript, Next.js a plus. You will work with React every day, write tests with Jest, ship with Docker and CI/CD, and need good communication in English.'
+);
+
 const KeywordCheckPage = () => {
   const [resume, setResume] = useState(() => {
     const saved = loadResume();
@@ -104,6 +110,7 @@ const KeywordCheckPage = () => {
 
   return (
     <ToolLayout
+      tabs={['Job & resume', 'Results']}
       actions={
         <>
           <Button type="button" variant="outline" onClick={fillFromSaved}>
@@ -152,8 +159,17 @@ const KeywordCheckPage = () => {
               onChange={e => setResume(e.target.value)}
             />
             <FieldDescription>
-              Filled from the Resume Builder when you have one saved. You can
-              also import any text PDF, or paste.
+              Filled from the{' '}
+              {/* a new tab, since the job post pasted here isn't saved */}
+              <a
+                href="/tools/resume"
+                target="_blank"
+                className="hover:text-primary underline underline-offset-4"
+              >
+                Resume Builder
+              </a>{' '}
+              when you have one saved. Edit it there, then press Use saved
+              resume. You can also import any text PDF, or paste.
             </FieldDescription>
           </Field>
         </form>
@@ -166,27 +182,28 @@ const KeywordCheckPage = () => {
             aria-label="Results"
             className="min-h-0 space-y-6 overflow-y-auto rounded-md border p-4"
           >
-            {!job.trim() ? (
+            {!job.trim() && (
               <p className="text-muted-foreground text-sm">
-                Paste a job post to see which skills it asks for and which ones
-                your resume doesn't mention yet.
+                Example for a frontend job. Paste a job post to check your
+                resume against it.
               </p>
-            ) : total === 0 ? (
+            )}
+            {job.trim() && total === 0 ? (
               <p className="text-muted-foreground text-sm">
                 No skills from the list were found in this job post.
               </p>
             ) : (
-              <>
+              <div className={cn('space-y-6', !job.trim() && 'opacity-50')}>
                 <SkillList
                   title="Missing from your resume"
-                  skills={result.missing}
+                  skills={(job.trim() ? result : EXAMPLE).missing}
                   missing
                 />
                 <SkillList
                   title="Already in your resume"
-                  skills={result.matched}
+                  skills={(job.trim() ? result : EXAMPLE).matched}
                 />
-              </>
+              </div>
             )}
           </div>
           <FieldDescription>

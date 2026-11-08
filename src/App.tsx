@@ -4,6 +4,7 @@ import { AnnouncementBar } from '@/components/announcement-bar';
 import { Footer } from '@/components/footer';
 import { Header } from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
+import { ToolLayout } from '@/components/tool-layout';
 import { Toaster } from '@/components/ui/sonner';
 import { Spinner } from '@/components/ui/spinner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -20,6 +21,7 @@ const CoverLetterPage = lazy(
 const KeywordCheckPage = lazy(
   () => import('@/pages/keyword-check/keyword-check-page')
 );
+const SalaryPage = lazy(() => import('@/pages/salary/salary-page'));
 const ToolsPage = lazy(() => import('@/pages/tools/tools-page'));
 const TOOL_PAGES: Record<
   (typeof TOOLS)[number]['href'] | typeof TOOLS_HUB.href,
@@ -29,6 +31,7 @@ const TOOL_PAGES: Record<
   '/tools/resume': <ResumePage />,
   '/tools/cover-letter': <CoverLetterPage />,
   '/tools/keyword-check': <KeywordCheckPage />,
+  '/tools/salary': <SalaryPage />,
 };
 
 // Below the fold, so their code (the contact form's zod/emailjs, motion) stays out of the first load
@@ -65,10 +68,25 @@ function App() {
           <>
             <Suspense
               fallback={
-                // same height as a tool page's <main>, so the footer doesn't jump while loading
-                <div className="flex min-h-svh items-center justify-center">
-                  <Spinner className="size-6" />
-                </div>
+                tool.href === TOOLS_HUB.href ? (
+                  // same height as the hub's <main>, so the footer doesn't jump while loading
+                  <div className="flex min-h-svh items-center justify-center">
+                    <Spinner className="size-6" />
+                  </div>
+                ) : (
+                  // the same frame as the page, so the sidebar stays put while it loads
+                  <ToolLayout
+                    actions={null}
+                    form={
+                      // spans the empty preview column too (both columns + the 1.5rem gap),
+                      // so it sits in the middle of the content beside the sidebar
+                      <div className="flex h-[calc(100svh-var(--header-height)-3rem)] items-center justify-center lg:w-[calc(200%+1.5rem)]">
+                        <Spinner className="size-6" />
+                      </div>
+                    }
+                    preview={null}
+                  />
+                )
               }
             >
               {TOOL_PAGES[tool.href]}

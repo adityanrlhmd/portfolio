@@ -14,6 +14,20 @@ describe('KeywordCheckPage', () => {
     expect(
       screen.getByLabelText<HTMLTextAreaElement>('Your resume').value
     ).toContain('TypeScript');
+    // the sidebar has one too; this is the one under the resume field
+    const hint = screen.getByText(/Edit it there/);
+    expect(
+      within(hint).getByRole('link', { name: 'Resume Builder' })
+    ).toHaveAttribute('target', '_blank');
+  });
+
+  it('shows an example until a job post is pasted', () => {
+    render(<KeywordCheckPage />);
+    const results = screen.getByRole('region', { name: 'Results' });
+    expect(
+      within(results).getByText(/Example for a frontend job/)
+    ).toBeInTheDocument();
+    expect(within(results).getByText('Docker')).toBeInTheDocument();
   });
 
   it('lists the job post skills the resume is missing', async () => {

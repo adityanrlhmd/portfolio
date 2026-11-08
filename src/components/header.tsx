@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Logo } from '@/assets/logo';
 
+import { ToolMenu } from '@/components/tool-nav';
 import { buttonVariants } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -19,7 +20,7 @@ import {
 import { useActiveSection } from '@/hooks/use-active-section';
 
 import { backToPortfolio } from '@/lib/back-to-portfolio';
-import { NAVIGATIONS, TOOLS, TOOLS_HUB } from '@/lib/config';
+import { NAVIGATIONS, TOOLS_HUB } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
 import { ToggleButton } from './toggle-button';
@@ -55,6 +56,8 @@ export const Header = ({ tool }: { tool?: string }) => {
       >
         <div className="container flex w-full items-center justify-between">
           <div className="flex min-w-0 items-center gap-3">
+            {/* a tool page's menu, on the left like the shadcn docs; wide screens have the sidebar */}
+            {tool && <ToolMenu />}
             {/* on a tool page it's a back button that's always in reach */}
             <a
               href="/"
@@ -93,18 +96,14 @@ export const Header = ({ tool }: { tool?: string }) => {
           )}
 
           <div className="flex items-center gap-2">
-            {/* the portfolio points to the hub to pick a tool; a tool page keeps the
-                other tools one tap away while scrolling */}
-            {(tool
-              ? TOOLS.filter(link => link.title !== tool)
-              : [TOOLS_HUB]
-            ).map(link => (
-              <Tooltip key={link.href}>
+            {/* the portfolio points to the hub to pick a tool */}
+            {!tool && (
+              <Tooltip>
                 <TooltipTrigger
                   render={
                     <a
-                      href={link.href}
-                      aria-label={link.title}
+                      href={TOOLS_HUB.href}
+                      aria-label={TOOLS_HUB.title}
                       className={buttonVariants({
                         variant: 'outline',
                         size: 'icon',
@@ -112,11 +111,11 @@ export const Header = ({ tool }: { tool?: string }) => {
                     />
                   }
                 >
-                  <link.icon className="size-[1.2rem]" />
+                  <TOOLS_HUB.icon className="size-[1.2rem]" />
                 </TooltipTrigger>
-                <TooltipContent side="bottom">{link.title}</TooltipContent>
+                <TooltipContent side="bottom">{TOOLS_HUB.title}</TooltipContent>
               </Tooltip>
-            ))}
+            )}
             <ToggleButton />
           </div>
         </div>
