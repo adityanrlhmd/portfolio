@@ -44,7 +44,7 @@ const PROJECTS = [
     alter: { en: 'Free Job Search Tool', id: 'Tool Cari Kerja Gratis' },
     category: 'Web',
     image: resumeBuilder,
-    imageSize: [1180, 868],
+    imageSize: [1200, 724],
     description: {
       en: 'A free resume builder for job seekers, with a live PDF preview and nothing uploaded anywhere. The PDF you download carries the form data inside it, so importing it later fills the form back in: no account, no server. The PDF library loads only on the tool pages, so the portfolio stays light.',
       id: 'Pembuat CV gratis buat yang lagi cari kerja, dengan preview PDF live dan nggak ada data yang di-upload ke mana pun. PDF yang di-download nyimpen isi form di dalamnya, jadi tinggal import lagi buat lanjut edit: tanpa akun, tanpa server. Library PDF-nya cuma dimuat di halaman tools, jadi portfolio-nya tetap ringan.',
