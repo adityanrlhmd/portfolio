@@ -147,7 +147,6 @@ const CoverLetterPage = () => {
 
   return (
     <ToolLayout
-      next={{ href: '/resume', label: 'Resume Builder' }}
       actions={
         <>
           <Button type="button" variant="outline" onClick={fillAditya}>

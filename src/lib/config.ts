@@ -1,10 +1,12 @@
 import {
   RiBarChartHorizontalLine,
+  RiFileSearchLine,
   RiFileUserLine,
   RiFolderLine,
   RiHomeLine,
   RiQuillPenLine,
   RiSendPlaneLine,
+  RiToolsLine,
 } from '@remixicon/react';
 
 import antdesignIcon from '@/assets/skills/ant-design.svg';
@@ -134,8 +136,35 @@ export const NAVIGATIONS = [
   },
 ] as const;
 
-// The free tools, each a page of its own (see App and vercel.json)
+// The free tools, each a page of its own under /tools (see App and vercel.json),
+// in the order a job hunt uses them
 export const TOOLS = [
-  { title: 'Resume Builder', href: '/resume', icon: RiFileUserLine },
-  { title: 'Cover Letter', href: '/cover-letter', icon: RiQuillPenLine },
+  {
+    title: 'Resume Builder',
+    href: '/tools/resume',
+    icon: RiFileUserLine,
+    description:
+      'Fill a form and watch your resume take shape as a PDF, ready to download.',
+  },
+  {
+    title: 'Keyword Checker',
+    href: '/tools/keyword-check',
+    icon: RiFileSearchLine,
+    description:
+      'Paste a job post and see which skills it asks for that your resume leaves out.',
+  },
+  {
+    title: 'Cover Letter',
+    href: '/tools/cover-letter',
+    icon: RiQuillPenLine,
+    description:
+      'Write a cover letter that matches your resume, with your details filled in.',
+  },
 ] as const;
+
+// The page that lists them all, the one to share
+export const TOOLS_HUB = {
+  title: 'Free Tools',
+  href: '/tools',
+  icon: RiToolsLine,
+} as const;

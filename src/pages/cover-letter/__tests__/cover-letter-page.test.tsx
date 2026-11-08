@@ -101,13 +101,6 @@ describe('CoverLetterPage', () => {
     expect(await screen.findByLabelText('Company')).toHaveValue('Acme');
   });
 
-  it('links to the resume builder', () => {
-    render(<CoverLetterPage />);
-    expect(
-      screen.getByRole('link', { name: 'Resume Builder' })
-    ).toHaveAttribute('href', '/resume');
-  });
-
   it('saves the last keystrokes when the visitor leaves right away', () => {
     render(<CoverLetterPage />);
     fireEvent.change(screen.getByLabelText('Company'), {

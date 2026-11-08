@@ -2,7 +2,7 @@ import { RiGithubFill, RiLinkedinBoxFill, RiMailFill } from '@remixicon/react';
 
 import { Logo } from '@/assets/logo';
 
-import { NAVIGATIONS, TOOLS } from '@/lib/config';
+import { NAVIGATIONS, TOOLS_HUB } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
 import { LetterGlitch } from './letter-glitch';
@@ -78,23 +78,14 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
               <div className="md:h-36">
                 <LetterGlitch glitchColors={['#35530e', '#7ccf00']} />
               </div>
-              {/* label on its own line, so a narrow column never splits a tool's name */}
-              <div className="mt-3 text-center md:text-end">
-                <p>Free tools</p>
-                <ul className="flex justify-center gap-2 md:justify-end">
-                  {TOOLS.map((tool, i) => (
-                    <li key={tool.href} className="whitespace-nowrap">
-                      {i > 0 && <span aria-hidden>· </span>}
-                      <a
-                        href={tool.href}
-                        className="text-foreground font-semibold hover:underline"
-                      >
-                        {tool.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <p className="mt-3 text-center md:text-end">
+                <a
+                  href={TOOLS_HUB.href}
+                  className="text-foreground font-semibold hover:underline"
+                >
+                  Free tools for your job search →
+                </a>
+              </p>
             </div>
           </div>
         )}

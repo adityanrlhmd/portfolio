@@ -32,3 +32,15 @@ export const skillLines = (text: string) =>
           items: line.slice(colon + 1).trim(),
         };
   });
+
+// The resume as plain text for the keyword checker, leaving out the photo and contact details
+export const resumeText = (resume: Resume) =>
+  [
+    resume.summary,
+    resume.skills,
+    resume.achievements,
+    ...resume.experiences.flatMap(e => [e.role, e.description, e.bullets]),
+    ...resume.educations.map(e => e.degree),
+  ]
+    .filter(text => text.trim())
+    .join('\n');

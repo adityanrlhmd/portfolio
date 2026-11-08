@@ -64,7 +64,6 @@ const ResumeBuilder = () => {
 
   return (
     <ToolLayout
-      next={{ href: '/cover-letter', label: 'Cover Letter' }}
       actions={
         <>
           <Button type="button" variant="outline" onClick={fillAditya}>

@@ -1,19 +1,18 @@
+import { RiArrowLeftLine } from '@remixicon/react';
+
 import { type ReactNode, useState } from 'react';
 
-import { ToolNav } from '@/components/tool-nav';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 
 import { cn } from '@/lib/utils';
 
 // The shared frame of a tool page: nav and actions on top, the form beside a sticky
 // preview on desktop, and Edit/Preview tabs to switch between them on mobile.
 export const ToolLayout = ({
-  next,
   actions,
   form,
   preview,
 }: {
-  next: { href: string; label: string };
   actions: ReactNode;
   form: ReactNode;
   preview: ReactNode;
@@ -26,7 +25,13 @@ export const ToolLayout = ({
           the auto/1fr rows give any spare height to the form row, not the toolbar */}
       <div className="container grid grid-cols-1 gap-x-6 gap-y-4 py-6 lg:grid-cols-2 lg:grid-rows-[auto_1fr]">
         <div className="space-y-4">
-          <ToolNav next={next} />
+          {/* to the hub, where a shared link lands; the header logo leads to the portfolio */}
+          <a
+            href="/tools"
+            className={buttonVariants({ variant: 'ghost', className: '-ms-2' })}
+          >
+            <RiArrowLeftLine /> All tools
+          </a>
           <p className="text-muted-foreground text-xs sm:hidden">
             Everything stays in your browser. Nothing is uploaded.
           </p>

@@ -18,7 +18,8 @@ import {
 
 import { useActiveSection } from '@/hooks/use-active-section';
 
-import { NAVIGATIONS, TOOLS } from '@/lib/config';
+import { backToPortfolio } from '@/lib/back-to-portfolio';
+import { NAVIGATIONS, TOOLS, TOOLS_HUB } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
 import { ToggleButton } from './toggle-button';
@@ -54,7 +55,13 @@ export const Header = ({ tool }: { tool?: string }) => {
       >
         <div className="container flex w-full items-center justify-between">
           <div className="flex min-w-0 items-center gap-3">
-            <a href="/" aria-label="Home" className="hover:text-primary">
+            {/* on a tool page it's a back button that's always in reach */}
+            <a
+              href="/"
+              aria-label="Home"
+              onClick={tool ? backToPortfolio : undefined}
+              className="hover:text-primary"
+            >
               <Logo />
             </a>
             {tool && (
@@ -86,26 +93,30 @@ export const Header = ({ tool }: { tool?: string }) => {
           )}
 
           <div className="flex items-center gap-2">
-            {!tool &&
-              TOOLS.map(link => (
-                <Tooltip key={link.href}>
-                  <TooltipTrigger
-                    render={
-                      <a
-                        href={link.href}
-                        aria-label={link.title}
-                        className={buttonVariants({
-                          variant: 'outline',
-                          size: 'icon',
-                        })}
-                      />
-                    }
-                  >
-                    <link.icon className="size-[1.2rem]" />
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">{link.title}</TooltipContent>
-                </Tooltip>
-              ))}
+            {/* the portfolio points to the hub to pick a tool; a tool page keeps the
+                other tools one tap away while scrolling */}
+            {(tool
+              ? TOOLS.filter(link => link.title !== tool)
+              : [TOOLS_HUB]
+            ).map(link => (
+              <Tooltip key={link.href}>
+                <TooltipTrigger
+                  render={
+                    <a
+                      href={link.href}
+                      aria-label={link.title}
+                      className={buttonVariants({
+                        variant: 'outline',
+                        size: 'icon',
+                      })}
+                    />
+                  }
+                >
+                  <link.icon className="size-[1.2rem]" />
+                </TooltipTrigger>
+                <TooltipContent side="bottom">{link.title}</TooltipContent>
+              </Tooltip>
+            ))}
             <ToggleButton />
           </div>
         </div>

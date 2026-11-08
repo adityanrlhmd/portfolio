@@ -1,6 +1,19 @@
 {
   "rewrites": [
-    { "source": "/resume", "destination": "/index.html" },
-    { "source": "/cover-letter", "destination": "/index.html" }
+    { "source": "/tools", "destination": "/tools.html" },
+    { "source": "/tools/:path*", "destination": "/tools.html" }
+  ],
+  "redirects": [
+    { "source": "/resume", "destination": "/tools/resume", "permanent": true },
+    {
+      "source": "/cover-letter",
+      "destination": "/tools/cover-letter",
+      "permanent": true
+    },
+    {
+      "source": "/keyword-check",
+      "destination": "/tools/keyword-check",
+      "permanent": true
+    }
   ]
 }

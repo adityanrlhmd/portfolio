@@ -6,9 +6,9 @@ export const AnnouncementBar = () => {
     >
       <div className="container py-2 text-center text-xs">
         <p>
-          New: build your resume with my template, live PDF preview included.{' '}
-          <a href="/resume" className="font-bold hover:underline">
-            Try the Resume Builder →
+          New: free job search tools, from resume to cover letter.{' '}
+          <a href="/tools" className="font-bold hover:underline">
+            See the tools →
           </a>
         </p>
       </div>
