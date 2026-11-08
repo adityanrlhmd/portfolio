@@ -185,3 +185,9 @@ export const TOOLS_HUB = {
   href: '/tools',
   icon: RiToolsLine,
 } as const;
+
+// The resume builder's write-up, linked from its project card (see vercel.json)
+export const CASE_STUDY = {
+  title: { en: 'Case Study', id: 'Studi Kasus' },
+  href: '/case-study/resume-builder',
+} as const;

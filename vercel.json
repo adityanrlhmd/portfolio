@@ -1,7 +1,8 @@
 {
   "rewrites": [
     { "source": "/tools", "destination": "/tools.html" },
-    { "source": "/tools/:path*", "destination": "/tools.html" }
+    { "source": "/tools/:path*", "destination": "/tools.html" },
+    { "source": "/case-study/:path*", "destination": "/index.html" }
   ],
   "redirects": [
     { "source": "/resume", "destination": "/tools/resume", "permanent": true },

@@ -12,7 +12,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 
 import Hero from '@/sections/hero';
 
-import { TOOLS, TOOLS_HUB } from '@/lib/config';
+import { CASE_STUDY, TOOLS, TOOLS_HUB } from '@/lib/config';
 
 // Their own chunks, so the PDF library never loads on the home page
 const ResumePage = lazy(() => import('@/pages/resume/resume-page'));
@@ -24,6 +24,9 @@ const KeywordCheckPage = lazy(
 );
 const SalaryPage = lazy(() => import('@/pages/salary/salary-page'));
 const ToolsPage = lazy(() => import('@/pages/tools/tools-page'));
+const CaseStudyPage = lazy(
+  () => import('@/pages/case-study/resume-builder-case-study')
+);
 const TOOL_PAGES: Record<
   (typeof TOOLS)[number]['href'] | typeof TOOLS_HUB.href,
   React.ReactNode
@@ -54,6 +57,7 @@ function App() {
   // the hub gets the same frame as a tool page
   const tool =
     path === TOOLS_HUB.href ? TOOLS_HUB : TOOLS.find(t => t.href === path);
+  const caseStudy = path === CASE_STUDY.href;
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -61,10 +65,15 @@ function App() {
         <TooltipProvider>
           {/* first, so toasts fired from a page's mount effects aren't dropped */}
           <Toaster />
-          {!tool && import.meta.env.VITE_SHOW_ANNOUNCEMENT_BAR === 'true' && (
-            <AnnouncementBar />
-          )}
-          <Header tool={tool?.title} />
+          {!tool &&
+            !caseStudy &&
+            import.meta.env.VITE_SHOW_ANNOUNCEMENT_BAR === 'true' && (
+              <AnnouncementBar />
+            )}
+          <Header
+            tool={tool?.title}
+            page={caseStudy ? CASE_STUDY.title : undefined}
+          />
 
           {tool ? (
             <>
@@ -92,6 +101,14 @@ function App() {
                 }
               >
                 {TOOL_PAGES[tool.href]}
+              </Suspense>
+              <Footer minimal />
+            </>
+          ) : caseStudy ? (
+            <>
+              {/* min-h-svh keeps the footer from jumping up while the chunk loads */}
+              <Suspense fallback={<div className="min-h-svh" />}>
+                <CaseStudyPage />
               </Suspense>
               <Footer minimal />
             </>

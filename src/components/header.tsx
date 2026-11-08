@@ -28,9 +28,19 @@ import { cn } from '@/lib/utils';
 
 import { ToggleButton } from './toggle-button';
 
-// Tool pages keep the same header frame but swap the navigation for the tool's title
-export const Header = ({ tool }: { tool?: Record<Lang, string> }) => {
+// Tool pages keep the same header frame but swap the navigation for the tool's title;
+// a page of its own (a case study) does the same with its `page` title, without the tools menu
+export const Header = ({
+  tool,
+  page,
+}: {
+  tool?: Record<Lang, string>;
+  page?: Record<Lang, string>;
+}) => {
   const { lang } = useLang();
+  const title = tool ?? page;
+  // the case study's own heading is the page's h1
+  const Title = tool ? 'h1' : 'p';
   const activeSection = useActiveSection(
     NAVIGATIONS.map(nav => nav.href.replace('#', ''))
   );
@@ -55,33 +65,37 @@ export const Header = ({ tool }: { tool?: Record<Lang, string> }) => {
                 tool && 'max-lg:border-b-0'
               )
             : // see-through on mobile only over the home hero; a tool's form scrolls under it
-              cn('sm:bg-background sm:border-b', tool && 'bg-background')
+              cn('sm:bg-background sm:border-b', title && 'bg-background')
         )}
       >
         <div className="container flex w-full items-center justify-between">
           <div className="flex min-w-0 items-center gap-3">
             {/* a tool page's menu, on the left like the shadcn docs; wide screens have the sidebar */}
             {tool && <ToolMenu />}
-            {/* on a tool page it's a back button that's always in reach */}
+            {/* off the home page it's a back button that's always in reach */}
             <a
               href="/"
               aria-label={lang === 'id' ? 'Beranda' : 'Home'}
-              onClick={tool ? backToPortfolio : undefined}
+              onClick={title ? backToPortfolio : undefined}
               className="hover:text-primary"
             >
               <Logo />
             </a>
-            {tool && (
+            {title && (
               <div className="min-w-0">
-                <h1 className="truncate text-sm font-bold">{tool[lang]}</h1>
-                <p className="text-muted-foreground hidden truncate text-xs sm:block">
-                  {COMMON[lang].localOnly}
-                </p>
+                <Title className="truncate text-sm font-bold">
+                  {title[lang]}
+                </Title>
+                {tool && (
+                  <p className="text-muted-foreground hidden truncate text-xs sm:block">
+                    {COMMON[lang].localOnly}
+                  </p>
+                )}
               </div>
             )}
           </div>
 
-          {!tool && (
+          {!title && (
             <NavigationMenu className="hidden sm:flex">
               <NavigationMenuList>
                 {NAVIGATIONS.map(nav => (
@@ -128,7 +142,7 @@ export const Header = ({ tool }: { tool?: Record<Lang, string> }) => {
         </div>
       </header>
 
-      {!tool && (
+      {!title && (
         <nav
           data-slot="bottom-nav"
           className="bg-background/80 fixed inset-x-0 bottom-0 z-50 border-t backdrop-blur-md sm:hidden"

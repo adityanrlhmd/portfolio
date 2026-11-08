@@ -11,6 +11,7 @@ import leslar from '@/assets/projects/leslar.webp';
 import phantom from '@/assets/projects/phantom.webp';
 import prestige from '@/assets/projects/prestige.webp';
 import qsr from '@/assets/projects/qsr.webp';
+import resumeBuilder from '@/assets/projects/resume-builder.jpg';
 import rooma from '@/assets/projects/rooma.webp';
 
 import { useLang } from '@/components/language-provider';
@@ -30,7 +31,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-import { SKILLS } from '@/lib/config';
+import { CASE_STUDY, SKILLS } from '@/lib/config';
 import { translations } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
@@ -38,6 +39,32 @@ import { cn } from '@/lib/utils';
 const SKILL_ORDER = Object.values(SKILLS);
 
 const PROJECTS = [
+  {
+    title: 'Resume Builder',
+    alter: { en: 'Free Job Search Tool', id: 'Tool Cari Kerja Gratis' },
+    category: 'Web',
+    image: resumeBuilder,
+    imageSize: [1180, 868],
+    description: {
+      en: 'A free resume builder for job seekers, with a live PDF preview and nothing uploaded anywhere. The PDF you download carries the form data inside it, so importing it later fills the form back in: no account, no server. The PDF library loads only on the tool pages, so the portfolio stays light.',
+      id: 'Pembuat CV gratis buat yang lagi cari kerja, dengan preview PDF live dan nggak ada data yang di-upload ke mana pun. PDF yang di-download nyimpen isi form di dalamnya, jadi tinggal import lagi buat lanjut edit: tanpa akun, tanpa server. Library PDF-nya cuma dimuat di halaman tools, jadi portfolio-nya tetap ringan.',
+    },
+    link: '/tools/resume',
+    caseStudy: CASE_STUDY.href,
+    stacks: [
+      SKILLS['react-js'],
+      SKILLS.tailwindcss,
+      SKILLS['shadcn-ui'],
+      SKILLS.typescript,
+      SKILLS.zod,
+      SKILLS['react-pdf'],
+      SKILLS.vitest,
+      SKILLS['testing-library'],
+      SKILLS.vite,
+      SKILLS.vercel,
+      SKILLS.git,
+    ],
+  },
   {
     title: 'emitra',
     alter: { en: 'B2B Marketplace', id: 'Marketplace B2B' },
@@ -321,6 +348,7 @@ const T = translations(
     intro:
       "Some of the things I've worked on, from enterprise platforms to client sites, and what I handled on each.",
     newTab: 'opens in a new tab',
+    caseStudy: 'Read the case study →',
   },
   {
     eyebrow: '⚡︎ Karya Pilihan',
@@ -328,6 +356,7 @@ const T = translations(
     intro:
       'Beberapa yang pernah kukerjain, dari platform enterprise sampai situs klien, plus bagian apa yang kupegang di tiap proyek.',
     newTab: 'buka di tab baru',
+    caseStudy: 'Baca studi kasusnya →',
   }
 );
 
@@ -411,8 +440,16 @@ const Projects = () => {
                 </CardAction>
               </CardHeader>
 
-              <CardContent className="text-muted-foreground">
+              <CardContent className="text-muted-foreground space-y-3">
                 <p>{project.description[lang]}</p>
+                {project.caseStudy && (
+                  <a
+                    href={project.caseStudy}
+                    className="text-primary inline-block font-medium hover:underline"
+                  >
+                    {t.caseStudy}
+                  </a>
+                )}
               </CardContent>
 
               <CardFooter>

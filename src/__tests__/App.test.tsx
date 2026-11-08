@@ -179,6 +179,37 @@ describe('App', () => {
     });
   });
 
+  it('serves the case study on its own page, linked from its project card', async () => {
+    render(<App />);
+    expect(
+      await screen.findByRole(
+        'link',
+        { name: 'Read the case study →' },
+        { timeout: 5000 }
+      )
+    ).toHaveAttribute('href', '/case-study/resume-builder');
+  });
+
+  it('gives the case study a title header and no site navigation', async () => {
+    window.history.pushState({}, '', '/case-study/resume-builder');
+    render(<App />);
+    expect(
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'A resume builder that needs no server',
+      })
+    ).toBeInTheDocument();
+    const header = screen.getByRole('banner');
+    expect(within(header).getByText('Case Study')).toBeInTheDocument();
+    expect(
+      within(header).queryByRole('link', { name: 'Experience' })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Try the builder/ })
+    ).toHaveAttribute('href', '/tools/resume');
+    expect(screen.queryByText('Navigate')).not.toBeInTheDocument();
+  });
+
   it('switches the site to Indonesian and remembers it', async () => {
     render(<App />);
     await userEvent.click(
