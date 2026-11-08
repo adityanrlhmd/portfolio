@@ -117,12 +117,22 @@ describe('CoverLetterPage', () => {
     expect(loadCoverLetter()?.company).toBe('Acme');
   });
 
-  it('resets to a fresh letter after confirming', async () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
+  it('resets to a blank letter after confirming, sender included', async () => {
+    saveResume(ADITYA_RESUME);
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true);
     render(<CoverLetterPage />);
     await user.type(screen.getByLabelText('Company'), 'Acme');
     await user.click(screen.getByRole('button', { name: 'Reset' }));
     expect(screen.getByLabelText('Company')).toHaveValue('');
+    expect(screen.getByLabelText('Full name')).toHaveValue('');
+    expect(screen.getByLabelText('Email')).toHaveValue('');
+
+    // a reset letter counts as untouched, so filling it doesn't ask again
+    confirm.mockClear();
+    await user.click(
+      screen.getByRole('button', { name: "Fill with Aditya's data" })
+    );
+    expect(confirm).not.toHaveBeenCalled();
   });
 });
 

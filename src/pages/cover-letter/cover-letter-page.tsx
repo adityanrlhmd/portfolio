@@ -65,9 +65,20 @@ const fileName = (letter: CoverLetter) =>
     .filter(Boolean)
     .join(' - ') + '.pdf';
 
-// untouched: still what a new letter starts with
+// Reset clears the sender too, unlike a first visit, which copies it from the saved resume
+const blankLetter = (): CoverLetter => ({
+  ...newCoverLetter(),
+  name: '',
+  email: '',
+  phone: '',
+  location: '',
+});
+
+// untouched: still what a new or reset letter starts with
 const isUntouched = (letter: CoverLetter) =>
-  JSON.stringify(letter) === JSON.stringify(newCoverLetter());
+  [newCoverLetter(), blankLetter()].some(
+    start => JSON.stringify(letter) === JSON.stringify(start)
+  );
 
 const CoverLetterPage = () => {
   const form = useForm<CoverLetter>({
@@ -119,7 +130,7 @@ const CoverLetterPage = () => {
 
   const reset = () => {
     if (!window.confirm("Clear everything? This can't be undone.")) return;
-    form.reset(newCoverLetter());
+    form.reset(blankLetter());
   };
 
   const download = async () => {
