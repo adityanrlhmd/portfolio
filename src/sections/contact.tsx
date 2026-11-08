@@ -4,8 +4,9 @@ import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
 
-import { useId, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
+import { useLang } from '@/components/language-provider';
 import { ShinyText } from '@/components/shiny-text';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,19 +18,58 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
+import { translations } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
-const contactSchema = z.object({
-  name: z
-    .string()
-    .min(2, 'Name must be at least 2 characters.')
-    .max(32, 'Name must be at most 32 characters.'),
-  email: z.string().email('Invalid email address.'),
-  message: z
-    .string()
-    .min(1, 'Message is required.')
-    .max(500, 'Message must be at most 500 characters.'),
-});
+const T = translations(
+  {
+    eyebrow: "⚡︎ Let's Connect",
+    title: 'Contact',
+    intro:
+      "Open to new roles, freelance work, or just a chat about frontend. Drop me a message and I'll get back to you soon.",
+    name: 'Name',
+    email: 'Email',
+    message: 'Message',
+    submit: 'Submit',
+    sent: 'Message sent successfully!',
+    failed: 'Failed to send message.',
+    errors: {
+      nameMin: 'Name must be at least 2 characters.',
+      nameMax: 'Name must be at most 32 characters.',
+      email: 'Invalid email address.',
+      messageMin: 'Message is required.',
+      messageMax: 'Message must be at most 500 characters.',
+    },
+  },
+  {
+    eyebrow: '⚡︎ Yuk Ngobrol',
+    title: 'Kontak',
+    intro:
+      'Lagi terbuka buat posisi baru, kerjaan freelance, atau sekadar ngobrol soal frontend. Kirim pesan aja, nanti aku balas secepatnya.',
+    name: 'Nama',
+    email: 'Email',
+    message: 'Pesan',
+    submit: 'Kirim',
+    sent: 'Pesan terkirim!',
+    failed: 'Pesan gagal terkirim.',
+    errors: {
+      nameMin: 'Nama minimal 2 karakter.',
+      nameMax: 'Nama maksimal 32 karakter.',
+      email: 'Email-nya nggak valid.',
+      messageMin: 'Pesannya jangan kosong ya.',
+      messageMax: 'Pesan maksimal 500 karakter.',
+    },
+  }
+);
+
+const contactSchema = (errors: (typeof T)['en']['errors']) =>
+  z.object({
+    name: z.string().min(2, errors.nameMin).max(32, errors.nameMax),
+    email: z.string().email(errors.email),
+    message: z.string().min(1, errors.messageMin).max(500, errors.messageMax),
+  });
+
+type ContactForm = z.infer<ReturnType<typeof contactSchema>>;
 
 const Contact = () => {
   const formId = useId();
@@ -38,9 +78,12 @@ const Contact = () => {
   const messageId = useId();
 
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
+  const { lang } = useLang();
+  const t = T[lang];
+  const schema = useMemo(() => contactSchema(T[lang].errors), [lang]);
 
-  const contactForm = useForm<z.infer<typeof contactSchema>>({
-    resolver: zodResolver(contactSchema),
+  const contactForm = useForm<ContactForm>({
+    resolver: zodResolver(schema),
     defaultValues: {
       name: '',
       email: '',
@@ -48,7 +91,7 @@ const Contact = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof contactSchema>) => {
+  const onSubmit = (data: ContactForm) => {
     setIsLoadingSubmit(true);
     emailjs
       .send(
@@ -59,11 +102,11 @@ const Contact = () => {
       )
       .then(
         () => {
-          toast.success('Message sent successfully!');
+          toast.success(t.sent);
           contactForm.reset();
         },
         () => {
-          toast.error('Failed to send message.');
+          toast.error(t.failed);
         }
       )
       .finally(() => {
@@ -76,7 +119,7 @@ const Contact = () => {
       <div className="container grid grid-cols-1 gap-8 md:grid-cols-2">
         <div className="space-y-4">
           <ShinyText
-            text="⚡︎ Let's Connect"
+            text={t.eyebrow}
             speed={2}
             delay={0}
             color="var(--primary)"
@@ -89,11 +132,10 @@ const Contact = () => {
             className="text-primary font-bold"
           />
           <h2 className="text-4xl font-bold lg:text-5xl lg:leading-tight">
-            Contact
+            {t.title}
           </h2>
           <p className="text-muted-foreground text-sm md:text-base">
-            Open to new roles, freelance work, or just a chat about frontend.
-            Drop me a message and I'll get back to you soon.
+            {t.intro}
           </p>
         </div>
 
@@ -108,7 +150,7 @@ const Contact = () => {
               control={contactForm.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={nameId}>Name</FieldLabel>
+                  <FieldLabel htmlFor={nameId}>{t.name}</FieldLabel>
                   <Input {...field} id={nameId} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -121,7 +163,7 @@ const Contact = () => {
               control={contactForm.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={emailId}>Email</FieldLabel>
+                  <FieldLabel htmlFor={emailId}>{t.email}</FieldLabel>
                   <Input {...field} id={emailId} />
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -134,7 +176,7 @@ const Contact = () => {
               control={contactForm.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={messageId}>Message</FieldLabel>
+                  <FieldLabel htmlFor={messageId}>{t.message}</FieldLabel>
                   <Textarea
                     {...field}
                     id={messageId}
@@ -165,7 +207,7 @@ const Contact = () => {
             className="w-full"
             isLoading={isLoadingSubmit}
           >
-            Submit
+            {t.submit}
           </Button>
         </form>
       </div>

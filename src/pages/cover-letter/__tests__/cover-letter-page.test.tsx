@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { Toaster } from '@/components/ui/sonner';
@@ -45,6 +45,23 @@ describe('CoverLetterPage', () => {
     expect(screen.getByLabelText('Full name')).toHaveValue(ADITYA_RESUME.name);
     expect(screen.getByLabelText('Email')).toHaveValue(ADITYA_RESUME.email);
     expect(screen.getByLabelText('Company')).toHaveValue('');
+  });
+
+  it("switches today's date with the PDF language, but leaves a typed date alone", async () => {
+    render(<CoverLetterPage />);
+    const date = screen.getByLabelText('Date');
+    const pdfLang = screen.getByRole('group', { name: 'PDF language' });
+    const today = (locale: string) =>
+      new Date().toLocaleDateString(locale, { dateStyle: 'long' });
+
+    await user.click(within(pdfLang).getByRole('button', { name: 'ID' }));
+    expect(date).toHaveValue(today('id-ID'));
+    expect(localStorage.getItem('pdf-lang')).toBe('id');
+
+    await user.clear(date);
+    await user.type(date, '1 Mei 2026');
+    await user.click(within(pdfLang).getByRole('button', { name: 'EN' }));
+    expect(date).toHaveValue('1 Mei 2026');
   });
 
   it('keeps what was typed after a reload', async () => {

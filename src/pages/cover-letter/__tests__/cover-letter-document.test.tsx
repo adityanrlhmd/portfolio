@@ -31,7 +31,7 @@ describe('cover letter data embedded in the PDF', () => {
     const blob = await pdf(
       <CoverLetterDocument
         letter={empty}
-        placeholder={PLACEHOLDER_COVER_LETTER}
+        placeholder={PLACEHOLDER_COVER_LETTER.en}
       />
     ).toBlob();
     expect(decodeCoverLetterFromPdf(await blob.arrayBuffer())).toEqual(empty);

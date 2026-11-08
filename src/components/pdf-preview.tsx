@@ -4,6 +4,8 @@ import workerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 import { type ReactElement, useEffect, useRef, useState } from 'react';
 
+import { useLang } from '@/components/language-provider';
+
 GlobalWorkerOptions.workerSrc = workerUrl;
 
 // Draws the PDF onto canvases instead of an iframe, so an update swaps the
@@ -20,6 +22,7 @@ export const PdfPreview = ({
   document: ReactElement<DocumentProps>;
   label: string;
 }) => {
+  const { lang } = useLang();
   const pagesRef = useRef<HTMLDivElement>(null);
   const [url, setUrl] = useState<string>();
 
@@ -93,7 +96,7 @@ export const PdfPreview = ({
         onClick={openPdf}
         className="text-muted-foreground hover:text-foreground cursor-pointer self-end text-xs underline underline-offset-3"
       >
-        Open PDF
+        {lang === 'id' ? 'Buka PDF' : 'Open PDF'}
       </button>
     </div>
   );

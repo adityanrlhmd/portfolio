@@ -17,6 +17,7 @@ import { toast } from 'sonner';
 
 import { type ReactNode, useEffect, useState } from 'react';
 
+import { useT } from '@/components/language-provider';
 import {
   Accordion,
   AccordionContent,
@@ -28,6 +29,7 @@ import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 
+import { translations } from '@/lib/i18n';
 import { type Crop, toSquareJpeg } from '@/lib/resume/photo';
 import type { Resume } from '@/lib/resume/schema';
 import { cn } from '@/lib/utils';
@@ -35,6 +37,87 @@ import { cn } from '@/lib/utils';
 import { PhotoCropper } from './photo-cropper';
 
 type Form = UseFormReturn<Resume>;
+
+const T = translations(
+  {
+    personal: 'Personal',
+    fullName: 'Full name',
+    phone: 'Phone',
+    email: 'Email',
+    location: 'Location',
+    links: 'Links',
+    onePerLine: 'One per line',
+    photo: 'Photo',
+    yourPhoto: 'Your photo',
+    changePhoto: 'Change photo',
+    uploadPhoto: 'Upload photo',
+    removePhoto: 'Remove photo',
+    notAnImage: 'Please choose an image file.',
+    cantOpenImage: "This image can't be opened here. Try a JPG or PNG.",
+    summary: 'Summary',
+    experience: 'Experience',
+    addExperience: 'Add experience',
+    newExperience: 'New experience',
+    company: 'Company',
+    role: 'Role',
+    duration: 'Duration',
+    durationHint: 'e.g. Jan 2024 - Present',
+    companyDescription: 'Company description (optional)',
+    whatYouDid: 'What you did',
+    oneBulletPerLine: 'One bullet per line',
+    education: 'Education',
+    addEducation: 'Add education',
+    newEducation: 'New education',
+    school: 'School',
+    degree: 'Degree',
+    skills: 'Skills',
+    skillsHint: 'One group per line, e.g. Mobile: React Native, Expo',
+    achievements: 'Certifications & Achievements',
+    achievementsHint: 'One per line. Left empty, it stays off the PDF.',
+    drag: 'Drag to reorder',
+    remove: 'Remove',
+  },
+  {
+    personal: 'Data diri',
+    fullName: 'Nama lengkap',
+    phone: 'Telepon',
+    email: 'Email',
+    location: 'Lokasi',
+    links: 'Tautan',
+    onePerLine: 'Satu per baris',
+    photo: 'Foto',
+    yourPhoto: 'Foto kamu',
+    changePhoto: 'Ganti foto',
+    uploadPhoto: 'Upload foto',
+    removePhoto: 'Hapus foto',
+    notAnImage: 'Pilih file gambar ya.',
+    cantOpenImage:
+      'Gambar ini nggak bisa dibuka di sini. Coba pakai JPG atau PNG.',
+    summary: 'Ringkasan',
+    experience: 'Pengalaman',
+    addExperience: 'Tambah pengalaman',
+    newExperience: 'Pengalaman baru',
+    company: 'Perusahaan',
+    role: 'Posisi',
+    duration: 'Periode',
+    durationHint: 'contoh: Jan 2024 - Sekarang',
+    companyDescription: 'Deskripsi perusahaan (opsional)',
+    whatYouDid: 'Yang kamu kerjain',
+    oneBulletPerLine: 'Satu poin per baris',
+    education: 'Pendidikan',
+    addEducation: 'Tambah pendidikan',
+    newEducation: 'Pendidikan baru',
+    school: 'Sekolah/kampus',
+    degree: 'Gelar',
+    skills: 'Keahlian',
+    skillsHint: 'Satu kelompok per baris, contoh: Mobile: React Native, Expo',
+    achievements: 'Sertifikasi & Prestasi',
+    achievementsHint:
+      'Satu per baris. Kalau dikosongin, bagian ini nggak muncul di PDF.',
+    drag: 'Geser buat ubah urutan',
+    remove: 'Hapus',
+  }
+);
 
 const TextField = ({
   form,
@@ -100,6 +183,7 @@ const SortableItem = ({
   children: ReactNode;
 }) => {
   const controls = useDragControls();
+  const t = useT(T);
 
   return (
     <Reorder.Item
@@ -117,7 +201,7 @@ const SortableItem = ({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Drag to reorder"
+            aria-label={t.drag}
             className="cursor-grab touch-none"
             onPointerDown={e => controls.start(e)}
             onKeyDown={e => {
@@ -143,7 +227,7 @@ const SortableItem = ({
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Remove"
+            aria-label={t.remove}
             onClick={onRemove}
           >
             <RiDeleteBinLine />
@@ -178,6 +262,7 @@ const useSortable = <N extends 'experiences' | 'educations'>(
 };
 
 export const ResumeForm = ({ form }: { form: Form }) => {
+  const t = useT(T);
   const experiences = useSortable(form, 'experiences');
   const educations = useSortable(form, 'educations');
   const photo = form.watch('photo');
@@ -198,7 +283,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
   const onPhoto = (file: File | undefined) => {
     if (!file) return;
     if (!file.type.startsWith('image/')) {
-      toast.error('Please choose an image file.');
+      toast.error(t.notAnImage);
       return;
     }
     setPicked({ file, url: URL.createObjectURL(file) });
@@ -210,34 +295,34 @@ export const ResumeForm = ({ form }: { form: Form }) => {
       const photo = await toSquareJpeg(picked.file, crop);
       form.setValue('photo', photo, { shouldDirty: true });
       setPicked(undefined);
-    } catch (error) {
-      toast.error((error as Error).message);
+    } catch {
+      toast.error(t.cantOpenImage);
     }
   };
 
   return (
     <Accordion defaultValue={['personal']} multiple>
-      <Section value="personal" title="Personal">
-        <TextField form={form} name="name" label="Full name" />
+      <Section value="personal" title={t.personal}>
+        <TextField form={form} name="name" label={t.fullName} />
         <div className="grid gap-4 sm:grid-cols-2">
-          <TextField form={form} name="phone" label="Phone" />
-          <TextField form={form} name="email" label="Email" />
+          <TextField form={form} name="phone" label={t.phone} />
+          <TextField form={form} name="email" label={t.email} />
         </div>
-        <TextField form={form} name="location" label="Location" />
+        <TextField form={form} name="location" label={t.location} />
         <TextField
           form={form}
           name="links"
-          label="Links"
-          hint="One per line"
+          label={t.links}
+          hint={t.onePerLine}
           multiline
         />
         <Field>
-          <FieldLabel htmlFor="photo">Photo</FieldLabel>
+          <FieldLabel htmlFor="photo">{t.photo}</FieldLabel>
           <div className="flex items-center gap-3">
             {photo && (
               <img
                 src={photo}
-                alt="Your photo"
+                alt={t.yourPhoto}
                 className="size-14 rounded-md object-cover"
               />
             )}
@@ -248,7 +333,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
               )}
             >
               <RiImageAddLine />
-              {photo ? 'Change photo' : 'Upload photo'}
+              {photo ? t.changePhoto : t.uploadPhoto}
               <input
                 id="photo"
                 type="file"
@@ -268,7 +353,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
                   form.setValue('photo', '', { shouldDirty: true })
                 }
               >
-                Remove photo
+                {t.removePhoto}
               </Button>
             )}
           </div>
@@ -278,9 +363,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
               onDone={confirmPhoto}
               onCancel={() => setPicked(undefined)}
               onError={() => {
-                toast.error(
-                  "This image can't be opened here. Try a JPG or PNG."
-                );
+                toast.error(t.cantOpenImage);
                 setPicked(undefined);
               }}
             />
@@ -288,17 +371,17 @@ export const ResumeForm = ({ form }: { form: Form }) => {
         </Field>
       </Section>
 
-      <Section value="summary" title="Summary">
+      <Section value="summary" title={t.summary}>
         <TextField
           form={form}
           name="summary"
-          label="Summary"
+          label={t.summary}
           multiline
           hideLabel
         />
       </Section>
 
-      <Section value="experience" title="Experience">
+      <Section value="experience" title={t.experience}>
         <Button
           type="button"
           variant="outline"
@@ -313,7 +396,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
             })
           }
         >
-          <RiAddLine /> Add experience
+          <RiAddLine /> {t.addExperience}
         </Button>
         <Reorder.Group
           axis="y"
@@ -329,7 +412,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
                 watchedExperiences[i]?.company,
                 watchedExperiences[i]?.role
               )}
-              placeholder="New experience"
+              placeholder={t.newExperience}
               index={i}
               count={experiences.fields.length}
               onMove={experiences.move}
@@ -339,35 +422,35 @@ export const ResumeForm = ({ form }: { form: Form }) => {
                 <TextField
                   form={form}
                   name={`experiences.${i}.company`}
-                  label="Company"
+                  label={t.company}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${i}.role`}
-                  label="Role"
+                  label={t.role}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${i}.location`}
-                  label="Location"
+                  label={t.location}
                 />
                 <TextField
                   form={form}
                   name={`experiences.${i}.duration`}
-                  label="Duration"
-                  hint="e.g. Jan 2024 - Present"
+                  label={t.duration}
+                  hint={t.durationHint}
                 />
               </div>
               <TextField
                 form={form}
                 name={`experiences.${i}.description`}
-                label="Company description (optional)"
+                label={t.companyDescription}
               />
               <TextField
                 form={form}
                 name={`experiences.${i}.bullets`}
-                label="What you did"
-                hint="One bullet per line"
+                label={t.whatYouDid}
+                hint={t.oneBulletPerLine}
                 multiline
               />
             </SortableItem>
@@ -375,7 +458,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
         </Reorder.Group>
       </Section>
 
-      <Section value="education" title="Education">
+      <Section value="education" title={t.education}>
         <Button
           type="button"
           variant="outline"
@@ -388,7 +471,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
             })
           }
         >
-          <RiAddLine /> Add education
+          <RiAddLine /> {t.addEducation}
         </Button>
         <Reorder.Group
           axis="y"
@@ -404,7 +487,7 @@ export const ResumeForm = ({ form }: { form: Form }) => {
                 watchedEducations[i]?.school,
                 watchedEducations[i]?.degree
               )}
-              placeholder="New education"
+              placeholder={t.newEducation}
               index={i}
               count={educations.fields.length}
               onMove={educations.move}
@@ -414,22 +497,22 @@ export const ResumeForm = ({ form }: { form: Form }) => {
                 <TextField
                   form={form}
                   name={`educations.${i}.school`}
-                  label="School"
+                  label={t.school}
                 />
                 <TextField
                   form={form}
                   name={`educations.${i}.degree`}
-                  label="Degree"
+                  label={t.degree}
                 />
                 <TextField
                   form={form}
                   name={`educations.${i}.location`}
-                  label="Location"
+                  label={t.location}
                 />
                 <TextField
                   form={form}
                   name={`educations.${i}.duration`}
-                  label="Duration"
+                  label={t.duration}
                 />
               </div>
             </SortableItem>
@@ -437,24 +520,24 @@ export const ResumeForm = ({ form }: { form: Form }) => {
         </Reorder.Group>
       </Section>
 
-      <Section value="skills" title="Skills">
+      <Section value="skills" title={t.skills}>
         <TextField
           form={form}
           name="skills"
           hideLabel
-          label="Skills"
-          hint="One group per line, e.g. Mobile: React Native, Expo"
+          label={t.skills}
+          hint={t.skillsHint}
           multiline
         />
       </Section>
 
-      <Section value="achievements" title="Certifications & Achievements">
+      <Section value="achievements" title={t.achievements}>
         <TextField
           form={form}
           name="achievements"
           hideLabel
-          label="Certifications & Achievements"
-          hint="One per line. Left empty, it stays off the PDF."
+          label={t.achievements}
+          hint={t.achievementsHint}
           multiline
         />
       </Section>

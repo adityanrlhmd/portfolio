@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 
 import { Logo } from '@/assets/logo';
 
+import { useLang } from '@/components/language-provider';
+import { LanguageToggle } from '@/components/language-toggle';
 import { ToolMenu } from '@/components/tool-nav';
 import { buttonVariants } from '@/components/ui/button';
 import {
@@ -21,12 +23,14 @@ import { useActiveSection } from '@/hooks/use-active-section';
 
 import { backToPortfolio } from '@/lib/back-to-portfolio';
 import { NAVIGATIONS, TOOLS_HUB } from '@/lib/config';
+import { COMMON, type Lang } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 import { ToggleButton } from './toggle-button';
 
 // Tool pages keep the same header frame but swap the navigation for the tool's title
-export const Header = ({ tool }: { tool?: string }) => {
+export const Header = ({ tool }: { tool?: Record<Lang, string> }) => {
+  const { lang } = useLang();
   const activeSection = useActiveSection(
     NAVIGATIONS.map(nav => nav.href.replace('#', ''))
   );
@@ -61,7 +65,7 @@ export const Header = ({ tool }: { tool?: string }) => {
             {/* on a tool page it's a back button that's always in reach */}
             <a
               href="/"
-              aria-label="Home"
+              aria-label={lang === 'id' ? 'Beranda' : 'Home'}
               onClick={tool ? backToPortfolio : undefined}
               className="hover:text-primary"
             >
@@ -69,9 +73,9 @@ export const Header = ({ tool }: { tool?: string }) => {
             </a>
             {tool && (
               <div className="min-w-0">
-                <h1 className="truncate text-sm font-bold">{tool}</h1>
+                <h1 className="truncate text-sm font-bold">{tool[lang]}</h1>
                 <p className="text-muted-foreground hidden truncate text-xs sm:block">
-                  Everything stays in your browser. Nothing is uploaded.
+                  {COMMON[lang].localOnly}
                 </p>
               </div>
             )}
@@ -81,13 +85,13 @@ export const Header = ({ tool }: { tool?: string }) => {
             <NavigationMenu className="hidden sm:flex">
               <NavigationMenuList>
                 {NAVIGATIONS.map(nav => (
-                  <NavigationMenuItem key={nav.title}>
+                  <NavigationMenuItem key={nav.href}>
                     <NavigationMenuLink
                       data-active={activeSection === nav.href.replace('#', '')}
                       className={navigationMenuTriggerStyle()}
                       href={nav.href}
                     >
-                      {nav.title}
+                      {nav.title[lang]}
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -103,7 +107,7 @@ export const Header = ({ tool }: { tool?: string }) => {
                   render={
                     <a
                       href={TOOLS_HUB.href}
-                      aria-label={TOOLS_HUB.title}
+                      aria-label={TOOLS_HUB.title[lang]}
                       className={buttonVariants({
                         variant: 'outline',
                         size: 'icon',
@@ -113,9 +117,12 @@ export const Header = ({ tool }: { tool?: string }) => {
                 >
                   <TOOLS_HUB.icon className="size-[1.2rem]" />
                 </TooltipTrigger>
-                <TooltipContent side="bottom">{TOOLS_HUB.title}</TooltipContent>
+                <TooltipContent side="bottom">
+                  {TOOLS_HUB.title[lang]}
+                </TooltipContent>
               </Tooltip>
             )}
+            <LanguageToggle />
             <ToggleButton />
           </div>
         </div>
@@ -128,14 +135,14 @@ export const Header = ({ tool }: { tool?: string }) => {
         >
           <ul className="flex items-center justify-evenly">
             {NAVIGATIONS.map(nav => (
-              <li key={nav.title}>
+              <li key={nav.href}>
                 <a
                   data-active={activeSection === nav.href.replace('#', '')}
                   className="text-muted-foreground hover:text-primary data-[active=true]:text-primary flex flex-col items-center justify-center p-4 text-sm"
                   href={nav.href}
                 >
                   <nav.icon />
-                  <span className="text-xs">{nav.title}</span>
+                  <span className="text-xs">{nav.title[lang]}</span>
                 </a>
               </li>
             ))}

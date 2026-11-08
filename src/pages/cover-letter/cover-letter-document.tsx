@@ -5,6 +5,26 @@ import {
   encodeCoverLetter,
   paragraphs,
 } from '@/lib/cover-letter';
+import { type Lang, translations } from '@/lib/i18n';
+
+// the PDF's own language, picked apart from the site's
+// eslint-disable-next-line react-refresh/only-export-components
+export const COVER_LETTER_PDF = translations(
+  {
+    title: 'Cover Letter',
+    subject: (role: string) => `Re: Application for ${role}`,
+    recipient: 'Hiring Manager',
+    greeting: (recipient: string) => `Dear ${recipient},`,
+    closing: 'Sincerely,',
+  },
+  {
+    title: 'Surat Lamaran',
+    subject: (role: string) => `Perihal: Lamaran Posisi ${role}`,
+    recipient: 'Bapak/Ibu HRD',
+    greeting: (recipient: string) => `Yth. ${recipient},`,
+    closing: 'Hormat saya,',
+  }
+);
 
 const s = StyleSheet.create({
   // same type as the resume, so the two read as a set
@@ -33,11 +53,14 @@ const s = StyleSheet.create({
 export const CoverLetterDocument = ({
   letter,
   placeholder,
+  lang = 'en',
 }: {
   letter: CoverLetter;
+  lang?: Lang;
   // preview only: empty fields show this content, faded
   placeholder?: CoverLetter;
 }) => {
+  const t = COVER_LETTER_PDF[lang];
   const take = (key: keyof CoverLetter) =>
     !placeholder || letter[key].trim()
       ? { value: letter[key].trim(), style: undefined }
@@ -56,8 +79,8 @@ export const CoverLetterDocument = ({
     <Document
       title={
         letter.company.trim()
-          ? `Cover Letter - ${letter.company.trim()}`
-          : 'Cover Letter'
+          ? `${t.title} - ${letter.company.trim()}`
+          : t.title
       }
       author={letter.name}
       subject={encodeCoverLetter(letter)}
@@ -90,12 +113,12 @@ export const CoverLetterDocument = ({
 
         {role.value && (
           <Text style={[s.block, s.bold, role.style]}>
-            Re: Application for {role.value}
+            {t.subject(role.value)}
           </Text>
         )}
 
         <Text style={s.block}>
-          Dear {letter.recipient.trim() || 'Hiring Manager'},
+          {t.greeting(letter.recipient.trim() || t.recipient)}
         </Text>
         <View style={body.style}>
           {paragraphs(body.value).map((paragraph, i) => (
@@ -106,7 +129,7 @@ export const CoverLetterDocument = ({
         </View>
 
         <View style={s.block} wrap={false}>
-          <Text>Sincerely,</Text>
+          <Text>{t.closing}</Text>
           <Text style={[s.paragraph, s.bold, name.style]}>{name.value}</Text>
         </View>
       </Page>

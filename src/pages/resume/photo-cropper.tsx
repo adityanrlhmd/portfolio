@@ -1,8 +1,25 @@
 import { useRef, useState } from 'react';
 
+import { useT } from '@/components/language-provider';
 import { Button } from '@/components/ui/button';
 
+import { translations } from '@/lib/i18n';
 import { type Crop, cropFor } from '@/lib/resume/photo';
+
+const T = translations(
+  {
+    area: 'Photo crop area. Drag or use the arrow keys to move the photo.',
+    zoom: 'Zoom',
+    use: 'Use photo',
+    cancel: 'Cancel',
+  },
+  {
+    area: 'Area crop foto. Geser atau pakai tombol panah buat mindahin foto.',
+    zoom: 'Zoom',
+    use: 'Pakai foto',
+    cancel: 'Batal',
+  }
+);
 
 const FRAME = 240;
 const STEP = 10;
@@ -19,6 +36,7 @@ export const PhotoCropper = ({
   onCancel: () => void;
   onError: () => void;
 }) => {
+  const t = useT(T);
   const [image, setImage] = useState<{ width: number; height: number }>();
   const [zoom, setZoom] = useState(1);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
@@ -32,7 +50,7 @@ export const PhotoCropper = ({
       <div
         tabIndex={0}
         role="img"
-        aria-label="Photo crop area. Drag or use the arrow keys to move the photo."
+        aria-label={t.area}
         className="bg-muted focus-visible:ring-ring/30 relative cursor-grab touch-none overflow-hidden rounded-md outline-none select-none focus-visible:ring-2 active:cursor-grabbing"
         style={{ width: FRAME, height: FRAME }}
         onPointerDown={e => {
@@ -90,7 +108,7 @@ export const PhotoCropper = ({
         className="flex items-center gap-3 text-sm"
         style={{ width: FRAME }}
       >
-        Zoom
+        {t.zoom}
         <input
           type="range"
           min={1}
@@ -107,10 +125,10 @@ export const PhotoCropper = ({
           disabled={!fit}
           onClick={() => fit && onDone(fit.crop)}
         >
-          Use photo
+          {t.use}
         </Button>
         <Button type="button" variant="ghost" onClick={onCancel}>
-          Cancel
+          {t.cancel}
         </Button>
       </div>
     </div>

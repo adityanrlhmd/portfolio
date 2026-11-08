@@ -179,6 +179,26 @@ describe('App', () => {
     });
   });
 
+  it('switches the site to Indonesian and remembers it', async () => {
+    render(<App />);
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Ganti ke Bahasa Indonesia' })
+    );
+    const header = screen.getByRole('banner');
+    expect(
+      within(header).getByRole('link', { name: 'Pengalaman' })
+    ).toBeInTheDocument();
+    expect(document.documentElement.lang).toBe('id');
+    expect(localStorage.getItem('lang')).toBe('id');
+
+    await userEvent.click(
+      screen.getByRole('button', { name: 'Switch to English' })
+    );
+    expect(
+      within(header).getByRole('link', { name: 'Experience' })
+    ).toBeInTheDocument();
+  });
+
   it("downloads Aditya's CV from the hero", async () => {
     render(<App />);
     await userEvent.click(screen.getByRole('button', { name: 'My Resume' }));

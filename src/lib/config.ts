@@ -114,24 +114,25 @@ export const SKILLS = {
   css: { name: 'CSS', icon: cssIcon, inverted: false },
 };
 
+// titles in both languages, picked with the site language (see useLang)
 export const NAVIGATIONS = [
   {
-    title: 'Home',
+    title: { en: 'Home', id: 'Beranda' },
     href: '#home',
     icon: RiHomeLine,
   },
   {
-    title: 'Experience',
+    title: { en: 'Experience', id: 'Pengalaman' },
     href: '#experience',
     icon: RiBarChartHorizontalLine,
   },
   {
-    title: 'Projects',
+    title: { en: 'Projects', id: 'Proyek' },
     href: '#projects',
     icon: RiFolderLine,
   },
   {
-    title: 'Contact',
+    title: { en: 'Contact', id: 'Kontak' },
     href: '#contact',
     icon: RiSendPlaneLine,
   },
@@ -141,38 +142,46 @@ export const NAVIGATIONS = [
 // in the order a job hunt uses them
 export const TOOLS = [
   {
-    title: 'Resume Builder',
+    title: { en: 'Resume Builder', id: 'Pembuat CV' },
     href: '/tools/resume',
     icon: RiFileUserLine,
-    description:
-      'Fill a form and watch your resume take shape as a PDF, ready to download.',
+    description: {
+      en: 'Fill a form and watch your resume take shape as a PDF, ready to download.',
+      id: 'Isi form, CV kamu langsung jadi PDF dan siap di-download.',
+    },
   },
   {
-    title: 'Keyword Checker',
+    title: { en: 'Keyword Checker', id: 'Cek Kata Kunci' },
     href: '/tools/keyword-check',
     icon: RiFileSearchLine,
-    description:
-      'Paste a job post and see which skills it asks for that your resume leaves out.',
+    description: {
+      en: 'Paste a job post and see which skills it asks for that your resume leaves out.',
+      id: 'Paste lowongan kerja, lihat skill apa aja yang diminta tapi belum ada di CV kamu.',
+    },
   },
   {
-    title: 'Cover Letter',
+    title: { en: 'Cover Letter', id: 'Surat Lamaran' },
     href: '/tools/cover-letter',
     icon: RiQuillPenLine,
-    description:
-      'Write a cover letter that matches your resume, with your details filled in.',
+    description: {
+      en: 'Write a cover letter that matches your resume, with your details filled in.',
+      id: 'Tulis surat lamaran yang nyambung sama CV kamu, data diri udah keisi otomatis.',
+    },
   },
   {
-    title: 'Salary Calculator',
+    title: { en: 'Salary Calculator', id: 'Kalkulator Gaji' },
     href: '/tools/salary',
     icon: RiCalculatorLine,
-    description:
-      'See what an Indonesian salary offer pays after BPJS and PPh 21.',
+    description: {
+      en: 'See what an Indonesian salary offer pays after BPJS and PPh 21.',
+      id: 'Cek gaji bersih dari tawaran kerja di Indonesia setelah dipotong BPJS dan PPh 21.',
+    },
   },
 ] as const;
 
 // The page that lists them all, the one to share
 export const TOOLS_HUB = {
-  title: 'Free Tools',
+  title: { en: 'Free Tools', id: 'Tools Gratis' },
   href: '/tools',
   icon: RiToolsLine,
 } as const;

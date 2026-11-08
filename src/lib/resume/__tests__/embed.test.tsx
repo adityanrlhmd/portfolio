@@ -33,7 +33,10 @@ describe('resume data embedded in the PDF', () => {
 
   it('keeps placeholders out of the embedded data', async () => {
     const blob = await pdf(
-      <ResumeDocument resume={EMPTY_RESUME} placeholder={PLACEHOLDER_RESUME} />
+      <ResumeDocument
+        resume={EMPTY_RESUME}
+        placeholder={PLACEHOLDER_RESUME.en}
+      />
     ).toBlob();
     expect(decodeResumeFromPdf(await blob.arrayBuffer())).toEqual(EMPTY_RESUME);
   });

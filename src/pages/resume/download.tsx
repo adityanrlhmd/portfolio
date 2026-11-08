@@ -1,10 +1,13 @@
 import { downloadPdf } from '@/lib/download-pdf';
+import type { Lang } from '@/lib/i18n';
 import type { Resume } from '@/lib/resume/schema';
 
-import { ResumeDocument } from './resume-document';
+import { RESUME_PDF, ResumeDocument } from './resume-document';
 
-export const downloadResume = (resume: Resume) =>
-  downloadPdf(
-    <ResumeDocument resume={resume} />,
-    resume.name.trim() ? `${resume.name.trim()} - Resume.pdf` : 'Resume.pdf'
+export const downloadResume = (resume: Resume, lang: Lang = 'en') => {
+  const title = RESUME_PDF[lang].title;
+  return downloadPdf(
+    <ResumeDocument resume={resume} lang={lang} />,
+    resume.name.trim() ? `${resume.name.trim()} - ${title}.pdf` : `${title}.pdf`
   );
+};

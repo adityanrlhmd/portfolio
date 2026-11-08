@@ -3,9 +3,28 @@ import { RiGithubFill, RiLinkedinBoxFill, RiMailFill } from '@remixicon/react';
 import { Logo } from '@/assets/logo';
 
 import { NAVIGATIONS, TOOLS_HUB } from '@/lib/config';
+import { translations } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
+import { useLang } from './language-provider';
 import { LetterGlitch } from './letter-glitch';
+
+const T = translations(
+  {
+    home: 'Home',
+    navigate: 'Navigate',
+    tagline: 'Frontend Engineer based in Indonesia',
+    tools: 'Free tools for your job search →',
+    rights: 'All rights reserved.',
+  },
+  {
+    home: 'Beranda',
+    navigate: 'Navigasi',
+    tagline: 'Frontend Engineer dari Indonesia',
+    tools: 'Tools gratis buat cari kerja →',
+    rights: 'Hak cipta dilindungi undang-undang.',
+  }
+);
 
 const LINKS = [
   {
@@ -26,6 +45,9 @@ const LINKS = [
 ];
 
 export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
+  const { lang } = useLang();
+  const t = T[lang];
+
   return (
     <footer className="border-t">
       <div className="text-muted-foreground container text-xs lg:text-sm">
@@ -48,7 +70,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
 
               <a
                 href="/"
-                aria-label="Home"
+                aria-label={t.home}
                 className="hover:text-foreground transition-all"
               >
                 <Logo size={100} />
@@ -56,7 +78,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
             </div>
 
             <div className="mt-8 flex flex-col items-center gap-3 md:mt-0">
-              <p className="text-foreground font-semibold">Navigate</p>
+              <p className="text-foreground font-semibold">{t.navigate}</p>
               <ul className="flex gap-4 text-center md:flex-col md:gap-2.5">
                 {NAVIGATIONS.map(nav => (
                   <li key={nav.href}>
@@ -64,14 +86,12 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
                       href={nav.href}
                       className="hover:text-foreground transition-all"
                     >
-                      {nav.title}
+                      {nav.title[lang]}
                     </a>
                   </li>
                 ))}
               </ul>
-              <p className="text-center">
-                Frontend Engineer based in Indonesia
-              </p>
+              <p className="text-center">{t.tagline}</p>
             </div>
 
             <div className="mt-10 w-full max-w-xs md:mt-0 md:justify-self-end">
@@ -83,7 +103,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
                   href={TOOLS_HUB.href}
                   className="text-foreground font-semibold hover:underline"
                 >
-                  Free tools for your job search →
+                  {t.tools}
                 </a>
               </p>
             </div>
@@ -92,8 +112,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
 
         <div className={cn('py-4', !minimal && 'border-t')}>
           <p className="text-center">
-            Copyright © {new Date().getFullYear()} Aditya Hamda. All rights
-            reserved.
+            Copyright © {new Date().getFullYear()} Aditya Hamda. {t.rights}
           </p>
         </div>
       </div>

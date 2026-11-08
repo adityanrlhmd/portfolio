@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { Suspense, lazy, useEffect, useState } from 'react';
 
 import { GridBeam } from '@/components/grid-beam';
+import { useLang } from '@/components/language-provider';
 import { TextType } from '@/components/text-type';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,6 +20,7 @@ import { useMediaQuery } from '@/hooks/use-media-query';
 
 import { ADITYA_RESUME } from '@/lib/aditya';
 import { SKILLS } from '@/lib/config';
+import { translations } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 // three.js + rapier live in their own chunk so the page renders before the 3D card
@@ -26,15 +28,39 @@ const Lanyard = lazy(() =>
   import('@/components/lanyard').then(m => ({ default: m.Lanyard }))
 );
 
-const HEADLINES = [
-  'Welcome to **my digital space**',
-  'A **frontend engineer** who sweats the details',
-  'Turning messy business logic into **simple UIs**',
-  "Let's **build something** together",
-];
+const T = translations(
+  {
+    headlines: [
+      'Welcome to **my digital space**',
+      'A **frontend engineer** who sweats the details',
+      'Turning messy business logic into **simple UIs**',
+      "Let's **build something** together",
+    ],
+    intro:
+      'I build frontends for government, banking, and enterprise products. I like owning a feature from the first discussion all the way to production, and keeping big codebases tidy enough that the next person can work on them without guessing.',
+    connect: "Let's Connect",
+    resume: 'My Resume',
+    resumeFailed: "Couldn't create the CV. Please try again.",
+  },
+  {
+    headlines: [
+      'Selamat datang di **ruang digitalku**',
+      '**Frontend engineer** yang rewel soal detail',
+      'Bikin logika bisnis yang ruwet jadi **UI yang simpel**',
+      'Yuk **bikin sesuatu** bareng',
+    ],
+    intro:
+      'Bikin frontend buat produk pemerintahan, perbankan, dan enterprise. Paling senang pegang satu fitur dari diskusi awal sampai rilis, sambil jaga codebase besar tetap rapi biar developer berikutnya nggak perlu nebak-nebak.',
+    connect: 'Yuk Ngobrol',
+    resume: 'Download CV',
+    resumeFailed: 'Gagal bikin CV. Coba lagi ya.',
+  }
+);
 
 const Hero = () => {
   const isLarge = useMediaQuery('(min-width: 1024px)');
+  const { lang } = useLang();
+  const t = T[lang];
   const [downloading, setDownloading] = useState(false);
   // start fetching the 3D card once the page has painted, so it doesn't compete with the first render
   const [show3d, setShow3d] = useState(false);
@@ -54,7 +80,7 @@ const Hero = () => {
       const { downloadResume } = await import('@/pages/resume/download');
       await downloadResume(ADITYA_RESUME);
     } catch {
-      toast.error("Couldn't create the CV. Please try again.");
+      toast.error(t.resumeFailed);
     } finally {
       setDownloading(false);
     }
@@ -79,7 +105,9 @@ const Hero = () => {
 
           <div className="z-10 w-full space-y-4 pt-0 lg:w-2/3 lg:p-0">
             <TextType
-              text={HEADLINES}
+              // starts typing over in the new language instead of mixing the two
+              key={lang}
+              text={t.headlines}
               typingSpeed={75}
               pauseDuration={1500}
               showCursor
@@ -93,10 +121,7 @@ const Hero = () => {
             <h1 className="sr-only">Aditya Hamda, frontend engineer</h1>
 
             <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
-              I build frontends for government, banking, and enterprise
-              products. I like owning a feature from the first discussion all
-              the way to production, and keeping big codebases tidy enough that
-              the next person can work on them without guessing.
+              {t.intro}
             </p>
 
             <div className="flex flex-wrap gap-3">
@@ -111,7 +136,7 @@ const Hero = () => {
                   })
                 )}
               >
-                <span>Let's Connect</span>
+                <span>{t.connect}</span>
               </a>
               <Button
                 type="button"
@@ -122,7 +147,7 @@ const Hero = () => {
                 onClick={downloadCv}
               >
                 {downloading ? <Spinner /> : <RiDownloadLine />}
-                My Resume
+                {t.resume}
               </Button>
             </div>
           </div>

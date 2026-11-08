@@ -1,8 +1,10 @@
 import { type ReactNode, useState } from 'react';
 
+import { useLang } from '@/components/language-provider';
 import { ToolNav } from '@/components/tool-nav';
 import { Button } from '@/components/ui/button';
 
+import { COMMON } from '@/lib/i18n';
 import { cn } from '@/lib/utils';
 
 // The shared frame of a tool page: the tools sidebar on wide screens, actions on top, the form beside a sticky
@@ -11,7 +13,7 @@ export const ToolLayout = ({
   actions,
   form,
   preview,
-  tabs = ['Edit', 'Preview'],
+  tabs,
 }: {
   actions: ReactNode;
   form: ReactNode;
@@ -20,6 +22,9 @@ export const ToolLayout = ({
   tabs?: [form: string, preview: string];
 }) => {
   const [tab, setTab] = useState<'edit' | 'preview'>('edit');
+  const { lang } = useLang();
+  const tabNames =
+    tabs ?? (lang === 'id' ? ['Edit', 'Preview'] : ['Edit', 'Preview']);
 
   return (
     <main className="min-h-svh">
@@ -33,7 +38,7 @@ export const ToolLayout = ({
 
         <div className="space-y-4 xl:col-start-2 xl:row-start-1">
           <p className="text-muted-foreground text-xs sm:hidden">
-            Everything stays in your browser. Nothing is uploaded.
+            {COMMON[lang].localOnly}
           </p>
           <div className="flex flex-wrap gap-2">{actions}</div>
         </div>
@@ -48,7 +53,7 @@ export const ToolLayout = ({
               aria-pressed={tab === value}
               onClick={() => setTab(value)}
             >
-              {tabs[i]}
+              {tabNames[i]}
             </Button>
           ))}
         </div>

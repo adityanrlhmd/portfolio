@@ -3,16 +3,34 @@ import { RiCloseLine, RiMenuLine } from '@remixicon/react';
 
 import { useId } from 'react';
 
+import { useLang } from '@/components/language-provider';
 import { Button } from '@/components/ui/button';
 
 import { backToPortfolio } from '@/lib/back-to-portfolio';
 import { TOOLS, TOOLS_HUB } from '@/lib/config';
+import { translations } from '@/lib/i18n';
+
+const T = translations(
+  {
+    menu: 'Tools menu',
+    more: 'More',
+    all: 'All tools',
+    portfolio: 'Portfolio',
+  },
+  {
+    menu: 'Menu tools',
+    more: 'Lainnya',
+    all: 'Semua tools',
+    portfolio: 'Portofolio',
+  }
+);
 
 // Every tool in job hunt order, styled after the shadcn docs sidebar.
 // The sidebar on wide screens.
 export const ToolNav = () => {
   const path = window.location.pathname.replace(/\/$/, '');
   const labelId = useId();
+  const { lang } = useLang();
 
   return (
     <nav aria-labelledby={labelId} className="flex flex-col gap-0.5">
@@ -31,7 +49,7 @@ export const ToolNav = () => {
           aria-current={link.href === path ? 'page' : undefined}
           className="hover:bg-muted aria-[current=page]:bg-muted flex h-7.5 w-fit items-center rounded-md px-2 text-[0.8rem] font-medium transition-colors"
         >
-          {link.title}
+          {link.title[lang]}
         </a>
       ))}
     </nav>
@@ -42,13 +60,18 @@ export const ToolNav = () => {
 // big links, toggled by the same button that turns into a close icon.
 export const ToolMenu = () => {
   const path = window.location.pathname.replace(/\/$/, '');
+  const { lang } = useLang();
+  const t = T[lang];
   const sections = [
-    { label: 'Tools', links: TOOLS },
     {
-      label: 'More',
+      label: 'Tools',
+      links: TOOLS.map(tool => ({ title: tool.title[lang], href: tool.href })),
+    },
+    {
+      label: t.more,
       links: [
-        { title: 'All tools', href: TOOLS_HUB.href },
-        { title: 'Portfolio', href: '/' },
+        { title: t.all, href: TOOLS_HUB.href },
+        { title: t.portfolio, href: '/' },
       ],
     },
   ];
@@ -60,7 +83,7 @@ export const ToolMenu = () => {
           <Button
             variant="ghost"
             size="icon"
-            aria-label="Tools menu"
+            aria-label={t.menu}
             className="group xl:hidden"
           />
         }
@@ -71,7 +94,7 @@ export const ToolMenu = () => {
       <Dialog.Portal>
         {/* starts under the header so it stays in view, with the button to close */}
         <Dialog.Popup className="bg-background/90 fixed inset-x-0 top-(--header-height) bottom-0 z-50 overflow-y-auto backdrop-blur transition-opacity duration-150 data-ending-style:opacity-0 data-starting-style:opacity-0">
-          <Dialog.Title className="sr-only">Tools menu</Dialog.Title>
+          <Dialog.Title className="sr-only">{t.menu}</Dialog.Title>
           <nav
             aria-label="Tools"
             className="container flex flex-col gap-10 py-6"

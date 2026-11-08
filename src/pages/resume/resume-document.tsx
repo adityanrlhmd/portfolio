@@ -10,11 +10,31 @@ import {
 
 import { type ComponentProps, Fragment, type ReactNode } from 'react';
 
+import { type Lang, translations } from '@/lib/i18n';
 import { encodeResume } from '@/lib/resume/embed';
 import { contactItems, skillLines, splitLines } from '@/lib/resume/format';
 import type { Resume } from '@/lib/resume/schema';
 
 const GRAY = '#8a8a8a';
+
+// the PDF's own language, picked apart from the site's
+// eslint-disable-next-line react-refresh/only-export-components
+export const RESUME_PDF = translations(
+  {
+    title: 'Resume',
+    experience: 'Work Experiences',
+    education: 'Education Level',
+    skills: 'Skills',
+    achievements: 'Certifications & Achievements',
+  },
+  {
+    title: 'CV',
+    experience: 'Pengalaman Kerja',
+    education: 'Pendidikan',
+    skills: 'Keahlian',
+    achievements: 'Sertifikasi & Prestasi',
+  }
+);
 
 const s = StyleSheet.create({
   page: {
@@ -115,11 +135,14 @@ const isFilled = (value: Resume[keyof Resume]) =>
 export const ResumeDocument = ({
   resume,
   placeholder,
+  lang = 'en',
 }: {
   resume: Resume;
+  lang?: Lang;
   // preview only: empty blocks show this content, faded; the embedded data stays the real resume
   placeholder?: Resume;
 }) => {
+  const t = RESUME_PDF[lang];
   const take = <K extends keyof Resume>(key: K) =>
     !placeholder || isFilled(resume[key])
       ? { value: resume[key], faded: undefined }
@@ -139,7 +162,7 @@ export const ResumeDocument = ({
 
   return (
     <Document
-      title={resume.name || 'Resume'}
+      title={resume.name || t.title}
       author={resume.name}
       subject={encodeResume(resume)}
     >
@@ -180,7 +203,7 @@ export const ResumeDocument = ({
         </View>
 
         {experiences.value.length > 0 && (
-          <Section title="Work Experiences" style={experiences.faded}>
+          <Section title={t.experience} style={experiences.faded}>
             {experiences.value.map((exp, i) => (
               <View key={i} style={s.entry}>
                 {/* keeps the entry's heading with its first bullet across page breaks */}
@@ -203,7 +226,7 @@ export const ResumeDocument = ({
         )}
 
         {educations.value.length > 0 && (
-          <Section title="Education Level" style={educations.faded}>
+          <Section title={t.education} style={educations.faded}>
             {educations.value.map((edu, i) => (
               <View key={i} style={s.entry}>
                 <EntryHeader
@@ -218,7 +241,7 @@ export const ResumeDocument = ({
         )}
 
         {skillList.length > 0 && (
-          <Section title="Skills" style={skills.faded}>
+          <Section title={t.skills} style={skills.faded}>
             <View style={s.entry}>
               {skillList.map((skill, i) => (
                 <Bullet key={i}>
@@ -235,10 +258,7 @@ export const ResumeDocument = ({
         )}
 
         {splitLines(achievements.value).length > 0 && (
-          <Section
-            title="Certifications & Achievements"
-            style={achievements.faded}
-          >
+          <Section title={t.achievements} style={achievements.faded}>
             <View style={s.entry}>{bullets(achievements.value)}</View>
           </Section>
         )}

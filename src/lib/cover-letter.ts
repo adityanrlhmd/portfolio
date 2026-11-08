@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { ADITYA_RESUME } from './aditya';
+import { LOCALES, type Lang, translations } from './i18n';
 import { decodeDataFromPdf, encodeData } from './pdf-data';
 import { loadResume } from './resume/storage';
 import { loadStored, saveStored } from './storage';
@@ -22,18 +23,32 @@ export type CoverLetter = z.infer<typeof coverLetterSchema>;
 
 export const STORAGE_KEY = 'cover-letter:v1';
 
-// Sample content the preview shows, faded, for fields the visitor hasn't filled yet.
-export const PLACEHOLDER_COVER_LETTER: CoverLetter = {
-  name: 'Your Name',
-  email: 'you@example.com',
-  phone: '+62 812 3456 7890',
-  location: 'City, Country',
-  date: 'January 1, 2026',
-  recipient: 'Hiring Manager',
-  company: 'Company Name',
-  role: 'Job Title',
-  body: "Open with the role you're applying for and why this company caught your eye.\n\nPick one or two things you've built or improved that match what they need, with results if you have them.\n\nClose by saying you'd love to talk, and thank them for their time.",
-};
+// Sample content the preview shows, faded, for fields the visitor hasn't filled yet,
+// in the PDF's language.
+export const PLACEHOLDER_COVER_LETTER = translations<CoverLetter>(
+  {
+    name: 'Your Name',
+    email: 'you@example.com',
+    phone: '+62 812 3456 7890',
+    location: 'City, Country',
+    date: 'January 1, 2026',
+    recipient: 'Hiring Manager',
+    company: 'Company Name',
+    role: 'Job Title',
+    body: "Open with the role you're applying for and why this company caught your eye.\n\nPick one or two things you've built or improved that match what they need, with results if you have them.\n\nClose by saying you'd love to talk, and thank them for their time.",
+  },
+  {
+    name: 'Nama Kamu',
+    email: 'kamu@contoh.com',
+    phone: '+62 812 3456 7890',
+    location: 'Kota, Negara',
+    date: '1 Januari 2026',
+    recipient: 'Bapak/Ibu HRD',
+    company: 'Nama Perusahaan',
+    role: 'Nama Posisi',
+    body: 'Buka dengan posisi yang kamu lamar dan alasan perusahaan ini menarik perhatianmu.\n\nPilih satu atau dua hal yang pernah kamu bangun atau perbaiki yang sesuai dengan kebutuhan mereka, sertakan hasilnya kalau ada.\n\nTutup dengan menyampaikan bahwa kamu ingin berdiskusi lebih lanjut, dan ucapkan terima kasih atas waktunya.',
+  }
+);
 
 // Company and recipient stay empty, since they depend on where the visitor is applying.
 export const ADITYA_COVER_LETTER: Omit<CoverLetter, 'date'> = {
@@ -52,15 +67,19 @@ export const ADITYA_COVER_LETTER: Omit<CoverLetter, 'date'> = {
   ].join('\n\n'),
 };
 
+// today, written the way a letter in that language dates itself
+export const today = (lang: Lang) =>
+  new Date().toLocaleDateString(LOCALES[lang], { dateStyle: 'long' });
+
 // A new letter starts with today's date and the sender details from the saved resume, if any.
-export const newCoverLetter = (): CoverLetter => {
+export const newCoverLetter = (lang: Lang = 'en'): CoverLetter => {
   const resume = loadResume();
   return {
     name: resume?.name ?? '',
     email: resume?.email ?? '',
     phone: resume?.phone ?? '',
     location: resume?.location ?? '',
-    date: new Date().toLocaleDateString('en-US', { dateStyle: 'long' }),
+    date: today(lang),
     recipient: '',
     company: '',
     role: '',

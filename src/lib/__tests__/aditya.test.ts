@@ -18,13 +18,13 @@ describe('ADITYA_RESUME', () => {
     );
   });
 
-  it('experiences come from the site data, newest first', () => {
+  it('experiences come from the site data, newest first, in English', () => {
     expect(ADITYA_RESUME.experiences.map(e => e.company)).toEqual(
       EXPERIENCES.map(e => e.company)
     );
     expect(ADITYA_RESUME.experiences[0].company).toBe('GovTech Procurement');
     expect(ADITYA_RESUME.experiences[0].bullets.split('\n')).toEqual(
-      EXPERIENCES[0].jobdesc
+      EXPERIENCES[0].jobdesc.en
     );
   });
 });

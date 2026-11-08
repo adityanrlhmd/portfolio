@@ -2,11 +2,13 @@ import { RiInformationLine } from '@remixicon/react';
 
 import { useState } from 'react';
 
+import { useLang } from '@/components/language-provider';
+import { Toggle } from '@/components/toggle';
 import { ToolLayout } from '@/components/tool-layout';
-import { Button } from '@/components/ui/button';
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 
+import { LOCALES, translations } from '@/lib/i18n';
 import {
   JKK_RATES,
   JP_CAP,
@@ -49,33 +51,6 @@ const RupiahInput = ({
   />
 );
 
-// one of a few choices, pressed like the mobile Edit/Preview tabs
-const Toggle = <T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: Record<T, string>;
-  onChange: (value: T) => void;
-}) => (
-  <div role="group" aria-label={label} className="flex gap-2">
-    {(Object.keys(options) as T[]).map(key => (
-      <Button
-        key={key}
-        type="button"
-        variant={value === key ? 'secondary' : 'ghost'}
-        aria-pressed={value === key}
-        onClick={() => onChange(key)}
-      >
-        {options[key]}
-      </Button>
-    ))}
-  </div>
-);
-
 // for the few lines that change how to read a number; calm on purpose, since red or yellow
 // reads as an error, and the red is kept for out-of-date rates
 const Note = ({ children }: { children: React.ReactNode }) => (
@@ -113,82 +88,204 @@ const Row = ({
   </div>
 );
 
-// offers in Indonesia quote either one, so the amount can be either
-const KNOWN = {
-  gross: {
-    label: 'Gross',
-    field: 'Monthly gross salary',
-    hint: 'Base pay plus fixed allowances, in rupiah, before anything is taken out.',
-  },
-  net: {
-    label: 'Take-home',
-    field: 'Monthly take-home pay',
-    hint: 'What lands in your account (THP), in rupiah. The gross is worked out from it.',
-  },
-};
-
-// every short form the page uses, for people who haven't had a payslip in Indonesia yet
+// every short form the page uses, with its full name; what each means is in T.terms
 const TERMS = [
-  ['THP', 'Take-home pay', 'What lands in your account each month.'],
-  [
-    'THR',
-    'Tunjangan Hari Raya',
-    'The holiday bonus, usually a month of salary, paid before Lebaran or your own religious holiday.',
-  ],
-  [
-    'PTKP',
-    'Penghasilan Tidak Kena Pajak',
-    'Your tax-free allowance. TK is single (tidak kawin), K is married (kawin), and the number is how many dependents you claim.',
-  ],
-  [
-    'PPh 21',
-    'Pajak Penghasilan Pasal 21',
-    'Income tax your employer takes from your pay and pays for you.',
-  ],
-  [
-    'TER',
-    'Tarif Efektif Rata-rata',
-    'The monthly PPh 21 rate, set by your gross and PTKP status.',
-  ],
-  [
-    'Pasal 17',
-    '',
-    'The yearly income tax rates, 5% to 35%, that December uses to settle the whole year.',
-  ],
-  [
-    'JHT',
-    'Jaminan Hari Tua',
-    'Savings at BPJS Ketenagakerjaan, paid out when you stop working or retire.',
-  ],
-  [
-    'JP',
-    'Jaminan Pensiun',
-    'A monthly pension from BPJS Ketenagakerjaan once you retire.',
-  ],
-  ['BPJS Kesehatan', '', 'National health insurance, for you and your family.'],
-  [
-    'JKK',
-    'Jaminan Kecelakaan Kerja',
-    'Work accident insurance, paid by your employer.',
-  ],
-  [
-    'JKM',
-    'Jaminan Kematian',
-    'Death benefit for your family, paid by your employer.',
-  ],
-  [
-    'PKWT',
-    'Perjanjian Kerja Waktu Tertentu',
-    'A fixed-term contract job. Taxed like a permanent one each month, plus compensation when the contract ends.',
-  ],
+  ['THP', 'Take-home pay'],
+  ['THR', 'Tunjangan Hari Raya'],
+  ['PTKP', 'Penghasilan Tidak Kena Pajak'],
+  ['PPh 21', 'Pajak Penghasilan Pasal 21'],
+  ['TER', 'Tarif Efektif Rata-rata'],
+  ['Pasal 17', ''],
+  ['JHT', 'Jaminan Hari Tua'],
+  ['JP', 'Jaminan Pensiun'],
+  ['BPJS Kesehatan', ''],
+  ['JKK', 'Jaminan Kecelakaan Kerja'],
+  ['JKM', 'Jaminan Kematian'],
+  ['PKWT', 'Perjanjian Kerja Waktu Tertentu'],
 ] as const;
 
+const T = translations(
+  {
+    tabs: ['Salary', 'Breakdown'] as [string, string],
+    // offers in Indonesia quote either one, so the amount can be either
+    known: {
+      gross: {
+        label: 'Gross',
+        field: 'Monthly gross salary',
+        hint: 'Base pay plus fixed allowances, in rupiah, before anything is taken out.',
+      },
+      net: {
+        label: 'Take-home',
+        field: 'Monthly take-home pay',
+        hint: 'What lands in your account (THP), in rupiah. The gross is worked out from it.',
+      },
+    },
+    amountIs: 'The amount is',
+    status: 'Tax status (PTKP)',
+    statusHint:
+      'TK is single, K is married, and the number is how many dependents you claim, up to 3.',
+    employment: 'Employment',
+    jobs: { permanent: 'Permanent', contract: 'Contract (PKWT)' },
+    months: 'Contract length (months)',
+    monthsHint:
+      'How many months the contract runs. Each month is taxed the same as a permanent job; the end brings compensation.',
+    bonus: 'Bonus, THR or overtime (optional)',
+    bonusHint:
+      "Paid once this year on top of the salary. It's taxed in the month it's paid, with no BPJS on it.",
+    jkk: 'Work risk (JKK)',
+    jkkLevels: ['Very low (offices)', 'Low', 'Medium', 'High', 'Very high'],
+    jkkHint:
+      "Set by your employer's line of business. Most office jobs are very low.",
+    termsTitle: 'What the terms mean',
+    terms: {
+      THP: 'What lands in your account each month.',
+      THR: 'The holiday bonus, usually a month of salary, paid before Lebaran or your own religious holiday.',
+      PTKP: 'Your tax-free allowance. TK is single (tidak kawin), K is married (kawin), and the number is how many dependents you claim.',
+      'PPh 21':
+        'Income tax your employer takes from your pay and pays for you.',
+      TER: 'The monthly PPh 21 rate, set by your gross and PTKP status.',
+      'Pasal 17':
+        'The yearly income tax rates, 5% to 35%, that December uses to settle the whole year.',
+      JHT: 'Savings at BPJS Ketenagakerjaan, paid out when you stop working or retire.',
+      JP: 'A monthly pension from BPJS Ketenagakerjaan once you retire.',
+      'BPJS Kesehatan': 'National health insurance, for you and your family.',
+      JKK: 'Work accident insurance, paid by your employer.',
+      JKM: 'Death benefit for your family, paid by your employer.',
+      PKWT: 'A fixed-term contract job. Taxed like a permanent one each month, plus compensation when the contract ends.',
+    },
+    takeHome: 'Take-home pay',
+    noExactGross: (amount: string) =>
+      `No gross pays exactly ${amount}, it sits on a tax bracket edge. This is the closest one that pays more.`,
+    monthly: 'Every month, January to November',
+    grossSalary: 'Gross salary',
+    bonusMonth: 'The month with your bonus',
+    bonusMonthHint:
+      "The bonus is added to that month's pay, so the TER rate goes up for the month.",
+    bonusRow: 'Bonus',
+    takeHomeThatMonth: 'Take-home that month',
+    december: 'December',
+    decemberHint: (yearTax: string, withheld: string, refund: boolean) =>
+      `The year's tax is re-counted with the Pasal 17 rates: ${yearTax}, of which ${withheld} was already taken January to November. December ${refund ? 'pays back the extra' : 'takes the rest'}.`,
+    paidBack: 'PPh 21 paid back',
+    takeHomeDecember: 'Take-home in December',
+    fixedTakeHome: (net: string) =>
+      `If your offer fixes the take-home (PPh ditanggung perusahaan or gross-up), December stays at ${net} and your employer settles the tax difference, whichever way it goes.`,
+    contractEnds: 'When the contract ends',
+    compensationHint: (months: number) =>
+      `Compensation of ${months} months ÷ 12 of your salary (PP 35/2021).`,
+    compensationNote:
+      'No tax rule names it, so employers tax it one of the two ways below. Ask HR which.',
+    compensation: 'Compensation',
+    asSeverance: 'Tax as severance (final)',
+    withPay: 'Or tax added to your pay',
+    employer: 'Paid by your employer',
+    employerHint: (taxable: string) =>
+      `Not in your pay, but JKK, JKM and BPJS Kesehatan count toward the ${taxable} the tax is worked out on.`,
+    outdated: (asOf: string) =>
+      `These rates are from ${asOf} and may be out of date.`,
+    footnote: (asOf: string, jpCap: string, kesCap: string) =>
+      `For a whole year at this salary. A contract that ends mid-year settles the year's tax in its last month instead of December. Rates as of ${asOf}. JP is capped at a salary of ${jpCap} and BPJS Kesehatan at ${kesCap}.`,
+  },
+  {
+    tabs: ['Gaji', 'Rincian'],
+    known: {
+      gross: {
+        label: 'Gross',
+        field: 'Gaji gross per bulan',
+        hint: 'Gaji pokok plus tunjangan tetap, dalam rupiah, sebelum dipotong apa-apa.',
+      },
+      net: {
+        label: 'Take-home',
+        field: 'Take-home pay per bulan',
+        hint: 'Yang masuk ke rekening kamu (THP), dalam rupiah. Gaji gross-nya dihitung dari angka ini.',
+      },
+    },
+    amountIs: 'Angka ini',
+    status: 'Status pajak (PTKP)',
+    statusHint:
+      'TK itu belum kawin, K itu kawin, dan angkanya jumlah tanggungan yang kamu klaim, maksimal 3.',
+    employment: 'Status kerja',
+    jobs: { permanent: 'Karyawan tetap', contract: 'Kontrak (PKWT)' },
+    months: 'Lama kontrak (bulan)',
+    monthsHint:
+      'Kontraknya jalan berapa bulan. Tiap bulan dipajakin sama kayak karyawan tetap; di akhir kontrak ada uang kompensasi.',
+    bonus: 'Bonus, THR, atau lembur (opsional)',
+    bonusHint:
+      'Dibayar sekali tahun ini di luar gaji. Dipajakin di bulan dibayarnya, tanpa potongan BPJS.',
+    jkk: 'Risiko kerja (JKK)',
+    jkkLevels: [
+      'Sangat rendah (kantor)',
+      'Rendah',
+      'Sedang',
+      'Tinggi',
+      'Sangat tinggi',
+    ],
+    jkkHint:
+      'Tergantung bidang usaha kantor kamu. Kebanyakan kerjaan kantoran masuk sangat rendah.',
+    termsTitle: 'Arti istilahnya',
+    terms: {
+      THP: 'Gaji bersih yang masuk ke rekening kamu tiap bulan.',
+      THR: 'Tunjangan hari raya, biasanya sebesar sebulan gaji, dibayar sebelum Lebaran atau hari raya agamamu.',
+      PTKP: 'Batas penghasilan bebas pajak kamu. TK itu belum kawin, K itu kawin, dan angkanya jumlah tanggungan yang kamu klaim.',
+      'PPh 21':
+        'Pajak penghasilan yang dipotong kantor dari gajimu, terus disetorin atas nama kamu.',
+      TER: 'Tarif PPh 21 bulanan, tergantung gaji gross dan status PTKP kamu.',
+      'Pasal 17':
+        'Tarif pajak penghasilan tahunan, 5% sampai 35%, yang dipakai di bulan Desember buat ngitung ulang pajak setahun penuh.',
+      JHT: 'Tabungan di BPJS Ketenagakerjaan, bisa dicairin pas kamu berhenti kerja atau pensiun.',
+      JP: 'Uang pensiun bulanan dari BPJS Ketenagakerjaan setelah kamu pensiun.',
+      'BPJS Kesehatan': 'Jaminan kesehatan nasional, buat kamu dan keluarga.',
+      JKK: 'Asuransi kecelakaan kerja, dibayar kantor.',
+      JKM: 'Santunan kematian buat keluarga, dibayar kantor.',
+      PKWT: 'Kerja dengan kontrak waktu tertentu. Tiap bulan dipajakin kayak karyawan tetap, plus uang kompensasi pas kontraknya selesai.',
+    },
+    takeHome: 'Take-home pay',
+    noExactGross: (amount: string) =>
+      `Nggak ada gaji gross yang hasilnya pas ${amount}, soalnya angka ini jatuh di batas lapisan tarif pajak. Ini yang paling dekat, hasilnya sedikit lebih besar.`,
+    monthly: 'Setiap bulan, Januari sampai November',
+    grossSalary: 'Gaji gross',
+    bonusMonth: 'Bulan pas bonus dibayar',
+    bonusMonthHint:
+      'Bonus ditambahin ke gaji bulan itu, jadi tarif TER-nya naik buat bulan itu.',
+    bonusRow: 'Bonus',
+    takeHomeThatMonth: 'Take-home bulan itu',
+    december: 'Desember',
+    decemberHint: (yearTax: string, withheld: string, refund: boolean) =>
+      `Pajak setahun dihitung ulang pakai tarif Pasal 17: ${yearTax}, dan ${withheld} di antaranya udah dipotong Januari sampai November. Desember ${refund ? 'ngembaliin kelebihannya' : 'motong sisanya'}.`,
+    paidBack: 'PPh 21 dikembalikan',
+    takeHomeDecember: 'Take-home bulan Desember',
+    fixedTakeHome: (net: string) =>
+      `Kalau tawaranmu nge-fix take-home (PPh ditanggung perusahaan atau gross-up), Desember tetap ${net} dan selisih pajaknya diberesin kantor, ke arah mana pun.`,
+    contractEnds: 'Pas kontrak selesai',
+    compensationHint: (months: number) =>
+      `Uang kompensasi sebesar ${months} bulan ÷ 12 dari gajimu (PP 35/2021).`,
+    compensationNote:
+      'Belum ada aturan pajak yang nyebut ini secara khusus, jadi kantor biasanya majakin pakai salah satu dari dua cara di bawah. Tanya HR yang mana.',
+    compensation: 'Kompensasi',
+    asSeverance: 'Pajak sebagai pesangon (final)',
+    withPay: 'Atau pajaknya digabung ke gaji',
+    employer: 'Dibayar kantor',
+    employerHint: (taxable: string) =>
+      `Nggak masuk ke gajimu, tapi JKK, JKM, dan BPJS Kesehatan ikut dihitung dalam ${taxable} yang jadi dasar pajaknya.`,
+    outdated: (asOf: string) =>
+      `Tarif ini per ${asOf} dan mungkin udah nggak berlaku.`,
+    footnote: (asOf: string, jpCap: string, kesCap: string) =>
+      `Buat setahun penuh dengan gaji ini. Kontrak yang selesai di tengah tahun beresin pajak setahunnya di bulan terakhir kontrak, bukan di Desember. Tarif per ${asOf}. Dasar JP dibatasi di gaji ${jpCap} dan BPJS Kesehatan di ${kesCap}.`,
+  }
+);
+
 const SalaryPage = () => {
-  const [known, setKnown] = useState<keyof typeof KNOWN>('gross');
+  const { lang } = useLang();
+  const t = T[lang];
+  const asOf = RATES_AS_OF.toLocaleDateString(LOCALES[lang], {
+    month: 'long',
+    year: 'numeric',
+  });
+  const [known, setKnown] = useState<'gross' | 'net'>('gross');
   const [amount, setAmount] = useState(0);
   const [status, setStatus] = useState<PtkpStatus>('TK/0');
   const [bonus, setBonus] = useState(0);
-  const [jkk, setJkk] = useState<number>(JKK_RATES[0].bps);
+  const [jkk, setJkk] = useState<number>(JKK_RATES[0]);
   const [job, setJob] = useState<'permanent' | 'contract'>('permanent');
   const [months, setMonths] = useState(12);
   const salary = known === 'gross' ? amount : grossFor(amount, status, jkk);
@@ -200,15 +297,18 @@ const SalaryPage = () => {
   return (
     <ToolLayout
       actions={null}
-      tabs={['Salary', 'Breakdown']}
+      tabs={t.tabs}
       form={
         <form onSubmit={e => e.preventDefault()} className="space-y-6">
           <Field>
-            <FieldLabel htmlFor="salary">{KNOWN[known].field}</FieldLabel>
+            <FieldLabel htmlFor="salary">{t.known[known].field}</FieldLabel>
             <Toggle
-              label="The amount is"
+              label={t.amountIs}
               value={known}
-              options={{ gross: KNOWN.gross.label, net: KNOWN.net.label }}
+              options={{
+                gross: t.known.gross.label,
+                net: t.known.net.label,
+              }}
               onChange={setKnown}
             />
             <RupiahInput
@@ -217,10 +317,10 @@ const SalaryPage = () => {
               onChange={setAmount}
               placeholder="10.000.000"
             />
-            <FieldDescription>{KNOWN[known].hint}</FieldDescription>
+            <FieldDescription>{t.known[known].hint}</FieldDescription>
           </Field>
           <Field>
-            <FieldLabel htmlFor="status">Tax status (PTKP)</FieldLabel>
+            <FieldLabel htmlFor="status">{t.status}</FieldLabel>
             <select
               id="status"
               value={status}
@@ -231,23 +331,20 @@ const SalaryPage = () => {
                 <option key={value}>{value}</option>
               ))}
             </select>
-            <FieldDescription>
-              TK is single, K is married, and the number is how many dependents
-              you claim, up to 3.
-            </FieldDescription>
+            <FieldDescription>{t.statusHint}</FieldDescription>
           </Field>
           <Field>
-            <FieldLabel>Employment</FieldLabel>
+            <FieldLabel>{t.employment}</FieldLabel>
             <Toggle
-              label="Employment"
+              label={t.employment}
               value={job}
-              options={{ permanent: 'Permanent', contract: 'Contract (PKWT)' }}
+              options={t.jobs}
               onChange={setJob}
             />
             {job === 'contract' && (
               <>
                 <FieldLabel htmlFor="months" className="pt-2">
-                  Contract length (months)
+                  {t.months}
                 </FieldLabel>
                 <Input
                   id="months"
@@ -257,51 +354,40 @@ const SalaryPage = () => {
                   value={months || ''}
                   onChange={e => setMonths(Number(e.target.value))}
                 />
-                <FieldDescription>
-                  How many months the contract runs. Each month is taxed the
-                  same as a permanent job; the end brings compensation.
-                </FieldDescription>
+                <FieldDescription>{t.monthsHint}</FieldDescription>
               </>
             )}
           </Field>
           <Field>
-            <FieldLabel htmlFor="bonus">
-              Bonus, THR or overtime (optional)
-            </FieldLabel>
+            <FieldLabel htmlFor="bonus">{t.bonus}</FieldLabel>
             <RupiahInput
               id="bonus"
               value={bonus}
               onChange={setBonus}
               placeholder="0"
             />
-            <FieldDescription>
-              Paid once this year on top of the salary. It's taxed in the month
-              it's paid, with no BPJS on it.
-            </FieldDescription>
+            <FieldDescription>{t.bonusHint}</FieldDescription>
           </Field>
           <Field>
-            <FieldLabel htmlFor="jkk">Work risk (JKK)</FieldLabel>
+            <FieldLabel htmlFor="jkk">{t.jkk}</FieldLabel>
             <select
               id="jkk"
               value={jkk}
               onChange={e => setJkk(Number(e.target.value))}
               className={SELECT}
             >
-              {JKK_RATES.map(rate => (
-                <option key={rate.bps} value={rate.bps}>
-                  {rate.label}, {percent(rate.bps)}
+              {JKK_RATES.map((bps, i) => (
+                <option key={bps} value={bps}>
+                  {t.jkkLevels[i]}, {percent(bps)}
                 </option>
               ))}
             </select>
-            <FieldDescription>
-              Set by your employer's line of business. Most office jobs are very
-              low.
-            </FieldDescription>
+            <FieldDescription>{t.jkkHint}</FieldDescription>
           </Field>
           <section className="space-y-3 border-t pt-6">
-            <h2 className="text-sm font-medium">What the terms mean</h2>
+            <h2 className="text-sm font-medium">{t.termsTitle}</h2>
             <dl className="space-y-3 text-xs/relaxed">
-              {TERMS.map(([term, name, meaning]) => (
+              {TERMS.map(([term, name]) => (
                 <div key={term}>
                   <dt className="font-medium">
                     {term}
@@ -312,7 +398,7 @@ const SalaryPage = () => {
                       </span>
                     )}
                   </dt>
-                  <dd className="text-muted-foreground">{meaning}</dd>
+                  <dd className="text-muted-foreground">{t.terms[term]}</dd>
                 </div>
               ))}
             </dl>
@@ -323,19 +409,16 @@ const SalaryPage = () => {
         <div className="flex max-h-full flex-col gap-2">
           <div
             role="region"
-            aria-label="Take-home pay"
+            aria-label={t.takeHome}
             className="min-h-0 space-y-6 overflow-y-auto rounded-md border p-4 text-sm"
           >
             {known === 'net' && pay.net !== amount && (
-              <Note>
-                No gross pays exactly {rupiah(amount)}, it sits on a tax bracket
-                edge. This is the closest one that pays more.
-              </Note>
+              <Note>{t.noExactGross(rupiah(amount))}</Note>
             )}
             <section className="space-y-2">
-              <h2 className="font-medium">Every month, January to November</h2>
+              <h2 className="font-medium">{t.monthly}</h2>
               <dl>
-                <Row label="Gross salary" value={salary} />
+                <Row label={t.grossSalary} value={salary} />
                 <Row label="JHT (2%)" value={pay.deductions.jht} minus />
                 <Row label="JP (1%)" value={pay.deductions.jp} minus />
                 <Row
@@ -348,25 +431,24 @@ const SalaryPage = () => {
                   value={pay.deductions.pph21}
                   minus
                 />
-                <Row label="Take-home pay" value={pay.net} strong />
+                <Row label={t.takeHome} value={pay.net} strong />
               </dl>
             </section>
             {bonus > 0 && (
               <section className="space-y-2">
-                <h2 className="font-medium">The month with your bonus</h2>
+                <h2 className="font-medium">{t.bonusMonth}</h2>
                 <p className="text-muted-foreground text-xs">
-                  The bonus is added to that month's pay, so the TER rate goes
-                  up for the month.
+                  {t.bonusMonthHint}
                 </p>
                 <dl>
-                  <Row label="Bonus" value={bonus} />
+                  <Row label={t.bonusRow} value={bonus} />
                   <Row
                     label={`PPh 21 (${bonusMonth.rate.toLocaleString('id-ID')}% TER)`}
                     value={bonusMonth.deductions.pph21}
                     minus
                   />
                   <Row
-                    label="Take-home that month"
+                    label={t.takeHomeThatMonth}
                     value={bonusMonth.net}
                     strong
                   />
@@ -374,60 +456,44 @@ const SalaryPage = () => {
               </section>
             )}
             <section className="space-y-2">
-              <h2 className="font-medium">December</h2>
+              <h2 className="font-medium">{t.december}</h2>
               <p className="text-muted-foreground text-xs">
-                The year's tax is re-counted with the Pasal 17 rates:{' '}
-                {rupiah(dec.yearTax)}, of which {rupiah(dec.withheld)} was
-                already taken January to November. December{' '}
-                {dec.pph21 < 0 ? 'pays back the extra' : 'takes the rest'}.
+                {t.decemberHint(
+                  rupiah(dec.yearTax),
+                  rupiah(dec.withheld),
+                  dec.pph21 < 0
+                )}
               </p>
               <dl>
                 {dec.pph21 < 0 ? (
-                  <Row label="PPh 21 paid back" value={-dec.pph21} />
+                  <Row label={t.paidBack} value={-dec.pph21} />
                 ) : (
                   <Row label="PPh 21" value={dec.pph21} minus />
                 )}
-                <Row label="Take-home in December" value={dec.net} strong />
+                <Row label={t.takeHomeDecember} value={dec.net} strong />
               </dl>
               {known === 'net' && amount > 0 && dec.net !== pay.net && (
-                <Note>
-                  If your offer fixes the take-home (PPh ditanggung perusahaan
-                  or gross-up), December stays at {rupiah(pay.net)} and your
-                  employer settles the tax difference, whichever way it goes.
-                </Note>
+                <Note>{t.fixedTakeHome(rupiah(pay.net))}</Note>
               )}
             </section>
             {job === 'contract' && (
               <section className="space-y-2">
-                <h2 className="font-medium">When the contract ends</h2>
+                <h2 className="font-medium">{t.contractEnds}</h2>
                 <p className="text-muted-foreground text-xs">
-                  Compensation of {months} months ÷ 12 of your salary (PP
-                  35/2021).
+                  {t.compensationHint(months)}
                 </p>
-                <Note>
-                  No tax rule names it, so employers tax it one of the two ways
-                  below. Ask HR which.
-                </Note>
+                <Note>{t.compensationNote}</Note>
                 <dl>
-                  <Row label="Compensation" value={comp.amount} />
-                  <Row
-                    label="Tax as severance (final)"
-                    value={comp.asSeverance}
-                    minus
-                  />
-                  <Row
-                    label="Or tax added to your pay"
-                    value={comp.withPay}
-                    minus
-                  />
+                  <Row label={t.compensation} value={comp.amount} />
+                  <Row label={t.asSeverance} value={comp.asSeverance} minus />
+                  <Row label={t.withPay} value={comp.withPay} minus />
                 </dl>
               </section>
             )}
             <section className="space-y-2">
-              <h2 className="font-medium">Paid by your employer</h2>
+              <h2 className="font-medium">{t.employer}</h2>
               <p className="text-muted-foreground text-xs">
-                Not in your pay, but JKK, JKM and BPJS Kesehatan count toward
-                the {rupiah(pay.taxable)} the tax is worked out on.
+                {t.employerHint(rupiah(pay.taxable))}
               </p>
               <dl>
                 <Row label={`JKK (${percent(jkk)})`} value={pay.employer.jkk} />
@@ -441,14 +507,11 @@ const SalaryPage = () => {
           </div>
           {OUTDATED && (
             <p role="alert" className="text-destructive text-xs">
-              These rates are from {RATES_AS_OF} and may be out of date.
+              {t.outdated(asOf)}
             </p>
           )}
           <FieldDescription>
-            For a whole year at this salary. A contract that ends mid-year
-            settles the year's tax in its last month instead of December. Rates
-            as of {RATES_AS_OF}. JP is capped at a salary of {rupiah(JP_CAP)}{' '}
-            and BPJS Kesehatan at {rupiah(KES_CAP)}.
+            {t.footnote(asOf, rupiah(JP_CAP), rupiah(KES_CAP))}
           </FieldDescription>
         </div>
       }

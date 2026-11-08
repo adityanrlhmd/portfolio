@@ -5,7 +5,7 @@
 
 // shortcut: BPJS is counted on the salary even below the regional minimum wage (UMK), where
 // BPJS Kesehatan really uses the UMK; that needs every region's UMK, and such pay is rare
-export const RATES_AS_OF = 'March 2026';
+export const RATES_AS_OF = new Date('2026-03-01');
 // the JP cap moves every March; past this date the page warns and the test fails until it's updated
 export const RATES_EXPIRE = new Date('2027-03-01');
 
@@ -15,13 +15,8 @@ export const KES_CAP = 12_000_000;
 // basis points, so the math stays in whole numbers
 const JKM = 30;
 // JKK by how risky the work is, set per business sector; offices are the lowest
-export const JKK_RATES = [
-  { bps: 24, label: 'Very low (offices)' },
-  { bps: 54, label: 'Low' },
-  { bps: 89, label: 'Medium' },
-  { bps: 127, label: 'High' },
-  { bps: 174, label: 'Very high' },
-] as const;
+// (very low to very high; the page names them)
+export const JKK_RATES = [24, 54, 89, 127, 174] as const;
 
 export const PTKP_STATUSES = [
   'TK/0',

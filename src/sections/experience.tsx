@@ -1,3 +1,4 @@
+import { useLang } from '@/components/language-provider';
 import ScrollVelocity from '@/components/scroll-velocity';
 import { ShinyText } from '@/components/shiny-text';
 import {
@@ -8,8 +9,33 @@ import {
 } from '@/components/ui/accordion';
 
 import { EXPERIENCES } from '@/lib/aditya';
+import { translations } from '@/lib/i18n';
+
+const T = translations(
+  {
+    eyebrow: '⚡︎ Work History',
+    title: 'Experience',
+    intro:
+      "Where I've worked and what I did there, from government and banking to enterprise platforms.",
+    years: 'Years of Shipping Web & Mobile Products',
+    summary:
+      'From national procurement to core banking and enterprise platforms. These days most of my time goes into architecture, PR reviews, and helping new teammates get up to speed.',
+  },
+  {
+    eyebrow: '⚡︎ Riwayat Kerja',
+    title: 'Pengalaman',
+    intro:
+      'Pernah kerja di mana aja dan ngapain aja di sana, dari pemerintahan, perbankan, sampai platform enterprise.',
+    years: 'Tahun Bikin Produk Web & Mobile',
+    summary:
+      'Dari pengadaan nasional sampai core banking dan platform enterprise. Sekarang waktuku lebih banyak habis buat arsitektur, review PR, dan bantu rekan baru cepat nyambung sama codebase.',
+  }
+);
 
 const Experience = () => {
+  const { lang } = useLang();
+  const t = T[lang];
+
   return (
     <section
       id="experience"
@@ -19,7 +45,7 @@ const Experience = () => {
         <div className="relative md:col-span-2">
           <div className="sticky top-[calc(var(--header-height)+2rem)] space-y-4">
             <ShinyText
-              text="⚡︎ Work History"
+              text={t.eyebrow}
               speed={2}
               delay={0}
               color="var(--primary)"
@@ -31,10 +57,9 @@ const Experience = () => {
               disabled={false}
               className="text-primary font-bold"
             />
-            <h2 className="text-4xl font-bold lg:text-5xl">Experience</h2>
+            <h2 className="text-4xl font-bold lg:text-5xl">{t.title}</h2>
             <p className="text-muted-foreground text-sm md:text-base">
-              Where I've worked and what I did there, from government and
-              banking to enterprise platforms.
+              {t.intro}
             </p>
           </div>
         </div>
@@ -52,13 +77,13 @@ const Experience = () => {
                   </div>
 
                   <span className="text-muted-foreground whitespace-nowrap">
-                    {exp.duration}
+                    {exp.duration[lang]}
                   </span>
                 </AccordionTrigger>
 
                 <AccordionContent>
                   <ul className="text-muted-foreground list-disc space-y-2 pl-4">
-                    {exp.jobdesc.map((desc, index) => (
+                    {exp.jobdesc[lang].map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
                   </ul>
@@ -99,14 +124,11 @@ const Experience = () => {
 
         <div className="container max-w-4xl space-y-4">
           <h3 className="text-3xl font-bold md:text-4xl">
-            <span className="sr-only">5⁺</span> Years of Shipping Web & Mobile
-            Products
+            <span className="sr-only">5⁺</span> {t.years}
           </h3>
 
           <p className="text-muted-foreground text-sm md:text-base">
-            From national procurement to core banking and enterprise platforms.
-            These days most of my time goes into architecture, PR reviews, and
-            helping new teammates get up to speed.
+            {t.summary}
           </p>
         </div>
       </div>

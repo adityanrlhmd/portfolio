@@ -60,6 +60,9 @@ describe('ResumePreview', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Open PDF' }));
 
     await waitFor(() => expect(tab.location.href).toBe('blob:preview'));
-    expect(pdf.mock.lastCall?.[0].props).toEqual({ resume: ADITYA_RESUME });
+    expect(pdf.mock.lastCall?.[0].props).toEqual({
+      resume: ADITYA_RESUME,
+      lang: 'en',
+    });
   });
 });
