@@ -89,7 +89,8 @@ export const PdfPreview = ({
         ref={pagesRef}
         role="img"
         aria-label={label}
-        className="flex-1 space-y-3 overflow-y-auto"
+        // the pages are white whatever the theme, so its scrollbar is drawn for a light background
+        className="flex-1 space-y-3 overflow-y-auto scheme-light"
       />
       <button
         type="button"

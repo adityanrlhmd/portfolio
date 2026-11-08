@@ -1,4 +1,4 @@
-import { RiInformationLine } from '@remixicon/react';
+import { RiArrowDownSLine, RiInformationLine } from '@remixicon/react';
 
 import { useState } from 'react';
 
@@ -60,8 +60,19 @@ const Note = ({ children }: { children: React.ReactNode }) => (
   </p>
 );
 
-const SELECT =
-  'focus-visible:border-ring focus-visible:ring-ring/30 bg-background h-9 w-full rounded-md border px-2 text-sm outline-none focus-visible:ring-2 md:text-xs/relaxed';
+// native, so phones get their own picker, but with our chevron: the browser's sits flush to the edge
+const Select = (props: React.ComponentProps<'select'>) => (
+  <div className="relative">
+    <select
+      {...props}
+      className="focus-visible:border-ring focus-visible:ring-ring/30 bg-background h-9 w-full appearance-none rounded-md border pr-8 pl-2.5 text-sm outline-none focus-visible:ring-2 md:text-xs/relaxed"
+    />
+    <RiArrowDownSLine
+      aria-hidden
+      className="text-muted-foreground pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2"
+    />
+  </div>
+);
 
 const Row = ({
   label,
@@ -321,16 +332,15 @@ const SalaryPage = () => {
           </Field>
           <Field>
             <FieldLabel htmlFor="status">{t.status}</FieldLabel>
-            <select
+            <Select
               id="status"
               value={status}
               onChange={e => setStatus(e.target.value as PtkpStatus)}
-              className={SELECT}
             >
               {PTKP_STATUSES.map(value => (
                 <option key={value}>{value}</option>
               ))}
-            </select>
+            </Select>
             <FieldDescription>{t.statusHint}</FieldDescription>
           </Field>
           <Field>
@@ -370,18 +380,17 @@ const SalaryPage = () => {
           </Field>
           <Field>
             <FieldLabel htmlFor="jkk">{t.jkk}</FieldLabel>
-            <select
+            <Select
               id="jkk"
               value={jkk}
               onChange={e => setJkk(Number(e.target.value))}
-              className={SELECT}
             >
               {JKK_RATES.map((bps, i) => (
                 <option key={bps} value={bps}>
                   {t.jkkLevels[i]}, {percent(bps)}
                 </option>
               ))}
-            </select>
+            </Select>
             <FieldDescription>{t.jkkHint}</FieldDescription>
           </Field>
           <section className="space-y-3 border-t pt-6">

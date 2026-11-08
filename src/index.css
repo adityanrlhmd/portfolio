@@ -103,6 +103,8 @@
 }
 
 .dark {
+  /* scrollbars and native controls draw light on dark too, or they vanish on the dark background */
+  color-scheme: dark;
   --background: oklch(0.147 0.004 49.25);
   --foreground: oklch(0.985 0.001 106.423);
   --card: oklch(14.69% 0.00412 49.1 / 0);
