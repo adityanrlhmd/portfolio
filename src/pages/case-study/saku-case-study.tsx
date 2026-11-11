@@ -36,7 +36,7 @@ const T = translations<
   {
     eyebrow: '⚡︎ Case Study',
     title: 'A family budget that two phones can share',
-    lead: 'Saku keeps a household’s money in one place, and anyone in the family can record a transaction from their own phone or laptop. It runs on the web, Android and iOS, in Indonesian and English, and costs nothing to run.',
+    lead: 'Saku keeps your money in one place, whether you track it alone or with the whole family, and everyone in a household can record a transaction from their own phone or laptop. It runs on the web, Android and iOS, in Indonesian and English, and costs nothing to run.',
     facts: [
       ['Role', 'Solo: product, design, web, mobile, database'],
       [
@@ -57,7 +57,7 @@ const T = translations<
         title: 'One household, everyone’s pockets',
         paragraphs: [
           'Every row belongs to a household, and Postgres row-level security does the access checks, not the app. A wallet can be shared or someone’s own. A transaction can be marked as belonging to one member or to several, so “how much did I spend” and “how much did we spend” both come from the same data.',
-          'Joining a household takes an invite link or a QR code. Leaving one takes the wallets that only you own into a personal space, and the shared ones stay with the family.',
+          'Joining a household takes an invite link or a QR code. Leaving one takes the wallets that only you own into a personal space, and the shared ones stay with the family. Using Saku alone works the same way: it’s a household of one, and nothing in the app waits for a partner.',
         ],
       },
       {
@@ -129,6 +129,18 @@ const T = translations<
           '520+ mobile unit tests, plus Vitest suites for the shared package and the web, and a Playwright smoke test for the auth guard',
         ],
       },
+      {
+        title: 'What’s next',
+        paragraphs: ['Some of what I’m exploring, not promises:'],
+        list: [
+          '**Record by chat.** Parents who’d rather not install an app could log spending from WhatsApp in plain words, with a confirmation before anything is saved.',
+          '**Ask your own AI assistant.** Connect Saku to an assistant like Claude and ask “how much did we spend on food this month?”',
+          '**Investments.** Mutual funds, stocks and time deposits, next to the wallets and gold already there.',
+          '**Offline for everything.** A new transaction already saves without signal. Edits, budgets and goals are next, once there’s a clear rule for when two people change the same thing while one of them is offline.',
+          '**Scan a receipt** into its line items.',
+          '**Play Store and App Store release.**',
+        ],
+      },
     ],
     watch: 'Watch the video',
     open: 'Open Saku',
@@ -140,7 +152,7 @@ const T = translations<
   {
     eyebrow: '⚡︎ Studi Kasus',
     title: 'Anggaran keluarga yang bisa dipakai bareng dari dua HP',
-    lead: 'Saku ngumpulin uang satu rumah tangga di satu tempat, dan siapa pun di keluarga bisa nyatet transaksi dari HP atau laptop masing-masing. Jalan di web, Android, dan iOS, bisa bahasa Indonesia dan Inggris, dan biaya jalaninnya nol.',
+    lead: 'Saku ngumpulin uangmu di satu tempat, mau dicatat sendiri atau bareng satu keluarga, dan tiap anggota rumah tangga bisa nyatet transaksi dari HP atau laptop masing-masing. Jalan di web, Android, dan iOS, bisa bahasa Indonesia dan Inggris, dan biaya jalaninnya nol.',
     facts: [
       ['Peran', 'Solo: produk, desain, web, mobile, database'],
       [
@@ -161,7 +173,7 @@ const T = translations<
         title: 'Satu rumah tangga, banyak kantong',
         paragraphs: [
           'Tiap baris data punya rumah tangganya sendiri, dan yang ngecek akses itu row-level security di Postgres, bukan aplikasinya. Wallet bisa dipakai bareng atau punya satu orang. Transaksi bisa ditandai punya satu anggota atau beberapa, jadi “aku habis berapa” dan “kita habis berapa” sama-sama dihitung dari data yang sama.',
-          'Gabung ke rumah tangga cukup lewat link undangan atau QR code. Kalau keluar, wallet yang cuma punyamu ikut pindah ke ruang pribadi, dan yang dipakai bareng tetap di keluarga.',
+          'Gabung ke rumah tangga cukup lewat link undangan atau QR code. Kalau keluar, wallet yang cuma punyamu ikut pindah ke ruang pribadi, dan yang dipakai bareng tetap di keluarga. Pakai Saku sendirian juga jalan dengan cara yang sama: rumah tangga isi satu orang, dan nggak ada fitur yang nungguin pasangan.',
         ],
       },
       {
@@ -231,6 +243,18 @@ const T = translations<
           'Sekitar 1.000 commit sejak Juli 2026',
           '64 migration database',
           '520+ unit test mobile, plus suite Vitest buat package bareng dan web, dan satu smoke test Playwright buat auth guard',
+        ],
+      },
+      {
+        title: 'Rencana ke depan',
+        paragraphs: ['Beberapa yang lagi aku jajaki, belum janji:'],
+        list: [
+          '**Nyatet lewat chat.** Orang tua yang ogah install aplikasi bisa nyatet pengeluaran dari WhatsApp pakai bahasa sehari-hari, dan ada konfirmasi dulu sebelum disimpan.',
+          '**Tanya ke asisten AI sendiri.** Sambungin Saku ke asisten kayak Claude, terus tanya “bulan ini kita habis berapa buat makan?”',
+          '**Investasi.** Reksadana, saham, dan deposito, di samping wallet dan emas yang udah ada.',
+          '**Offline buat semuanya.** Transaksi baru udah bisa disimpan tanpa sinyal. Berikutnya edit, budget, dan target tabungan, setelah ada aturan yang jelas kalau dua orang ngubah data yang sama pas salah satunya lagi offline.',
+          '**Scan struk** jadi rincian per item.',
+          '**Rilis di Play Store dan App Store.**',
         ],
       },
     ],

@@ -43,8 +43,8 @@ const PROJECTS = [
   {
     title: 'Saku',
     alter: {
-      en: 'Household Finance Tracker',
-      id: 'Pencatat Keuangan Keluarga',
+      en: 'Personal & Household Finance Tracker',
+      id: 'Pencatat Keuangan Pribadi & Keluarga',
     },
     category: 'Web',
     // shown next to the link, until the apps are in the stores
@@ -52,8 +52,8 @@ const PROJECTS = [
     image: saku,
     imageSize: [1200, 724],
     description: {
-      en: "A money tracker for a whole household. Bank accounts, e-wallets, cash, gold and credit cards live in one place, and what one person records shows up on everyone else's phone and laptop in real time. I built it alone: a Next.js web app, an Expo app for Android and iOS, and the Supabase backend they share, all in Indonesian and English.",
-      id: 'Pencatat keuangan buat satu rumah tangga. Rekening bank, e-wallet, uang tunai, emas, dan kartu kredit ngumpul di satu tempat, dan yang dicatat satu orang langsung muncul real time di HP dan laptop anggota keluarga lainnya. Aku bangun sendirian: web Next.js, aplikasi Expo buat Android dan iOS, dan backend Supabase yang dipakai bareng, semuanya bisa bahasa Indonesia dan Inggris.',
+      en: "A money tracker for yourself or a whole household. Bank accounts, e-wallets, cash, gold and credit cards live in one place, and in a household, what one person records shows up on everyone else's phone and laptop in real time. I built it alone: a Next.js web app, an Expo app for Android and iOS, and the Supabase backend they share, all in Indonesian and English.",
+      id: 'Pencatat keuangan buat sendiri atau satu rumah tangga. Rekening bank, e-wallet, uang tunai, emas, dan kartu kredit ngumpul di satu tempat, dan kalau dipakai bareng keluarga, yang dicatat satu orang langsung muncul real time di HP dan laptop anggota lainnya. Aku bangun sendirian: web Next.js, aplikasi Expo buat Android dan iOS, dan backend Supabase yang dipakai bareng, semuanya bisa bahasa Indonesia dan Inggris.',
     },
     link: 'https://saku-aditt.vercel.app',
     caseStudy: CASE_STUDY.saku,

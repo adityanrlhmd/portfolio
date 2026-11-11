@@ -26,8 +26,8 @@
     "image": "/og/resume-builder.jpg"
   },
   "/case-study/saku": {
-    "title": "Case Study: Saku, a Household Finance Tracker | Aditya Hamda",
-    "description": "A money tracker a whole family shares in real time, on the web, Android and iOS, in Indonesian and English. Built solo with Next.js, Expo and Supabase.",
+    "title": "Case Study: Saku, a Personal & Household Finance Tracker | Aditya Hamda",
+    "description": "A money tracker for yourself or a whole family, shared in real time, on the web, Android and iOS, in Indonesian and English. Built solo with Next.js, Expo and Supabase.",
     "image": "/og/saku.jpg"
   }
 }
