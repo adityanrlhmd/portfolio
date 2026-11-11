@@ -61,6 +61,13 @@ export const CaseStudyArticle = ({
   <main className="min-h-svh">
     <article className="container max-w-3xl space-y-10 py-10">
       <div className="space-y-4">
+        <a
+          href="/#projects"
+          onClick={backToPortfolio}
+          className="text-muted-foreground hover:text-primary inline-block text-sm"
+        >
+          ← {t.back}
+        </a>
         <p className="text-primary text-sm font-bold">{t.eyebrow}</p>
         <h1 className="text-3xl font-bold lg:text-4xl lg:leading-tight">
           {t.title}
@@ -121,7 +128,7 @@ export const CaseStudyArticle = ({
           {t.next} <RiArrowRightLine size={18} />
         </a>
         <a
-          href="/"
+          href="/#projects"
           onClick={backToPortfolio}
           className="text-muted-foreground hover:text-primary inline-block text-sm underline underline-offset-4"
         >
