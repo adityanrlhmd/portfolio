@@ -1,7 +1,7 @@
 import { CASE_STUDY, TOOLS, TOOLS_HUB } from '@/lib/config';
-import { SEO_PAGES } from '@/lib/seo';
+import SEO_PAGES from '@/lib/seo.json';
 
-describe('SEO_PAGES', () => {
+describe('seo.json', () => {
   it('covers every tool and case study page, and nothing else', () => {
     const routes = [
       TOOLS_HUB.href,

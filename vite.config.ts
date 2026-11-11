@@ -7,11 +7,21 @@ import { URL, fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
 import { defineConfig } from 'vitest/config';
 
-import { SEO_PAGES, SITE } from './src/lib/seo';
-
-// Search engines and link previews don't run JS, so each page in SEO_PAGES gets a copy of the
-// built index.html with its own title, description, URL and image (served by cleanUrls in
-// vercel.json), and they all go in sitemap.xml.
+// Search engines and link previews (WhatsApp, LinkedIn) don't run JS, so each page in
+// src/lib/seo.json gets a copy of the built index.html with its own title, description, URL
+// and image (served by cleanUrls in vercel.json), and they all go in sitemap.xml. English
+// only: the language toggle doesn't change the URL. Read, not imported, so the file stays
+// out of tsconfig.node.json's project (importing it there breaks tsc on a clean build).
+const SITE = 'https://adityahamda.vercel.app';
+const SEO_PAGES: Record<
+  string,
+  { title: string; description: string; image?: string }
+> = JSON.parse(
+  readFileSync(
+    fileURLToPath(new URL('./src/lib/seo.json', import.meta.url)),
+    'utf8'
+  )
+);
 const HOME_TITLE = 'Aditya Hamda | Frontend Engineer';
 const HOME_DESCRIPTION =
   'Frontend engineer building web and mobile apps for government, banking, and enterprise products. React, Next.js, TypeScript.';
