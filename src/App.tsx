@@ -24,9 +24,14 @@ const KeywordCheckPage = lazy(
 );
 const SalaryPage = lazy(() => import('@/pages/salary/salary-page'));
 const ToolsPage = lazy(() => import('@/pages/tools/tools-page'));
-const CaseStudyPage = lazy(
+const ResumeBuilderCaseStudy = lazy(
   () => import('@/pages/case-study/resume-builder-case-study')
 );
+const SakuCaseStudy = lazy(() => import('@/pages/case-study/saku-case-study'));
+const CASE_STUDY_PAGES: Record<string, React.ReactNode> = {
+  [CASE_STUDY.resumeBuilder]: <ResumeBuilderCaseStudy />,
+  [CASE_STUDY.saku]: <SakuCaseStudy />,
+};
 const TOOL_PAGES: Record<
   (typeof TOOLS)[number]['href'] | typeof TOOLS_HUB.href,
   React.ReactNode
@@ -57,7 +62,7 @@ function App() {
   // the hub gets the same frame as a tool page
   const tool =
     path === TOOLS_HUB.href ? TOOLS_HUB : TOOLS.find(t => t.href === path);
-  const caseStudy = path === CASE_STUDY.href;
+  const caseStudy = CASE_STUDY_PAGES[path];
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
@@ -108,7 +113,7 @@ function App() {
             <>
               {/* min-h-svh keeps the footer from jumping up while the chunk loads */}
               <Suspense fallback={<div className="min-h-svh" />}>
-                <CaseStudyPage />
+                {caseStudy}
               </Suspense>
               <Footer minimal />
             </>

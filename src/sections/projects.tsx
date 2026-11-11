@@ -13,6 +13,7 @@ import prestige from '@/assets/projects/prestige.webp';
 import qsr from '@/assets/projects/qsr.webp';
 import resumeBuilder from '@/assets/projects/resume-builder.jpg';
 import rooma from '@/assets/projects/rooma.webp';
+import saku from '@/assets/projects/saku.jpg';
 
 import { useLang } from '@/components/language-provider';
 import { ShinyText } from '@/components/shiny-text';
@@ -40,6 +41,38 @@ const SKILL_ORDER = Object.values(SKILLS);
 
 const PROJECTS = [
   {
+    title: 'Saku',
+    alter: {
+      en: 'Household Finance Tracker',
+      id: 'Pencatat Keuangan Keluarga',
+    },
+    category: 'Web',
+    // shown next to the link, until the apps are in the stores
+    soon: 'Mobile',
+    image: saku,
+    imageSize: [1200, 724],
+    description: {
+      en: "A money tracker for a whole household. Bank accounts, e-wallets, cash, gold and credit cards live in one place, and what one person records shows up on everyone else's phone and laptop in real time. I built it alone: a Next.js web app, an Expo app for Android and iOS, and the Supabase backend they share, all in Indonesian and English.",
+      id: 'Pencatat keuangan buat satu rumah tangga. Rekening bank, e-wallet, uang tunai, emas, dan kartu kredit ngumpul di satu tempat, dan yang dicatat satu orang langsung muncul real time di HP dan laptop anggota keluarga lainnya. Aku bangun sendirian: web Next.js, aplikasi Expo buat Android dan iOS, dan backend Supabase yang dipakai bareng, semuanya bisa bahasa Indonesia dan Inggris.',
+    },
+    link: 'https://saku-aditt.vercel.app',
+    caseStudy: CASE_STUDY.saku,
+    stacks: [
+      SKILLS['next-js'],
+      SKILLS['react-native'],
+      SKILLS.expo,
+      SKILLS.tailwindcss,
+      SKILLS.typescript,
+      SKILLS.tanstack,
+      SKILLS.zod,
+      SKILLS.supabase,
+      SKILLS.vitest,
+      SKILLS.jest,
+      SKILLS.vercel,
+      SKILLS.git,
+    ],
+  },
+  {
     title: 'Resume Builder',
     alter: { en: 'Free Job Search Tool', id: 'Tool Cari Kerja Gratis' },
     category: 'Web',
@@ -50,7 +83,7 @@ const PROJECTS = [
       id: 'Pembuat CV gratis buat yang lagi cari kerja, dengan preview PDF live dan nggak ada data yang di-upload ke mana pun. PDF yang di-download nyimpen isi form di dalamnya, jadi tinggal import lagi buat lanjut edit: tanpa akun, tanpa server. Library PDF-nya cuma dimuat di halaman tools, jadi portfolio-nya tetap ringan.',
     },
     link: '/tools/resume',
-    caseStudy: CASE_STUDY.href,
+    caseStudy: CASE_STUDY.resumeBuilder,
     stacks: [
       SKILLS['react-js'],
       SKILLS.tailwindcss,
@@ -349,6 +382,7 @@ const T = translations(
       "Some of the things I've worked on, from enterprise platforms to client sites, and what I handled on each.",
     newTab: 'opens in a new tab',
     caseStudy: 'Read the case study →',
+    soon: 'coming soon',
   },
   {
     eyebrow: '⚡︎ Karya Pilihan',
@@ -357,6 +391,7 @@ const T = translations(
       'Beberapa yang pernah kukerjain, dari platform enterprise sampai situs klien, plus bagian apa yang kupegang di tiap proyek.',
     newTab: 'buka di tab baru',
     caseStudy: 'Baca studi kasusnya →',
+    soon: 'segera hadir',
   }
 );
 
@@ -422,7 +457,7 @@ const Projects = () => {
                 <CardDescription>
                   <p>{project.alter[lang]}</p>
                 </CardDescription>
-                <CardAction>
+                <CardAction className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1">
                   {project.link ? (
                     <a
                       href={project.link}
@@ -436,6 +471,14 @@ const Projects = () => {
                     </a>
                   ) : (
                     <span className="text-xs">{project.category}</span>
+                  )}
+                  {project.soon && (
+                    <span className="text-muted-foreground text-xs">
+                      {project.soon}{' '}
+                      <span className="border-primary/40 bg-primary/10 text-primary border px-1.5 py-0.5">
+                        {t.soon}
+                      </span>
+                    </span>
                   )}
                 </CardAction>
               </CardHeader>

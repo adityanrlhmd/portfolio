@@ -1,12 +1,12 @@
 import { RiArrowRightLine, RiGithubFill } from '@remixicon/react';
 
-import { Fragment } from 'react';
-
 import { useLang } from '@/components/language-provider';
 import { buttonVariants } from '@/components/ui/button';
 
-import { backToPortfolio } from '@/lib/back-to-portfolio';
+import { CASE_STUDY } from '@/lib/config';
 import { translations } from '@/lib/i18n';
+
+import { CaseStudyArticle, type CaseStudyCopy } from './case-study-article';
 
 const SOURCE = 'https://github.com/adityanrlhmd/portfolio';
 const TOOL = '/tools/resume';
@@ -16,18 +16,7 @@ const EMBED_CODE = `// the form, as JSON, inside the PDF's Subject field
 const utf8 = new TextEncoder().encode(JSON.stringify(resume));
 const subject = \`resume-data:\${btoa(String.fromCharCode(...utf8))}\`;`;
 
-type Section = { title: string; paragraphs: string[]; code?: string };
-
-const T = translations<{
-  eyebrow: string;
-  title: string;
-  lead: string;
-  facts: [label: string, value: string][];
-  sections: Section[];
-  tryIt: string;
-  source: string;
-  back: string;
-}>(
+const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
   {
     eyebrow: '⚡︎ Case Study',
     title: 'A resume builder that needs no server',
@@ -94,6 +83,7 @@ const T = translations<{
     ],
     tryIt: 'Try the builder',
     source: 'Source on GitHub',
+    next: 'Next case study: Saku, a household finance tracker',
     back: 'Back to portfolio',
   },
   {
@@ -162,85 +152,35 @@ const T = translations<{
     ],
     tryIt: 'Coba pembuat CV-nya',
     source: 'Source code di GitHub',
+    next: 'Studi kasus berikutnya: Saku, pencatat keuangan keluarga',
     back: 'Balik ke portfolio',
   }
 );
-
-// `backticks` in the copy become inline code
-const withCode = (text: string) =>
-  text.split('`').map((part, i) =>
-    i % 2 ? (
-      <code key={i} className="bg-muted rounded px-1 py-0.5 text-[0.85em]">
-        {part}
-      </code>
-    ) : (
-      <Fragment key={i}>{part}</Fragment>
-    )
-  );
 
 const ResumeBuilderCaseStudy = () => {
   const { lang } = useLang();
   const t = T[lang];
 
   return (
-    <main className="min-h-svh">
-      <article className="container max-w-3xl space-y-10 py-10">
-        <div className="space-y-4">
-          <p className="text-primary text-sm font-bold">{t.eyebrow}</p>
-          <h1 className="text-3xl font-bold lg:text-4xl lg:leading-tight">
-            {t.title}
-          </h1>
-          <p className="text-muted-foreground">{t.lead}</p>
-          <dl className="grid gap-2 border-y py-4 text-sm sm:grid-cols-[auto_1fr] sm:gap-x-6">
-            {t.facts.map(([label, value]) => (
-              <Fragment key={label}>
-                <dt className="text-muted-foreground">{label}</dt>
-                <dd>{value}</dd>
-              </Fragment>
-            ))}
-          </dl>
-          <div className="flex flex-wrap gap-3">
-            <a href={TOOL} className={buttonVariants()}>
-              {t.tryIt} <RiArrowRightLine />
-            </a>
-            <a
-              href={SOURCE}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={buttonVariants({ variant: 'outline' })}
-            >
-              <RiGithubFill /> {t.source}
-            </a>
-          </div>
+    <CaseStudyArticle
+      t={t}
+      nextHref={CASE_STUDY.saku}
+      actions={
+        <div className="flex flex-wrap gap-3">
+          <a href={TOOL} className={buttonVariants()}>
+            {t.tryIt} <RiArrowRightLine />
+          </a>
+          <a
+            href={SOURCE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={buttonVariants({ variant: 'outline' })}
+          >
+            <RiGithubFill /> {t.source}
+          </a>
         </div>
-
-        {t.sections.map(section => (
-          <section key={section.title} className="space-y-4">
-            <h2 className="text-xl font-bold">{section.title}</h2>
-            {section.paragraphs.map((paragraph, i) => (
-              <Fragment key={i}>
-                <p className="text-muted-foreground leading-relaxed">
-                  {withCode(paragraph)}
-                </p>
-                {i === 0 && section.code && (
-                  <pre className="bg-muted overflow-x-auto rounded-md border p-4 text-xs leading-relaxed">
-                    <code>{section.code}</code>
-                  </pre>
-                )}
-              </Fragment>
-            ))}
-          </section>
-        ))}
-
-        <a
-          href="/"
-          onClick={backToPortfolio}
-          className="text-muted-foreground hover:text-primary inline-block text-sm underline underline-offset-4"
-        >
-          ← {t.back}
-        </a>
-      </article>
-    </main>
+      }
+    />
   );
 };
 

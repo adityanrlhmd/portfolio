@@ -179,14 +179,38 @@ describe('App', () => {
     });
   });
 
-  it('serves the case study on its own page, linked from its project card', async () => {
+  it('serves each case study on its own page, linked from its project card', async () => {
+    render(<App />);
+    const links = await screen.findAllByRole(
+      'link',
+      { name: 'Read the case study →' },
+      { timeout: 5000 }
+    );
+    expect(links.map(link => link.getAttribute('href'))).toEqual([
+      '/case-study/saku',
+      '/case-study/resume-builder',
+    ]);
+  });
+
+  it('serves the Saku case study with its video and a link to the web app', async () => {
+    window.history.pushState({}, '', '/case-study/saku');
     render(<App />);
     expect(
-      await screen.findByRole(
-        'link',
-        { name: 'Read the case study →' },
-        { timeout: 5000 }
-      )
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'A family budget that two phones can share',
+      })
+    ).toBeInTheDocument();
+    expect(document.querySelector('video')).toHaveAttribute(
+      'src',
+      '/videos/saku-promo.mp4'
+    );
+    expect(screen.getByRole('link', { name: /Open Saku/ })).toHaveAttribute(
+      'href',
+      'https://saku-aditt.vercel.app'
+    );
+    expect(
+      screen.getByRole('link', { name: /Next case study/ })
     ).toHaveAttribute('href', '/case-study/resume-builder');
   });
 
