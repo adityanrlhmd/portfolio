@@ -1,0 +1,49 @@
+// What search engines and link previews (WhatsApp, LinkedIn) see for each page other than
+// home. They don't run JS, so vite.config.ts writes an HTML copy of the built page per entry
+// with these swapped in, and lists them in sitemap.xml. No imports: vite.config.ts reads it.
+// English only: the language toggle doesn't change the URL.
+export const SITE = 'https://adityahamda.vercel.app';
+
+export const SEO_PAGES: Record<
+  string,
+  { title: string; description: string; image?: string }
+> = {
+  '/tools': {
+    title: 'Free Job Search Tools | Aditya Hamda',
+    description:
+      'Make your resume, check it against a job post, and write the cover letter. Free, no sign-up, nothing leaves your browser.',
+  },
+  '/tools/resume': {
+    title: 'Free Resume Builder | Aditya Hamda',
+    description:
+      'Fill in the form and get a clean PDF resume with a live preview. Free, no sign-up, nothing leaves your browser, and the PDF doubles as your save file.',
+    image: '/og/resume-builder.jpg',
+  },
+  '/tools/keyword-check': {
+    title: 'Resume Keyword Checker | Aditya Hamda',
+    description:
+      'Paste a job post and see which skills it asks for that your resume leaves out. Free, no sign-up.',
+  },
+  '/tools/cover-letter': {
+    title: 'Free Cover Letter Builder | Aditya Hamda',
+    description:
+      'Write a cover letter that matches your resume, with your details filled in. Free, no sign-up, nothing leaves your browser.',
+  },
+  '/tools/salary': {
+    title: 'Indonesian Salary Calculator | Aditya Hamda',
+    description:
+      'See what an Indonesian salary offer pays after BPJS and PPh 21. Free, no sign-up.',
+  },
+  '/case-study/resume-builder': {
+    title: 'Case Study: A Resume Builder That Needs No Server | Aditya Hamda',
+    description:
+      'How a free resume builder keeps everything in the browser, with the downloaded PDF doubling as the save file.',
+    image: '/og/resume-builder.jpg',
+  },
+  '/case-study/saku': {
+    title: 'Case Study: Saku, a Household Finance Tracker | Aditya Hamda',
+    description:
+      'A money tracker a whole family shares in real time, on the web, Android and iOS, in Indonesian and English. Built solo with Next.js, Expo and Supabase.',
+    image: '/og/saku.jpg',
+  },
+};
