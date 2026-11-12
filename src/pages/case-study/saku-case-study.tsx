@@ -31,7 +31,14 @@ const shot = (src: string, alt: string) => ({
 });
 
 const T = translations<
-  CaseStudyCopy & { watch: string; open: string; apps: string; video: string }
+  CaseStudyCopy & {
+    watch: string;
+    open: string;
+    android: string;
+    stores: string;
+    soon: string;
+    video: string;
+  }
 >(
   {
     eyebrow: '⚡︎ Case Study',
@@ -139,7 +146,9 @@ const T = translations<
     ],
     watch: 'Watch the video',
     open: 'Open Saku',
-    apps: 'Android: download the APK from the web app · Play Store & App Store: coming soon',
+    android: 'Android: download the APK from the web app',
+    stores: 'Play Store & App Store:',
+    soon: 'Coming soon',
     video: 'Saku promo video',
     next: 'Next case study: a resume builder that needs no server',
     back: 'Back to portfolio',
@@ -250,7 +259,9 @@ const T = translations<
     ],
     watch: 'Lihat videonya',
     open: 'Buka Saku',
-    apps: 'Android: download APK-nya dari web · Play Store & App Store: segera hadir',
+    android: 'Android: download APK-nya dari web',
+    stores: 'Play Store & App Store:',
+    soon: 'Segera hadir',
     video: 'Video promo Saku',
     next: 'Studi kasus berikutnya: pembuat CV yang nggak butuh server',
     back: 'Balik ke portfolio',
@@ -287,7 +298,15 @@ const SakuCaseStudy = () => {
               {t.open} <RiExternalLinkLine />
             </a>
           </div>
-          <p className="text-muted-foreground text-sm">{t.apps}</p>
+          <ul className="text-muted-foreground space-y-1.5 text-sm">
+            <li>{t.android}</li>
+            <li>
+              {t.stores} {/* same badge as the project card's "coming soon" */}
+              <span className="border-primary/40 bg-primary/10 text-primary border px-1.5 py-0.5 text-xs font-medium">
+                {t.soon}
+              </span>
+            </li>
+          </ul>
         </div>
       }
     >
