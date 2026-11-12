@@ -63,8 +63,9 @@ const T = translations<
       {
         title: 'Real time without running a server',
         paragraphs: [
-          'When Ani saves an expense on her phone, Budi’s laptop shows it a moment later, with no server of my own in between. A Postgres trigger broadcasts a small `{ table, op, by }` message on the household’s Supabase Realtime channel. Each app listens and refreshes only the TanStack Query caches that table feeds.',
-          'The writer’s own screen doesn’t wait for the round trip either: every change is optimistic, and a failed one rolls back.',
+          'When Ani saves an expense on her phone, Budi’s laptop shows it a moment later, with no server of my own in between. A Postgres trigger broadcasts a small `{ table, op, by, via }` message on the household’s Supabase Realtime channel. The phone answers it by refetching only the TanStack Query caches that table feeds, and the web by re-rendering the page on the server.',
+          'On the phone, the writer’s own screen doesn’t wait for the round trip either: every change is optimistic, and a failed one rolls back.',
+          'The first version skipped messages from the signed-in user, so an expense I saved on my phone didn’t show on my own laptop until I reloaded the page. Now the trigger also adds `via`, the platform that made the write, read from an `x-saku-client` header each app now sends, and an app refreshes when the writer is someone else or used another platform. Two web tabs on the same account still don’t update each other, which rarely comes up.',
         ],
         images: [
           shot(sync, 'An expense saved on the phone appearing on the laptop'),
@@ -73,7 +74,7 @@ const T = translations<
       {
         title: 'Money rules live in one place',
         paragraphs: [
-          'Two apps that each compute a balance their own way will, sooner or later, disagree. So the web and the phone hold no money rules themselves. Both import one shared TypeScript package with the Zod schemas and row builders for everything they write. Some of the rules in there:',
+          'The web and the phone hold no money rules of their own, so they can’t compute a balance two different ways. Both import one shared TypeScript package with the Zod schemas and row builders for everything they write. Some of the rules in there:',
         ],
         list: [
           '**Credit cards bill by statement cycle.** The bill closes on a cut-off day and is due on another, both clamped for short months. The app separates what the statement still asks for from what was spent after the cut-off, counted on the user’s local day, never in SQL, where `current_date` is UTC and would say yesterday for the first seven hours of every Jakarta day.',
@@ -94,18 +95,13 @@ const T = translations<
       {
         title: 'Shipping to a family for free',
         paragraphs: [
-          'The app had to stay free, to build and to use: no paid push service and no store fees.',
-        ],
-        list: [
-          '**Android installs from the web app.** The APK sits at one fixed address, and the download button and QR code on the web always point to it.',
-          '**Most fixes go out over the air** with EAS Update, so nobody reinstalls. Only a native change needs a new APK.',
-          '**Reminders are local notifications**, not paid push.',
+          'The app had to stay free, to build and to use: no store fees and no paid push service. So Android installs from the web app. The APK sits at one fixed address, and the download button and QR code on the web always point to it. Most fixes go out over the air with EAS Update, so nobody reinstalls; only a native change needs a new APK. Reminders are local notifications instead of push.',
         ],
       },
       {
         title: 'Make it feel like theirs',
         paragraphs: [
-          'There are nine accent colours and nineteen backgrounds, from plain tints to batik, plus your own photo, all defined once in the shared package. The accents are in OKLCH and tested for contrast, and the colours that carry meaning for money (income green, expense red) never move. A photo background gets a scrim tested to keep headings at 4.5:1 or better over any picture.',
+          'There are nine accent colours and nineteen backgrounds, from plain tints to batik, plus your own photo, all defined once in the shared package. In our family, some use a photo, others batik or another background. The accents are in OKLCH and tested for contrast, and the colours that carry meaning for money (income green, expense red) never move. A photo background gets a scrim tested to keep headings at 4.5:1 or better over any picture.',
         ],
         images: [
           shot(themes, 'Dark and light themes with different accent colours'),
@@ -114,10 +110,9 @@ const T = translations<
       },
       {
         title: 'Trade-offs',
-        paragraphs: [],
-        list: [
-          '**No bank import.** Every transaction is entered by hand. That keeps bank credentials out of the app, at the cost of some typing.',
-          '**Not in the stores yet.** Android installs as an APK from the web app and the iPhone build is installed locally. Fine for a family, but not a public launch.',
+        paragraphs: [
+          'There’s no bank import. Every transaction is entered by hand, which keeps bank credentials out of the app at the cost of some typing.',
+          'It’s not in the stores yet. Android installs as an APK from the web app and the iPhone build is installed locally: fine for a family, but not a public launch.',
         ],
       },
       {
@@ -125,7 +120,7 @@ const T = translations<
         paragraphs: [],
         list: [
           'About 1,000 commits since July 2026',
-          '64 database migrations',
+          '65 database migrations',
           '520+ mobile unit tests, plus Vitest suites for the shared package and the web, and a Playwright smoke test for the auth guard',
         ],
       },
@@ -179,8 +174,9 @@ const T = translations<
       {
         title: 'Real time tanpa server sendiri',
         paragraphs: [
-          'Pas Ani nyimpen pengeluaran di HP-nya, laptop Budi langsung nampilin sesaat kemudian, tanpa server buatanku di tengahnya. Trigger Postgres nge-broadcast pesan kecil `{ table, op, by }` di channel Supabase Realtime milik rumah tangga itu. Tiap aplikasi dengerin dan cuma nge-refresh cache TanStack Query yang diisi tabel itu.',
-          'Layar si penulis juga nggak nunggu bolak-balik ke server: tiap perubahan langsung tampil secara optimistic, dan kalau gagal, dibalikin lagi.',
+          'Pas Ani nyimpen pengeluaran di HP-nya, laptop Budi langsung nampilin sesaat kemudian, tanpa server buatanku di tengahnya. Trigger Postgres nge-broadcast pesan kecil `{ table, op, by, via }` di channel Supabase Realtime milik rumah tangga itu. HP-nya ngebales dengan cuma nge-refetch cache TanStack Query yang diisi tabel itu, dan web-nya dengan nge-render ulang halamannya di server.',
+          'Di HP, layar si penulis juga nggak nunggu bolak-balik ke server: tiap perubahan langsung tampil secara optimistic, dan kalau gagal, dibalikin lagi.',
+          'Versi pertamanya ngelewatin pesan dari user yang lagi login, jadi pengeluaran yang aku simpan di HP nggak muncul di laptopku sendiri sampai halamannya di-reload. Sekarang trigger-nya juga nambahin `via`, platform yang nulis datanya, dibaca dari header `x-saku-client` yang sekarang dikirim tiap aplikasi, dan aplikasi nge-refresh kalau yang nulis orang lain atau nulisnya dari platform lain. Dua tab web dengan akun yang sama masih nggak saling update, tapi itu jarang kejadian.',
         ],
         images: [
           shot(sync, 'Pengeluaran yang disimpan di HP muncul di laptop'),
@@ -189,7 +185,7 @@ const T = translations<
       {
         title: 'Aturan uang cuma ada di satu tempat',
         paragraphs: [
-          'Dua aplikasi yang ngitung saldo dengan caranya masing-masing, cepat atau lambat bakal beda hasil. Jadi web dan HP nggak nyimpen aturan uang sendiri. Dua-duanya import satu package TypeScript bareng yang isinya schema Zod dan pembentuk baris buat semua yang mereka tulis. Beberapa aturan di dalamnya:',
+          'Web dan HP nggak nyimpen aturan uang sendiri, jadi saldonya nggak mungkin dihitung dengan dua cara berbeda. Dua-duanya import satu package TypeScript bareng yang isinya schema Zod dan pembentuk baris buat semua yang mereka tulis. Beberapa aturan di dalamnya:',
         ],
         list: [
           '**Kartu kredit ditagih per siklus.** Tagihan tutup di tanggal cetak dan jatuh tempo di tanggal lain, dua-duanya disesuaikan buat bulan yang pendek. Aplikasinya misahin yang masih ditagih di lembar tagihan dari yang dibelanjain setelah tanggal cetak, dihitung pakai hari lokal user, bukan di SQL, karena di sana `current_date` itu UTC dan bakal bilang masih kemarin selama tujuh jam pertama tiap hari di Jakarta.',
@@ -210,18 +206,13 @@ const T = translations<
       {
         title: 'Rilis ke keluarga tanpa biaya',
         paragraphs: [
-          'Aplikasinya harus tetap gratis, buat dibikin maupun dipakai: nggak ada layanan push berbayar dan nggak ada biaya store.',
-        ],
-        list: [
-          '**Android di-install dari web-nya.** APK-nya ada di satu alamat tetap, dan tombol download serta QR code di web selalu ngarah ke situ.',
-          '**Kebanyakan perbaikan dikirim over the air** pakai EAS Update, jadi nggak ada yang perlu install ulang. Cuma perubahan native yang butuh APK baru.',
-          '**Pengingatnya pakai notifikasi lokal**, bukan push berbayar.',
+          'Aplikasinya harus tetap gratis, buat dibikin maupun dipakai: nggak ada biaya store dan nggak ada layanan push berbayar. Jadi Android di-install dari web-nya. APK-nya ada di satu alamat tetap, dan tombol download serta QR code di web selalu ngarah ke situ. Kebanyakan perbaikan dikirim over the air pakai EAS Update, jadi nggak ada yang perlu install ulang; cuma perubahan native yang butuh APK baru. Pengingatnya pakai notifikasi lokal, bukan push.',
         ],
       },
       {
         title: 'Biar terasa punya sendiri',
         paragraphs: [
-          'Ada sembilan warna aksen dan sembilan belas background, dari warna polos sampai batik, plus foto sendiri, semuanya didefinisikan sekali di package bareng. Aksennya pakai OKLCH dan dites kontrasnya, dan warna yang punya arti buat uang (hijau pemasukan, merah pengeluaran) nggak pernah berubah. Background foto dikasih lapisan gelap yang dites biar judul tetap di 4.5:1 atau lebih di atas gambar apa pun.',
+          'Ada sembilan warna aksen dan sembilan belas background, dari warna polos sampai batik, plus foto sendiri, semuanya didefinisikan sekali di package bareng. Di keluarga kami, ada yang pakai foto, ada yang batik atau background lain. Aksennya pakai OKLCH dan dites kontrasnya, dan warna yang punya arti buat uang (hijau pemasukan, merah pengeluaran) nggak pernah berubah. Background foto dikasih lapisan gelap yang dites biar judul tetap di 4.5:1 atau lebih di atas gambar apa pun.',
         ],
         images: [
           shot(themes, 'Tema gelap dan terang dengan warna aksen berbeda'),
@@ -230,10 +221,9 @@ const T = translations<
       },
       {
         title: 'Trade-off',
-        paragraphs: [],
-        list: [
-          '**Nggak ada import dari bank.** Tiap transaksi dicatat manual. Kredensial bank jadi nggak pernah masuk ke aplikasi, gantinya ya ngetik sedikit.',
-          '**Belum ada di store.** Android di-install sebagai APK dari web-nya dan versi iPhone di-install lokal. Cukup buat keluarga, tapi belum rilis publik.',
+        paragraphs: [
+          'Nggak ada import dari bank. Tiap transaksi dicatat manual, jadi kredensial bank nggak pernah masuk ke aplikasi, gantinya ya ngetik sedikit.',
+          'Belum ada di store. Android di-install sebagai APK dari web-nya dan versi iPhone di-install lokal: cukup buat keluarga, tapi belum rilis publik.',
         ],
       },
       {
@@ -241,7 +231,7 @@ const T = translations<
         paragraphs: [],
         list: [
           'Sekitar 1.000 commit sejak Juli 2026',
-          '64 migration database',
+          '65 migration database',
           '520+ unit test mobile, plus suite Vitest buat package bareng dan web, dan satu smoke test Playwright buat auth guard',
         ],
       },

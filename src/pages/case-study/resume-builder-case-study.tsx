@@ -33,7 +33,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         title: 'The problem',
         paragraphs: [
           'Most free resume builders ask for an account first, keep your data on their server, or put the PDF download behind a paywall. I wanted one that is actually free: no sign-up, no backend, nothing uploaded.',
-          'Dropping the server raises the real question, though. If nothing is stored anywhere, how do you open your resume again next month to update it?',
+          'But if nothing is stored anywhere, how do you open your resume again next month to update it?',
         ],
       },
       {
@@ -76,7 +76,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         title: 'Trade-offs',
         paragraphs: [
           'Your data lives in one browser until you download. Clear the site data before that and the draft is gone; the PDF is the real backup.',
-          "Anyone with the PDF can read the embedded data. It's the same information printed on the page, but it's worth knowing.",
+          "Anyone with the PDF can read the embedded data. It's the same information printed on the page.",
           'Import only works for PDFs made here. Reading any resume would mean guessing its structure from free text, which is a different and far less reliable tool.',
         ],
       },
@@ -102,7 +102,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         title: 'Masalahnya',
         paragraphs: [
           'Kebanyakan pembuat CV gratis minta bikin akun dulu, nyimpen data kamu di server mereka, atau ngunci download PDF di balik paywall. Aku pengen yang beneran gratis: nggak perlu daftar, nggak ada backend, nggak ada yang di-upload.',
-          'Tapi begitu server dibuang, muncul pertanyaan yang sebenarnya: kalau nggak ada yang disimpan di mana pun, gimana caranya buka CV itu lagi bulan depan buat di-update?',
+          'Tapi kalau nggak ada yang disimpan di mana pun, gimana caranya buka CV itu lagi bulan depan buat di-update?',
         ],
       },
       {
@@ -145,7 +145,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         title: 'Trade-off',
         paragraphs: [
           'Data kamu cuma ada di satu browser sampai kamu download. Kalau data situs kehapus sebelum itu, draft-nya hilang; backup yang beneran ya PDF-nya.',
-          'Siapa pun yang pegang PDF-nya bisa baca data yang disisipkan. Isinya sama dengan yang tercetak di halaman, tapi tetap perlu tahu.',
+          'Siapa pun yang pegang PDF-nya bisa baca data yang disisipkan. Isinya sama dengan yang tercetak di halaman.',
           'Import cuma jalan buat PDF yang dibikin di sini. Kalau mau baca CV apa pun, strukturnya harus ditebak dari teks bebas, dan itu tool yang beda dan jauh kurang bisa diandalkan.',
         ],
       },
