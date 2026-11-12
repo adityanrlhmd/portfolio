@@ -5,7 +5,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { URL, fileURLToPath } from 'node:url';
 import type { Plugin } from 'vite';
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 // Search engines and link previews (WhatsApp, LinkedIn) don't run JS, so each page in
 // src/lib/seo.json gets a copy of the built index.html with its own title, description, URL
@@ -76,6 +76,8 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './vitest.setup.ts',
+    // installed agent skills ship their own test suites
+    exclude: [...configDefaults.exclude, '.agents/**', '.claude/**'],
     css: true,
     server: {
       deps: {
