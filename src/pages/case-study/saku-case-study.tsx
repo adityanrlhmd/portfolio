@@ -72,7 +72,7 @@ const T = translations<
         paragraphs: [
           'When Ani saves an expense on her phone, Budi’s laptop shows it a moment later, with no server of my own in between. A Postgres trigger broadcasts a small `{ table, op, by, via }` message on the household’s Supabase Realtime channel. The phone answers it by refetching only the TanStack Query caches that table feeds, and the web by re-rendering the page on the server.',
           'On the phone, the writer’s own screen doesn’t wait for the round trip either: every change is optimistic, and a failed one rolls back.',
-          'The first version skipped messages from the signed-in user, so an expense I saved on my phone didn’t show on my own laptop until I reloaded the page. Now the trigger also adds `via`, the platform that made the write, read from an `x-saku-client` header each app now sends, and an app refreshes when the writer is someone else or used another platform. Two web tabs on the same account still don’t update each other, which rarely comes up.',
+          'The first version skipped messages from the signed-in user, so an expense I saved on my phone didn’t show on my own laptop until I reloaded the page. Now the trigger also adds `via`, the platform that made the write, read from an `x-saku-client` header each app now sends, and an app refreshes when the writer is someone else or used another platform. Two web tabs on the same account **still don’t update each other**, which rarely comes up.',
         ],
         images: [
           shot(sync, 'An expense saved on the phone appearing on the laptop'),
@@ -118,8 +118,8 @@ const T = translations<
       {
         title: 'Trade-offs',
         paragraphs: [
-          'There’s no bank import. Every transaction is entered by hand, which keeps bank credentials out of the app at the cost of some typing.',
-          'It’s not in the stores yet. Android installs as an APK from the web app and the iPhone build is installed locally: fine for a family, but not a public launch.',
+          'There’s **no bank import**. Every transaction is entered by hand, which keeps bank credentials out of the app at the cost of some typing.',
+          'It’s **not in the stores yet**. Android installs as an APK from the web app and the iPhone build is installed locally: fine for a family, but not a public launch.',
         ],
       },
       {
@@ -133,7 +133,7 @@ const T = translations<
       },
       {
         title: 'What’s next',
-        paragraphs: ['Some of what I’m exploring, not promises:'],
+        paragraphs: ['Some of what I’m exploring, **not promises**:'],
         list: [
           '**Record by chat.** Parents who’d rather not install an app could log spending from WhatsApp in plain words, with a confirmation before anything is saved.',
           '**Ask your own AI assistant.** Connect Saku to an assistant like Claude and ask “how much did we spend on food this month?”',
@@ -185,7 +185,7 @@ const T = translations<
         paragraphs: [
           'Pas Ani nyimpen pengeluaran di HP-nya, laptop Budi langsung nampilin sesaat kemudian, tanpa server buatanku di tengahnya. Trigger Postgres nge-broadcast pesan kecil `{ table, op, by, via }` di channel Supabase Realtime milik rumah tangga itu. HP-nya ngebales dengan cuma nge-refetch cache TanStack Query yang diisi tabel itu, dan web-nya dengan nge-render ulang halamannya di server.',
           'Di HP, layar si penulis juga nggak nunggu bolak-balik ke server: tiap perubahan langsung tampil secara optimistic, dan kalau gagal, dibalikin lagi.',
-          'Versi pertamanya ngelewatin pesan dari user yang lagi login, jadi pengeluaran yang aku simpan di HP nggak muncul di laptopku sendiri sampai halamannya di-reload. Sekarang trigger-nya juga nambahin `via`, platform yang nulis datanya, dibaca dari header `x-saku-client` yang sekarang dikirim tiap aplikasi, dan aplikasi nge-refresh kalau yang nulis orang lain atau nulisnya dari platform lain. Dua tab web dengan akun yang sama masih nggak saling update, tapi itu jarang kejadian.',
+          'Versi pertamanya ngelewatin pesan dari user yang lagi login, jadi pengeluaran yang aku simpan di HP nggak muncul di laptopku sendiri sampai halamannya di-reload. Sekarang trigger-nya juga nambahin `via`, platform yang nulis datanya, dibaca dari header `x-saku-client` yang sekarang dikirim tiap aplikasi, dan aplikasi nge-refresh kalau yang nulis orang lain atau nulisnya dari platform lain. Dua tab web dengan akun yang sama **masih nggak saling update**, tapi itu jarang kejadian.',
         ],
         images: [
           shot(sync, 'Pengeluaran yang disimpan di HP muncul di laptop'),
@@ -231,8 +231,8 @@ const T = translations<
       {
         title: 'Trade-off',
         paragraphs: [
-          'Nggak ada import dari bank. Tiap transaksi dicatat manual, jadi kredensial bank nggak pernah masuk ke aplikasi, gantinya ya ngetik sedikit.',
-          'Belum ada di store. Android di-install sebagai APK dari web-nya dan versi iPhone di-install lokal: cukup buat keluarga, tapi belum rilis publik.',
+          '**Nggak ada import dari bank.** Tiap transaksi dicatat manual, jadi kredensial bank nggak pernah masuk ke aplikasi, gantinya ya ngetik sedikit.',
+          '**Belum ada di store.** Android di-install sebagai APK dari web-nya dan versi iPhone di-install lokal: cukup buat keluarga, tapi belum rilis publik.',
         ],
       },
       {
@@ -246,7 +246,7 @@ const T = translations<
       },
       {
         title: 'Rencana ke depan',
-        paragraphs: ['Beberapa yang lagi aku jajaki, belum janji:'],
+        paragraphs: ['Beberapa yang lagi aku jajaki, **belum janji**:'],
         list: [
           '**Nyatet lewat chat.** Orang tua yang ogah install aplikasi bisa nyatet pengeluaran dari WhatsApp pakai bahasa sehari-hari, dan ada konfirmasi dulu sebelum disimpan.',
           '**Tanya ke asisten AI sendiri.** Sambungin Saku ke asisten kayak Claude, terus tanya “bulan ini kita habis berapa buat makan?”',

@@ -41,7 +41,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         paragraphs: [
           "When you download, the whole form goes into the PDF itself: JSON, base64-encoded, in the document's Subject field with a `resume-data:` prefix. Import that same PDF later and the form fills itself back in. The file you send to recruiters is also your backup, and it works on any device.",
           'Reading it back needs no PDF parser. React PDF writes the Subject as a plain, uncompressed string, so a regex over the raw bytes finds it. What comes out goes through the same Zod schema as the form, so a PDF from somewhere else, or one edited by hand, gets a friendly "only resumes made here can be imported" instead of a broken form.',
-          'Two details: the photo stays out of the embedded copy to keep the file small (you add it again after importing), and a round-trip test uses a name like `José (QA) 李 ✓`, since base64 alone mangles anything outside Latin-1 unless the text is turned into UTF-8 bytes first.',
+          'Two details: **the photo stays out of the embedded copy** to keep the file small (you add it again after importing), and a round-trip test uses a name like `José (QA) 李 ✓`, since base64 alone mangles anything outside Latin-1 unless the text is turned into UTF-8 bytes first.',
         ],
         code: EMBED_CODE,
       },
@@ -75,9 +75,9 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
       {
         title: 'Trade-offs',
         paragraphs: [
-          'Your data lives in one browser until you download. Clear the site data before that and the draft is gone; the PDF is the real backup.',
-          "Anyone with the PDF can read the embedded data. It's the same information printed on the page.",
-          'Import only works for PDFs made here. Reading any resume would mean guessing its structure from free text, which is a different and far less reliable tool.',
+          'Your data lives in one browser **until you download**. Clear the site data before that and the draft is gone; the PDF is the real backup.',
+          "Anyone with the PDF **can read the embedded data**. It's the same information printed on the page.",
+          'Import **only works for PDFs made here**. Reading any resume would mean guessing its structure from free text, which is a different and far less reliable tool.',
         ],
       },
     ],
@@ -110,7 +110,7 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
         paragraphs: [
           'Pas kamu download, seluruh isi form ikut masuk ke dalam PDF-nya: JSON yang di-encode base64, disimpan di field Subject dokumen dengan prefix `resume-data:`. Import PDF yang sama nanti, form-nya langsung keisi lagi. File yang kamu kirim ke recruiter jadi backup juga, dan bisa dibuka di device mana aja.',
           'Bacanya balik juga nggak butuh parser PDF. React PDF nulis Subject sebagai string biasa yang nggak dikompres, jadi cukup regex di byte mentahnya. Hasilnya dicek pakai schema Zod yang sama dengan form, jadi PDF dari tempat lain atau yang diedit manual dapat pesan "cuma CV yang dibikin di sini yang bisa di-import", bukan form yang rusak.',
-          'Dua detail: foto nggak ikut disimpan biar file-nya tetap kecil (tinggal pasang lagi setelah import), dan ada test round-trip pakai nama kayak `José (QA) 李 ✓`, soalnya base64 doang bakal ngerusak karakter di luar Latin-1 kalau teksnya nggak diubah jadi byte UTF-8 dulu.',
+          'Dua detail: **foto nggak ikut disimpan** biar file-nya tetap kecil (tinggal pasang lagi setelah import), dan ada test round-trip pakai nama kayak `José (QA) 李 ✓`, soalnya base64 doang bakal ngerusak karakter di luar Latin-1 kalau teksnya nggak diubah jadi byte UTF-8 dulu.',
         ],
         code: EMBED_CODE,
       },
@@ -144,9 +144,9 @@ const T = translations<CaseStudyCopy & { tryIt: string; source: string }>(
       {
         title: 'Trade-off',
         paragraphs: [
-          'Data kamu cuma ada di satu browser sampai kamu download. Kalau data situs kehapus sebelum itu, draft-nya hilang; backup yang beneran ya PDF-nya.',
-          'Siapa pun yang pegang PDF-nya bisa baca data yang disisipkan. Isinya sama dengan yang tercetak di halaman.',
-          'Import cuma jalan buat PDF yang dibikin di sini. Kalau mau baca CV apa pun, strukturnya harus ditebak dari teks bebas, dan itu tool yang beda dan jauh kurang bisa diandalkan.',
+          'Data kamu cuma ada di satu browser **sampai kamu download**. Kalau data situs kehapus sebelum itu, draft-nya hilang; backup yang beneran ya PDF-nya.',
+          'Siapa pun yang pegang PDF-nya **bisa baca data yang disisipkan**. Isinya sama dengan yang tercetak di halaman.',
+          'Import **cuma jalan buat PDF yang dibikin di sini**. Kalau mau baca CV apa pun, strukturnya harus ditebak dari teks bebas, dan itu tool yang beda dan jauh kurang bisa diandalkan.',
         ],
       },
     ],
