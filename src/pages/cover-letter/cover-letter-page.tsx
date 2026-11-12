@@ -1,17 +1,20 @@
 import {
   RiDownloadLine,
+  RiFileCopyLine,
   RiFileUploadLine,
   RiRefreshLine,
   RiUserLine,
 } from '@remixicon/react';
 import { type FieldPath, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useT } from '@/components/language-provider';
 import { PdfLangToggle } from '@/components/pdf-lang-toggle';
 import { PdfPreview } from '@/components/pdf-preview';
+import { Toggle } from '@/components/toggle';
 import { ToolLayout } from '@/components/tool-layout';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
@@ -25,14 +28,17 @@ import {
   ADITYA_COVER_LETTER,
   type CoverLetter,
   PLACEHOLDER_COVER_LETTER,
+  applicationEmail,
   decodeCoverLetterFromPdf,
   loadCoverLetter,
   newCoverLetter,
   saveCoverLetter,
+  signatureLinks,
   today,
 } from '@/lib/cover-letter';
 import { downloadPdf } from '@/lib/download-pdf';
 import { COMMON, type Lang, translations } from '@/lib/i18n';
+import { loadStored, saveStored } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 
 import { COVER_LETTER_PDF, CoverLetterDocument } from './cover-letter-document';
@@ -60,6 +66,20 @@ const T = translations(
       'Replace what you have typed with the imported cover letter?',
     imported: 'Cover letter imported.',
     preview: 'Cover letter preview',
+    previewOf: 'Show',
+    letterTab: 'Cover letter',
+    emailTab: 'Email to HR',
+    emailSubject: 'Subject',
+    emailBody: 'Email body',
+    letterIn: 'Cover letter',
+    letterAttached: 'Attached',
+    letterInline: 'In the email',
+    emailHint: (inline: boolean) =>
+      `Written in the PDF's language from your form. ${inline ? 'Your whole letter is the email, so attach only your CV.' : "Your letter's first paragraph is the pitch. Attach your CV and this cover letter yourself."} Links come from your saved resume. If the job post asks for a subject format, use that.`,
+    copy: (what: string) => `Copy ${what.toLowerCase()}`,
+    copyShort: 'Copy',
+    copied: 'Copied.',
+    copyFailed: "Couldn't copy. Select the text and copy it by hand.",
   },
   {
     aboutYou: 'Tentang kamu',
@@ -82,8 +102,26 @@ const T = translations(
     replaceWithImport: 'Timpa isian kamu pakai surat lamaran yang di-import?',
     imported: 'Surat lamaran berhasil di-import.',
     preview: 'Preview surat lamaran',
+    previewOf: 'Tampilkan',
+    letterTab: 'Surat lamaran',
+    emailTab: 'Email ke HR',
+    emailSubject: 'Subjek',
+    emailBody: 'Isi email',
+    letterIn: 'Surat lamaran',
+    letterAttached: 'Dilampirin',
+    letterInline: 'Di badan email',
+    emailHint: (inline: boolean) =>
+      `Ditulis pakai bahasa PDF dari isian kamu. ${inline ? 'Seluruh surat lamaran jadi isi email, jadi cukup lampirin CV aja.' : 'Paragraf pertama surat lamaran dipakai buat perkenalan singkat. CV sama surat lamaran ini tetep harus kamu lampirin sendiri ya.'} Link diambil dari resume yang kamu simpan. Kalau lowongannya minta format subjek tertentu, ikutin itu.`,
+    copy: (what: string) => `Copy ${what.toLowerCase()}`,
+    copyShort: 'Copy',
+    copied: 'Udah ke-copy.',
+    copyFailed: 'Gagal copy. Blok teksnya terus copy manual aja.',
   }
 );
+
+// where the email puts the letter; remembered per browser, inline until picked
+const LETTER_IN_KEY = 'cover-letter:letter-in';
+const letterInSchema = z.enum(['inline', 'attached']);
 
 const fileName = (letter: CoverLetter, lang: Lang) =>
   [letter.name.trim(), COVER_LETTER_PDF[lang].title, letter.company.trim()]
@@ -113,6 +151,14 @@ const CoverLetterPage = () => {
     defaultValues: loadCoverLetter() ?? newCoverLetter(pdfLang),
   });
   const debounced = useAutosave(form, saveCoverLetter);
+  const [view, setView] = useState<'pdf' | 'email'>('pdf');
+  const [letterIn, setLetterIn] = useState(
+    () => loadStored(LETTER_IN_KEY, letterInSchema) ?? 'inline'
+  );
+  const changeLetterIn = (next: typeof letterIn) => {
+    saveStored(LETTER_IN_KEY, next);
+    setLetterIn(next);
+  };
 
   const fields: {
     title: string;
@@ -193,6 +239,21 @@ const CoverLetterPage = () => {
     form.reset(blankLetter(pdfLang));
   };
 
+  const links = useMemo(() => signatureLinks(debounced.name), [debounced.name]);
+  const email = applicationEmail(debounced, pdfLang, {
+    inline: letterIn === 'inline',
+    links,
+  });
+
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(t.copied);
+    } catch {
+      toast.error(t.copyFailed);
+    }
+  };
+
   const download = async () => {
     const letter = form.getValues();
     try {
@@ -270,7 +331,63 @@ const CoverLetterPage = () => {
           </Field>
         </form>
       }
-      preview={<PdfPreview {...docs} label={t.preview} />}
+      preview={
+        <div className="flex h-full flex-col gap-3">
+          <Toggle
+            label={t.previewOf}
+            value={view}
+            options={{ pdf: t.letterTab, email: t.emailTab }}
+            onChange={setView}
+          />
+          <div className="min-h-0 flex-1">
+            {view === 'pdf' ? (
+              <PdfPreview {...docs} label={t.preview} />
+            ) : (
+              <div className="h-full space-y-4 overflow-y-auto rounded-md border p-4">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span aria-hidden className="text-muted-foreground text-xs">
+                    {t.letterIn}
+                  </span>
+                  <Toggle
+                    label={t.letterIn}
+                    value={letterIn}
+                    options={{
+                      inline: t.letterInline,
+                      attached: t.letterAttached,
+                    }}
+                    onChange={changeLetterIn}
+                  />
+                </div>
+                {(
+                  [
+                    [t.emailSubject, email.subject, 'font-medium'],
+                    [t.emailBody, email.body, 'whitespace-pre-wrap'],
+                  ] as const
+                ).map(([label, value, style]) => (
+                  <section key={label} aria-label={label} className="space-y-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <h2 className="text-muted-foreground text-xs">{label}</h2>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        aria-label={t.copy(label)}
+                        onClick={() => copy(value)}
+                      >
+                        <RiFileCopyLine /> {t.copyShort}
+                      </Button>
+                    </div>
+                    <p className={cn('text-sm', style)}>{value}</p>
+                  </section>
+                ))}
+                <p className="text-muted-foreground border-t pt-4 text-xs">
+                  {t.emailHint(letterIn === 'inline')}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      }
     />
   );
 };

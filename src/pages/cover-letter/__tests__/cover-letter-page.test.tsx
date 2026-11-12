@@ -7,10 +7,12 @@ import { ADITYA_RESUME } from '@/lib/aditya';
 import {
   ADITYA_COVER_LETTER,
   STORAGE_KEY,
+  applicationEmail,
   encodeCoverLetter,
   loadCoverLetter,
   newCoverLetter,
   paragraphs,
+  signatureLinks,
 } from '@/lib/cover-letter';
 import { saveResume } from '@/lib/resume/storage';
 
@@ -127,6 +129,45 @@ describe('CoverLetterPage', () => {
     expect(loadCoverLetter()?.company).toBe('Acme');
   });
 
+  it('copies the email subject', async () => {
+    render(
+      <>
+        <Toaster />
+        <CoverLetterPage />
+      </>
+    );
+    await user.type(screen.getByLabelText('Position'), 'Designer');
+    await user.type(
+      screen.getByLabelText('Full name'),
+      '{Control>}a{/Control}Sari'
+    );
+    await user.click(screen.getByRole('button', { name: 'Email to HR' }));
+    expect(
+      await screen.findByText('Application for Designer – Sari')
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Copy subject' }));
+    expect(await navigator.clipboard.readText()).toBe(
+      'Application for Designer – Sari'
+    );
+    expect(await screen.findByText('Copied.')).toBeInTheDocument();
+  });
+
+  it('puts the letter in the email until the visitor picks attached, and remembers it', async () => {
+    const { unmount } = render(<CoverLetterPage />);
+    await user.type(screen.getByLabelText('Letter'), 'My pitch.');
+    await user.click(screen.getByRole('button', { name: 'Email to HR' }));
+    const attached = () => screen.getByRole('button', { name: 'Attached' });
+    expect(attached()).toHaveAttribute('aria-pressed', 'false');
+    expect(await screen.findByText(/My CV is attached/)).toBeInTheDocument();
+
+    await user.click(attached());
+    expect(screen.getByText(/- Cover letter/)).toBeInTheDocument();
+    unmount();
+    render(<CoverLetterPage />);
+    await user.click(screen.getByRole('button', { name: 'Email to HR' }));
+    expect(attached()).toHaveAttribute('aria-pressed', 'true');
+  });
+
   it('resets to a blank letter after confirming, sender included', async () => {
     saveResume(ADITYA_RESUME);
     const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true);
@@ -143,6 +184,67 @@ describe('CoverLetterPage', () => {
       screen.getByRole('button', { name: "Fill with Aditya's data" })
     );
     expect(confirm).not.toHaveBeenCalled();
+  });
+});
+
+describe('applicationEmail', () => {
+  const letter = {
+    ...newCoverLetter(),
+    name: 'Budi',
+    email: 'budi@mail.com',
+    phone: '',
+    role: 'Frontend Engineer',
+    company: 'Acme',
+    body: 'My pitch.\n\nMy work.\n\nThank you.',
+  };
+
+  it('fills in the job and sender, and shows placeholders for what is missing', () => {
+    const id = applicationEmail({ ...letter, body: '' }, 'id');
+    expect(id.subject).toBe('Lamaran Frontend Engineer – Budi');
+    // no recipient but a company: the company's team is greeted
+    expect(id.body).toMatch(/^Yth\. Tim HRD Acme,/);
+    expect(id.body).toContain('posisi Frontend Engineer di Acme');
+    // with no letter yet, a stock line stands in for the pitch
+    expect(id.body).toContain('Saya yakin pengalaman saya');
+    // empty phone is left out, not shown as a placeholder
+    expect(id.body).toMatch(/Hormat saya,\nBudi\nbudi@mail\.com$/);
+
+    const en = applicationEmail({ ...letter, role: '' }, 'en');
+    expect(en.subject).toBe('Application for Job Title – Budi');
+  });
+
+  it('drops the company when it is empty', () => {
+    const body = applicationEmail({ ...letter, company: '' }, 'id').body;
+    expect(body).toMatch(/^Yth\. Bapak\/Ibu HRD,/);
+    expect(body).toContain('lamaran untuk posisi Frontend Engineer.');
+    expect(body).toContain('kontribusi yang bisa saya berikan.');
+    expect(body).not.toContain('Nama Perusahaan');
+  });
+
+  it('borrows the first paragraph when the letter is attached, and the whole letter when inline', () => {
+    const attached = applicationEmail(letter, 'en').body;
+    expect(attached).toContain("at Acme.\n\nMy pitch.\n\nI've attached");
+    expect(attached).not.toContain('My work.');
+
+    const inline = applicationEmail(letter, 'en', {
+      inline: true,
+      links: 'linkedin.com/in/budi',
+    }).body;
+    expect(inline).toContain(
+      'at Acme. My CV is attached for your review.\n\nMy pitch.\n\nMy work.\n\nThank you.\n\nBest regards,'
+    );
+    expect(inline).toMatch(/budi@mail\.com\nlinkedin\.com\/in\/budi$/);
+  });
+});
+
+describe('signatureLinks', () => {
+  beforeEach(() => localStorage.clear());
+
+  it("takes the links of the resume whose name matches the sender's", () => {
+    saveResume({ ...ADITYA_RESUME, name: 'Budi', links: 'github.com/budi' });
+    expect(signatureLinks('Budi')).toBe('github.com/budi');
+    expect(signatureLinks(ADITYA_RESUME.name)).toBe(ADITYA_RESUME.links);
+    expect(signatureLinks('Someone else')).toBe('');
   });
 });
 

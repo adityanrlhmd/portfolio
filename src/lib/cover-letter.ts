@@ -103,3 +103,83 @@ export const paragraphs = (text: string) =>
     .split(/\n\s*\n/)
     .map(p => p.trim())
     .filter(Boolean);
+
+const EMAIL = translations(
+  {
+    subject: (role: string, name: string) =>
+      `Application for ${role} – ${name}`,
+    greeting: (recipient: string) => `Dear ${recipient},`,
+    team: (company: string) => `${company} Hiring Team`,
+    intro: (name: string, role: string, company: string) =>
+      `My name is ${name}, and I'd like to apply for the ${role} position${company && ` at ${company}`}.`,
+    cvAttached: 'My CV is attached for your review.',
+    pitch: 'I believe my experience is a good match for what this role needs.',
+    attached:
+      "I've attached the following for your review:\n- CV\n- Cover letter",
+    outro: (company: string) =>
+      `I'd welcome the chance to talk about how I can contribute to ${company || 'your team'}. Thank you for your time and consideration, and I look forward to hearing from you.`,
+    closing: 'Best regards,',
+  },
+  {
+    subject: (role: string, name: string) => `Lamaran ${role} – ${name}`,
+    greeting: (recipient: string) => `Yth. ${recipient},\n\nDengan hormat,`,
+    team: (company: string) => `Tim HRD ${company}`,
+    intro: (name: string, role: string, company: string) =>
+      `Perkenalkan, saya ${name}. Melalui email ini, saya ingin mengajukan lamaran untuk posisi ${role}${company && ` di ${company}`}.`,
+    cvAttached:
+      'CV saya lampirkan bersama email ini sebagai bahan pertimbangan.',
+    pitch: 'Saya yakin pengalaman saya sesuai dengan kebutuhan posisi ini.',
+    attached:
+      'Sebagai bahan pertimbangan, bersama email ini saya lampirkan:\n- CV\n- Surat lamaran',
+    outro: (company: string) =>
+      `Saya berharap dapat diberi kesempatan wawancara untuk menjelaskan lebih lanjut kontribusi yang bisa saya berikan${company && ` untuk ${company}`}. Atas waktu dan perhatian Bapak/Ibu, saya ucapkan terima kasih.`,
+    closing: 'Hormat saya,',
+  }
+);
+
+// The links of whichever resume belongs to the sender: the visitor's saved one, or Aditya's
+// after "Fill with Aditya's data". A name that matches neither gets no links.
+export const signatureLinks = (name: string) =>
+  [loadResume(), ADITYA_RESUME].find(
+    resume => resume && resume.name.trim() === name.trim()
+  )?.links ?? '';
+
+// The email the CV goes with. By default the letter is attached too and the email borrows its
+// first paragraph as the pitch; with `inline`, the whole letter is the email and only the CV
+// is attached. Empty fields show the placeholder so the visitor sees what is missing, except
+// the company, which is simply left out (not every application names one).
+export const applicationEmail = (
+  letter: CoverLetter,
+  lang: Lang,
+  { inline = false, links = '' } = {}
+) => {
+  const t = EMAIL[lang];
+  const p = PLACEHOLDER_COVER_LETTER[lang];
+  const take = (key: keyof CoverLetter) => letter[key].trim() || p[key];
+  const company = letter.company.trim();
+  const letterParagraphs = paragraphs(letter.body);
+  const intro = t.intro(take('name'), take('role'), company);
+  // a written letter already closes with its own thanks
+  const fullLetter = inline && letterParagraphs.length > 0;
+
+  return {
+    subject: t.subject(take('role'), take('name')),
+    body: [
+      t.greeting(
+        letter.recipient.trim() || (company ? t.team(company) : p.recipient)
+      ),
+      ...(fullLetter
+        ? [`${intro} ${t.cvAttached}`, ...letterParagraphs]
+        : [
+            intro,
+            letterParagraphs[0] ?? t.pitch,
+            inline ? t.cvAttached : t.attached,
+            t.outro(company),
+          ]),
+      [t.closing, take('name'), letter.phone, letter.email, links]
+        .map(line => line.trim())
+        .filter(Boolean)
+        .join('\n'),
+    ].join('\n\n'),
+  };
+};
