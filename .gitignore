@@ -11,7 +11,12 @@ node_modules
 dist
 dist-ssr
 .env
+.env.*
+!.env.example
 *.local
+.mcp.json
+.vercel
+coverage
 
 # Editor directories and files
 .vscode/*
