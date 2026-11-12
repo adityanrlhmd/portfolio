@@ -81,8 +81,8 @@ const T = translations<
       {
         title: 'Works with no signal',
         paragraphs: [
-          'Saku gets used where the signal is bad: at a shop, on the road. Whatever you do there day to day waits in an ordered outbox on the phone and goes out by itself once the signal is back. That covers adding, editing or deleting a transaction, correcting a wallet balance, recording a friend paying you back, and taking money out of savings. The app also opens with no signal: it reads the signed-in session from the phone instead of waiting on a token refresh that can’t reach the server.',
-          'New records were the easy part. Each one carries an id minted on the phone and is written `on conflict do nothing`, so sending it late, or twice, can never book it twice.',
+          'Saku gets used where the signal is bad: at a shop, on the road. Almost anything you do there waits in an ordered outbox on the phone and goes out by itself once the signal is back: adding, editing or deleting a transaction, correcting a wallet balance, recording a friend paying you back, taking money out of savings, and creating or editing a wallet, debt, savings goal, budget, category or recurring transaction. The app also opens with no signal: it reads the signed-in session from the phone instead of waiting on a token refresh that can’t reach the server.',
+          'New records were the easy part. Each one carries an id minted on the phone and is written `on conflict do nothing`, so sending it late, or twice, can never book it twice. Because that id is final from the start, a wallet created offline can take an expense offline straight away, and the outbox sends the wallet first.',
           'Edits were the hard part. If Budi changes “Lunch” offline while Ani changes the same row online, sending Budi’s version later would quietly erase Ani’s. So a queued edit is sent as a compare-and-set on a row version that a Postgres trigger keeps (`updated_at`, `updated_by`). Usually nobody touched the row, and the edit applies without a word. On a real clash, **only the person who was offline is asked**: keep my version, or take Ani’s. Ani is never interrupted about a change she didn’t make.',
           'A balance correction is worked out when it’s sent, not when it’s typed, and it waits behind everything queued before it. That way it still lands on the exact figure the user read off their bank, even if Ani recorded something in that wallet in the meantime.',
         ],
@@ -129,7 +129,7 @@ const T = translations<
         paragraphs: [
           'There’s **no bank import**. Every transaction is entered by hand, which keeps bank credentials out of the app at the cost of some typing.',
           'It’s **not in the stores yet**. Android installs as an APK from the web app and the iPhone build is installed locally: fine for a family, but not a public launch.',
-          '**Offline covers the day-to-day only.** Creating a wallet, a budget or a savings goal still needs a connection. Those are rare away from a signal, and they’re where two people clash most.',
+          '**Deleting needs a signal.** Deleting a wallet, a debt, a budget or a savings goal still needs a connection, because the server first checks whether it’s still in use, and refusing later, after you’ve moved on, would be worse. Offline, the app says so up front and changes nothing on screen.',
         ],
       },
       {
@@ -137,7 +137,7 @@ const T = translations<
         paragraphs: [],
         list: [
           'About 1,000 commits since July 2026',
-          '66 database migrations',
+          '67 database migrations',
           '580+ mobile unit tests, plus Vitest suites for the shared package and the web, and a Playwright smoke test for the auth guard',
         ],
       },
@@ -148,7 +148,6 @@ const T = translations<
           '**Record by chat.** Parents who’d rather not install an app could log spending from WhatsApp in plain words, with a confirmation before anything is saved.',
           '**Ask your own AI assistant.** Connect Saku to an assistant like Claude and ask “how much did we spend on food this month?”',
           '**Investments.** Mutual funds, stocks and time deposits, next to the wallets and gold already there.',
-          '**Offline for the rest.** Day-to-day records already work with no signal. Wallets, budgets and goals are next.',
           '**Scan a receipt** into its line items.',
           '**Play Store and App Store release.**',
         ],
@@ -204,8 +203,8 @@ const T = translations<
       {
         title: 'Tetap jalan tanpa sinyal',
         paragraphs: [
-          'Saku sering dipakai di tempat yang sinyalnya jelek, kayak di toko atau di jalan. Apa pun yang dilakuin sehari-hari di sana disimpan dulu di antrean berurutan di HP, terus kekirim sendiri begitu sinyal balik. Itu termasuk nambah, ngedit, atau ngehapus transaksi, nyocokin saldo dompet, nyatet temen yang bayar utang, dan narik uang dari tabungan. Aplikasinya juga tetap bisa dibuka tanpa sinyal: data login dibaca dari HP, bukan nunggu refresh token yang nggak bisa nyampe ke server.',
-          'Catatan baru itu bagian yang gampang. Tiap catatan bawa id yang dibikin di HP dan ditulis `on conflict do nothing`, jadi kalau kekirim telat atau dobel, nggak bakal kecatat dua kali.',
+          'Saku sering dipakai di tempat yang sinyalnya jelek, kayak di toko atau di jalan. Hampir semua yang dilakuin di sana disimpan dulu di antrean berurutan di HP, terus kekirim sendiri begitu sinyal balik: nambah, ngedit, atau ngehapus transaksi, nyocokin saldo dompet, nyatet temen yang bayar utang, narik uang dari tabungan, sampai bikin atau ngedit wallet, utang, target tabungan, budget, kategori, dan transaksi berulang. Aplikasinya juga tetap bisa dibuka tanpa sinyal: data login dibaca dari HP, bukan nunggu refresh token yang nggak bisa nyampe ke server.',
+          'Catatan baru itu bagian yang gampang. Tiap catatan bawa id yang dibikin di HP dan ditulis `on conflict do nothing`, jadi kalau kekirim telat atau dobel, nggak bakal kecatat dua kali. Karena id-nya udah final dari awal, wallet yang dibikin pas offline langsung bisa dipakai nyatet pengeluaran pas offline juga, dan antreannya ngirim wallet itu duluan.',
           'Bagian yang susah itu edit. Kalau Budi ngubah “Makan siang” pas offline, sementara Ani ngubah baris yang sama pas online, versi Budi yang kekirim belakangan bakal diam-diam ngehapus perubahan Ani. Makanya edit yang ngantre dikirim sebagai compare-and-set, pakai versi baris yang dijaga trigger Postgres (`updated_at`, `updated_by`). Biasanya nggak ada yang nyentuh baris itu, jadi editnya langsung masuk tanpa nanya apa-apa. Kalau beneran bentrok, **yang ditanya cuma orang yang tadinya offline**: pakai versiku, atau pakai versi Ani. Ani nggak pernah diganggu soal perubahan yang bukan dia yang bikin.',
           'Penyesuaian saldo dihitung pas dikirim, bukan pas diketik, dan nunggu giliran di belakang semua yang ngantre sebelumnya. Jadi saldonya tetap pas di angka yang dilihat user di aplikasi banknya, walaupun Ani sempat nyatet sesuatu di dompet itu.',
         ],
@@ -252,7 +251,7 @@ const T = translations<
         paragraphs: [
           '**Nggak ada import dari bank.** Tiap transaksi dicatat manual, jadi kredensial bank nggak pernah masuk ke aplikasi, gantinya ya ngetik sedikit.',
           '**Belum ada di store.** Android di-install sebagai APK dari web-nya dan versi iPhone di-install lokal: cukup buat keluarga, tapi belum rilis publik.',
-          '**Offline baru buat yang sehari-hari.** Bikin wallet, budget, atau target tabungan masih butuh koneksi. Itu jarang dilakuin di tempat tanpa sinyal, dan di situ juga paling sering dua orang saling bentrok.',
+          '**Ngehapus butuh sinyal.** Ngehapus wallet, utang, budget, atau target tabungan masih butuh koneksi, karena server ngecek dulu apakah datanya masih dipakai, dan kalau baru nolak belakangan, pas user udah lanjut ngapain, malah lebih repot. Pas offline, aplikasinya langsung bilang dari awal dan nggak ngubah apa-apa di layar.',
         ],
       },
       {
@@ -260,7 +259,7 @@ const T = translations<
         paragraphs: [],
         list: [
           'Sekitar 1.000 commit sejak Juli 2026',
-          '66 migration database',
+          '67 migration database',
           '580+ unit test mobile, plus suite Vitest buat package bareng dan web, dan satu smoke test Playwright buat auth guard',
         ],
       },
@@ -271,7 +270,6 @@ const T = translations<
           '**Nyatet lewat chat.** Orang tua yang ogah install aplikasi bisa nyatet pengeluaran dari WhatsApp pakai bahasa sehari-hari, dan ada konfirmasi dulu sebelum disimpan.',
           '**Tanya ke asisten AI sendiri.** Sambungin Saku ke asisten kayak Claude, terus tanya “bulan ini kita habis berapa buat makan?”',
           '**Investasi.** Reksadana, saham, dan deposito, di samping wallet dan emas yang udah ada.',
-          '**Offline buat sisanya.** Catatan sehari-hari udah bisa tanpa sinyal. Berikutnya wallet, budget, dan target tabungan.',
           '**Scan struk** jadi rincian per item.',
           '**Rilis di Play Store dan App Store.**',
         ],
