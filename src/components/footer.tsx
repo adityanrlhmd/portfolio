@@ -44,6 +44,8 @@ const LINKS = [
   },
 ];
 
+const YEAR = new Date().getFullYear();
+
 export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
   const { lang } = useLang();
   const t = T[lang];
@@ -112,7 +114,7 @@ export const Footer = ({ minimal = false }: { minimal?: boolean }) => {
 
         <div className={cn('py-4', !minimal && 'border-t')}>
           <p className="text-center">
-            Copyright © {new Date().getFullYear()} Aditya Hamda. {t.rights}
+            Copyright © {YEAR} Aditya Hamda. {t.rights}
           </p>
         </div>
       </div>
