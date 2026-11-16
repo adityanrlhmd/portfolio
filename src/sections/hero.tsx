@@ -32,12 +32,12 @@ const T = translations(
   {
     headlines: [
       'Welcome to **my digital space**',
-      'A **frontend engineer** who sweats the details',
+      'A **software engineer** who sweats the details',
       'Turning messy business logic into **simple UIs**',
       "Let's **build something** together",
     ],
     intro:
-      'I build frontends for government, banking, and enterprise products. I like owning a feature from the first discussion all the way to production, and keeping big codebases tidy enough that the next person can work on them without guessing.',
+      'I build web and mobile apps for government, banking, and enterprise products. I like owning a feature from the first discussion all the way to production, and keeping big codebases tidy enough that the next person can work on them without guessing.',
     connect: "Let's Connect",
     resume: 'My Resume',
     resumeFailed: "Couldn't create the CV. Please try again.",
@@ -45,12 +45,12 @@ const T = translations(
   {
     headlines: [
       'Selamat datang di **ruang digitalku**',
-      '**Frontend engineer** yang rewel soal detail',
+      '**Software engineer** yang rewel soal detail',
       'Bikin logika bisnis yang ruwet jadi **UI yang simpel**',
       'Yuk **bikin sesuatu** bareng',
     ],
     intro:
-      'Bikin frontend buat produk pemerintahan, perbankan, dan enterprise. Paling senang pegang satu fitur dari diskusi awal sampai rilis, sambil jaga codebase besar tetap rapi biar developer berikutnya nggak perlu nebak-nebak.',
+      'Bikin aplikasi web dan mobile buat produk pemerintahan, perbankan, dan enterprise. Paling senang pegang satu fitur dari diskusi awal sampai rilis, sambil jaga codebase besar tetap rapi biar developer berikutnya nggak perlu nebak-nebak.',
     connect: 'Yuk Ngobrol',
     resume: 'Download CV',
     resumeFailed: 'Gagal bikin CV. Coba lagi ya.',
@@ -118,7 +118,7 @@ const Hero = () => {
               className="text-3xl font-bold lg:text-6xl"
               pauseWhenHidden
             />
-            <h1 className="sr-only">Aditya Hamda, frontend engineer</h1>
+            <h1 className="sr-only">Aditya Hamda, software engineer</h1>
 
             <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">
               {t.intro}

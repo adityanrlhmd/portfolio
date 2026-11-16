@@ -16,13 +16,13 @@ const T = translations(
     title: 'Free tools for your job search',
     intro:
       'Make your resume, check it against the job, write the cover letter, then see what the offer pays after tax. Free, no sign-up, and nothing you type leaves your browser.',
-    madeBy: ['Made by ', ', a frontend engineer.'],
+    madeBy: ['Made by ', ', a software engineer.'],
   },
   {
     title: 'Tools gratis buat cari kerja',
     intro:
       'Bikin CV, cocokin sama lowongannya, tulis surat lamaran, terus cek berapa gaji bersih dari tawarannya setelah pajak. Gratis, nggak perlu daftar, dan semua yang kamu ketik nggak keluar dari browser.',
-    madeBy: ['Dibikin sama ', ', frontend engineer.'],
+    madeBy: ['Dibikin sama ', ', software engineer.'],
   }
 );
 

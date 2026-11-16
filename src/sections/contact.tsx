@@ -26,7 +26,7 @@ const T = translations(
     eyebrow: "⚡︎ Let's Connect",
     title: 'Contact',
     intro:
-      "Open to new roles, freelance work, or just a chat about frontend. Drop me a message and I'll get back to you soon.",
+      "Open to new roles, freelance work, or just a chat about building web and mobile apps. Drop me a message and I'll get back to you soon.",
     name: 'Name',
     email: 'Email',
     message: 'Message',
@@ -45,7 +45,7 @@ const T = translations(
     eyebrow: '⚡︎ Yuk Ngobrol',
     title: 'Kontak',
     intro:
-      'Lagi terbuka buat posisi baru, kerjaan freelance, atau sekadar ngobrol soal frontend. Kirim pesan aja, nanti aku balas secepatnya.',
+      'Lagi terbuka buat posisi baru, kerjaan freelance, atau sekadar ngobrol soal bikin aplikasi web dan mobile. Kirim pesan aja, nanti aku balas secepatnya.',
     name: 'Nama',
     email: 'Email',
     message: 'Pesan',

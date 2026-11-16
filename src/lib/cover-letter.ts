@@ -56,14 +56,14 @@ export const ADITYA_COVER_LETTER: Omit<CoverLetter, 'date'> = {
   email: ADITYA_RESUME.email,
   phone: ADITYA_RESUME.phone,
   // the resume's "open to remote" note reads oddly in a letterhead; the closing says it instead
-  location: 'Sukabumi, Indonesia',
+  location: 'West Java, Indonesia',
   recipient: '',
   company: '',
-  role: 'Frontend Engineer',
+  role: 'Software Engineer',
   body: [
-    "I'm a Frontend Engineer with 5+ years of building web and mobile apps with React, Next.js, and React Native. Right now I build the order and contract flows of a national e-procurement platform at GovTech Procurement, and I'd love to bring that experience to your team.",
+    "I'm a Software Engineer focused on web and mobile, with 5+ years of building apps with React, Next.js, and React Native. Right now I build the order and contract flows of a national e-procurement platform at GovTech Procurement, and I'd love to bring that experience to your team.",
     'Along the way I set up a core banking frontend from scratch at Bank Jakarta, and built micro frontends, a document management system, and real-time chat at eDOT. I like owning features end to end, from the design handoff to the edge cases in production, and keeping big codebases easy for the next person to work on.',
-    "I'm based in Sukabumi and open to remote work or relocation. I'd be glad to talk about how I can help. Thank you for your time and consideration.",
+    "I'm based in West Java and open to remote work or relocation. I'd be glad to talk about how I can help. Thank you for your time and consideration.",
   ].join('\n\n'),
 };
 

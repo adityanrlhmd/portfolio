@@ -13,14 +13,14 @@ const T = translations(
   {
     home: 'Home',
     navigate: 'Navigate',
-    tagline: 'Frontend Engineer based in Indonesia',
+    tagline: 'Software Engineer based in Indonesia',
     tools: 'Free tools for your job search →',
     rights: 'All rights reserved.',
   },
   {
     home: 'Beranda',
     navigate: 'Navigasi',
-    tagline: 'Frontend Engineer dari Indonesia',
+    tagline: 'Software Engineer dari Indonesia',
     tools: 'Tools gratis buat cari kerja →',
     rights: 'Hak cipta dilindungi undang-undang.',
   }
