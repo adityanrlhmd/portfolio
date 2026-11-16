@@ -79,9 +79,14 @@ describe('CoverLetterPage', () => {
     expect(screen.getByLabelText('Company')).toHaveValue('Acme');
   });
 
-  it("fills Aditya's letter and keeps the date", async () => {
+  it("fills Aditya's letter with today's date, even over an older draft", async () => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ ...newCoverLetter(), date: 'January 1, 2020' })
+    );
+    vi.spyOn(window, 'confirm').mockReturnValue(true);
     render(<CoverLetterPage />);
-    const date = (screen.getByLabelText('Date') as HTMLInputElement).value;
+    expect(screen.getByLabelText('Date')).toHaveValue('January 1, 2020');
     await user.click(
       screen.getByRole('button', { name: "Fill with Aditya's data" })
     );
@@ -91,7 +96,9 @@ describe('CoverLetterPage', () => {
     expect(screen.getByLabelText('Letter')).toHaveValue(
       ADITYA_COVER_LETTER.body
     );
-    expect(screen.getByLabelText('Date')).toHaveValue(date);
+    expect(screen.getByLabelText('Date')).toHaveValue(
+      new Date().toLocaleDateString('en-US', { dateStyle: 'long' })
+    );
   });
 
   it('imports a cover letter PDF made here, and rejects others', async () => {

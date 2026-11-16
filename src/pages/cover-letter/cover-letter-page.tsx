@@ -215,7 +215,8 @@ const CoverLetterPage = () => {
       !window.confirm(t.replaceWithAditya)
     )
       return;
-    form.reset({ ...ADITYA_COVER_LETTER, date: form.getValues('date') });
+    // always today's date, even when a draft saved on an earlier day is loaded
+    form.reset({ ...ADITYA_COVER_LETTER, date: today(pdfLang) });
   };
 
   const importPdf = async (file: File | undefined) => {
