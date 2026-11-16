@@ -22,22 +22,27 @@ const SEO_PAGES: Record<
     'utf8'
   )
 );
-const HOME_TITLE = 'Aditya Hamda | Frontend Engineer';
-const HOME_DESCRIPTION =
-  'Frontend engineer building web and mobile apps for government, banking, and enterprise products. React, Next.js, TypeScript.';
+const HOME_IMAGE = '/og/home.jpg';
 const pagesHtml = (): Plugin => ({
   name: 'pages-html',
   apply: 'build',
   writeBundle({ dir = 'dist' }) {
     const home = readFileSync(join(dir, 'index.html'), 'utf8');
+    // read from index.html so editing the home title there can't break this build
+    const homeTitle = home.match(/<title>(.+?)<\/title>/)?.[1];
+    const homeDescription = home.match(
+      /name="description"\s+content="([^"]+)"/
+    )?.[1];
+    if (!homeTitle || !homeDescription)
+      throw new Error('index.html: <title> or meta description not found');
     for (const [path, page] of Object.entries(SEO_PAGES)) {
       let html = home;
       const swaps: [string, string][] = [
-        [HOME_TITLE, page.title],
-        [HOME_DESCRIPTION, page.description],
+        [homeTitle, page.title],
+        [homeDescription, page.description],
         // og:url, twitter:url and the canonical link
         [`"${SITE}/"`, `"${SITE}${path}"`],
-        [`${SITE}/aditt.jpg`, `${SITE}${page.image ?? '/aditt.jpg'}`],
+        [`${SITE}${HOME_IMAGE}`, `${SITE}${page.image ?? HOME_IMAGE}`],
       ];
       for (const [from, to] of swaps) {
         // fails the build when index.html changes, instead of shipping the portfolio's preview
