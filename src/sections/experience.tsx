@@ -39,7 +39,7 @@ const Experience = () => {
   return (
     <section
       id="experience"
-      className="space-y-10 border-b py-16 sm:scroll-mt-(--header-height)"
+      className="scroll-mt-(--header-height) space-y-10 border-b py-16"
     >
       <div className="container grid grid-cols-1 gap-6 md:grid-cols-5">
         <div className="relative md:col-span-2">
