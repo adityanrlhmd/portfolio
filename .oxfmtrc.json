@@ -1,0 +1,103 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "useTabs": false,
+  "printWidth": 80,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "sortPackageJson": false,
+  "sortTailwindcss": {},
+  "ignorePatterns": [
+    "node_modules/",
+    "pnpm-lock.yaml",
+    "package-lock.json",
+    "bun.lock",
+    "dist/",
+    "coverage/",
+    "*.test.js.snap",
+    ".env",
+    ".env.*",
+    "!.env.example",
+    "*.log",
+    "npm-debug.log*",
+    ".idea/",
+    ".vscode/",
+    "*.swp",
+    "*.swo",
+    "*~",
+    ".vercel/",
+    "*.otf",
+    "*.ttf",
+    "*.woff",
+    "*.woff2",
+    "*.eot",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.ico",
+    "*.svg",
+    "*.webp",
+    "*.pdf",
+    "*.min.js",
+    "*.min.css",
+    "CHANGELOG.md",
+    "LICENSE",
+    ".husky/",
+    ".agents",
+    ".claude"
+  ],
+  "sortImports": {
+    "ignoreCase": false,
+    "customGroups": [
+      {
+        "groupName": "react",
+        "elementNamePattern": ["react", "react/**"]
+      },
+      {
+        "groupName": "react-dom",
+        "elementNamePattern": ["react-dom", "react-dom/**"]
+      },
+      {
+        "groupName": "assets",
+        "elementNamePattern": ["@/assets/**"]
+      },
+      {
+        "groupName": "components",
+        "elementNamePattern": ["@/components/**"]
+      },
+      {
+        "groupName": "sections",
+        "elementNamePattern": ["@/sections/**"]
+      },
+      {
+        "groupName": "hooks",
+        "elementNamePattern": ["@/hooks/**"]
+      },
+      {
+        "groupName": "lib",
+        "elementNamePattern": ["@/lib/**"]
+      },
+      {
+        "groupName": "types",
+        "elementNamePattern": ["@/types/**"]
+      }
+    ],
+    "groups": [
+      ["builtin", "external", "internal"],
+      "react",
+      "react-dom",
+      "assets",
+      "components",
+      "sections",
+      "hooks",
+      "lib",
+      "types",
+      ["parent", "sibling", "index"],
+      "unknown"
+    ]
+  }
+}

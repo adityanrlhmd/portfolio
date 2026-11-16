@@ -11,7 +11,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "format": "prettier --write .",
+    "format": "oxfmt",
     "prepare": "husky"
   },
   "dependencies": {
@@ -48,7 +48,6 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.184.1",
@@ -58,9 +57,8 @@
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.0.2",
+    "oxfmt": "0.79.0",
     "oxlint": "^1.94.0",
-    "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.8.0",
     "shadcn": "^4.7.0",
     "typescript": "^5.2.2",
     "vite": "^8",

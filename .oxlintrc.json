@@ -113,6 +113,12 @@
           {
             "allowConstantExport": true
           }
+        ],
+        "sort-imports": [
+          "error",
+          {
+            "ignoreDeclarationSort": true
+          }
         ]
       },
       "plugins": ["typescript", "react"],
